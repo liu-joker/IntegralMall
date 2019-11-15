@@ -1,0 +1,248 @@
+body, dl, dd, ul, ol, h1, h2, h3, h4, h5, h6, pre, form, input, textarea, p, hr, thead, tbody, tfoot, th, td {
+  margin: 0;
+  padding: 0;
+}
+
+title {
+  text-align: center
+}
+
+ul, ol {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+}
+
+html {
+  -ms-text-size-adjust: none;
+  -webkit-text-size-adjust: none;
+  text-size-adjust: none;
+  font-size: 32px;
+
+}
+
+body, button, input, select, textarea {
+  font-family: 'helvetica neue', tahoma, 'hiragino sans gb', stheiti, 'wenquanyi micro hei'
+}
+
+b, strong {
+  font-weight: bold;
+}
+
+i, em {
+  font-style: normal;
+}
+
+#app {
+  font-family:PingFang SC;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #2c3e50;
+  width: 100%;
+
+  text-align: left;
+}
+
+#app .banner1Content {
+  text-align: left;
+}
+
+html {
+  box-sizing: border-box;
+  font-size: 16px;
+}
+
+body {
+  width: 100%;
+  margin: 0;
+}
+
+img {
+  border: 0 none;
+  width: auto \9;
+  max-width: 100%;
+  vertical-align: top;
+}
+
+.bgc {
+  width: 100%;
+  height: 100%;
+  min-height: 100vh;
+  display: block;
+  position: absolute;
+  overflow: hidden;
+  top: 0;
+  left: 0;
+  z-index: -1;
+
+}
+
+.content {
+  *overflow: hidden;
+  min-height: 100vh;
+}
+
+.RedEnveloap .bgc:after {
+  margin-top: -1px;
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+  content: '';
+  background: linear-gradient(to bottom, #FA4A4A, #f03838);
+}
+
+
+
+.download .bgc:after {
+  margin-top: -1px;
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+  content: '';
+  background-color: #F4F4F4;
+}
+
+.bgc img {
+  display: block;
+  width: 100%;
+  background: linear-gradient(to top, #f63f70, #ff8859 50%);
+}
+
+.vux-no-group-title {
+  background-color: transparent !important;
+  border-top-color: transparent !important
+}
+
+.weui-cells:before, .weui-cells:after {
+  border-color: transparent !important;
+}
+
+.weui-cells {
+  flex: 1
+}
+
+.InternetbankLogin .weui-cells {
+  margin-top: 0;
+}
+
+.register .weui-cells {
+  margin: 0
+}
+
+.weui-btn:after {
+  border: none !important;
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */
+{
+  opacity: 0;
+}
+
+.weui-dialog {
+  max-width: 80% !important;
+  width: 80% !important
+}
+
+@media screen and (min-width: 1024px) {
+  #app .weui-dialog {
+    width: 80%;
+  }
+}
+
+.confirm .weui-dialog__title {
+  font-size: 1.25rem
+}
+
+.confirm .weui-dialog__btn_primary {
+  color: #F89F04 !important;
+}
+
+.confirm .weui-dialog__ft {
+  font-size: 1.75rem;
+  line-height: 5rem
+}
+
+.vux-loading-no-text .weui-toast {
+  min-height: 9.1875rem !important;
+  width: 9.1875rem !important
+}
+
+body .weui-icon_toast.weui-loading {
+  margin: 2.8125rem 0 0;
+  width: 3.5625rem;
+  height: 3.5625rem
+}
+
+body .vux-x-input .vux-input-icon {
+  font-size: 1.5rem;
+}
+
+body .vux-input-icon.weui-icon-warn:before, .vux-input-icon.weui-icon-success:before {
+  font-size: 1.5rem
+}
+
+body .vux-x-input .weui-icon {
+  padding: 0
+}
+
+body .weui-cell__ft {
+  position: absolute;
+  right: 15px
+}
+
+.register .weui-cell__ft .weui-icon {
+  font-size: 2rem;
+}
+
+.register .weui-cell__ft .weui-icon:before {
+  font-size: 2rem;
+}
+
+.register .weui-cell {
+  padding: 0;
+}
+
+.weui-toast {
+  padding: 0 0.5rem;
+}
+
+.InternetbankLogin .vux-tab .vux-tab-item {
+  /*font-size: 2rem;*/
+
+}
+
+.InternetbankLogin .weui-icon-success, .InternetbankLogin .weui-icon-circle {
+  font-size: 1.75rem;
+}
+
+.InternetbankLogin .vux-check-icon > .weui-icon-success:before, .vux-check-icon > .weui-icon-success-circle:before {
+  color: #1997FE;
+}
+
+.insurance .vux-tab .vux-tab-item.vux-tab-selected {
+  font-weight: bold;
+  z-index: 2;
+}
+
+.insurance .vux-tab .vux-tab-item {
+  font-size: 1.875rem;
+  background: transparent;
+
+}
+
+.insurance .vux-fixed .vux-tab-container {
+  box-shadow: 0 0 1.25rem -0.25rem #999999;
+}
+
+
+.insurance .vux-tab-ink-bar {
+  height: 0.75rem !important;
+  z-index: 1;
+  bottom: 1.75rem;
+}
