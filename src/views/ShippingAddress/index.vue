@@ -47,6 +47,9 @@
       }
     },
     created() {
+      this.$vux.loading.show({
+        text: '加载中...'
+      })
       this.getData()
     },
     methods: {
@@ -54,7 +57,11 @@
         //设置默认地址
         console.log(x.isDefault)
         if (x.isDefault == 0) {
+          this.$vux.loading.show({
+            text: '请稍候...'
+          })
           this.$axiosApi.setDefAddress(x.id).then(res => {
+            this.$vux.loading.hide()
             if (res.code == 200) {
               this.$vux.toast.show({
                 text: '操作成功',
@@ -82,7 +89,11 @@
           onCancel() {
           },
           onConfirm: () => {
+            this.$vux.loading.show({
+              text: '请稍候...'
+            })
             this.$axiosApi.updateAddress(x.id).then(res => {
+              this.$vux.loading.hide()
               if (res.code == 200) {
                 this.$vux.toast.show({
                   text: '操作成功',
@@ -103,11 +114,27 @@
         })
       },
       getData() {
+        this.$vux.loading.show({
+          text: '加载中...'
+        })
         this.$axiosApi.addressList().then(res => {
-          this.addressList = res.data.map(v => {
-            v.addressInfo = v.areaName + '<br />' + v.address
-            return v
-          })
+          this.$vux.loading.hide()
+          if(res.code == 200){
+            this.addressList = res.data.map(v => {
+              v.addressInfo = v.areaName + '<br />' + v.address
+              return v
+            })
+          }else {
+            this.$vux.alert.show({
+              title: '提示',
+              content: res.message,
+              onShow () {
+              },
+              onHide () {
+              }
+            })
+          }
+
         })
       },
       addAddress() {

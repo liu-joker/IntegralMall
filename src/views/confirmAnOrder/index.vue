@@ -28,7 +28,7 @@
       <div class="O_content">
         <div class="goods">
           <div class="img">
-            <img  :src="orderInfo.imgUrl || pic_sort2" alt="">
+            <img :src="orderInfo.imgUrl" alt="">
           </div>
           <div class="textInfo">
             <div>{{orderInfoItem.name}}</div>
@@ -61,10 +61,10 @@
         <div class="method_content">
           <div class="label">选择支付方式：</div>
           <div class="payList">
-            <div class="item" :class="PayActive == 3?'active':''" @click="PayActive = 3">
+           <!-- <div class="item" :class="PayActive == 3?'active':''" @click="PayActive = 3">
               <span class="round"></span>
               银联支付
-            </div>
+            </div>-->
             <div class="item" :class="PayActive == 2?'active':''" @click="PayActive = 2">
               <span class="round"></span>
               微信支付
@@ -101,7 +101,7 @@
       return {
         pic_sort2: pic_sort2,
         PresentPrice: "&yen;500.00",
-        PayActive: 3,
+        PayActive: 2,
         AddressInfo: {},
         itemId:'',
         payMode:'',
@@ -111,20 +111,75 @@
       }
     },
     created() {
+      this.$vux.loading.show({
+        text: '加载中...'
+      })
       this.itemId = this.$route.params.itemId
       this.payMode = this.$route.params.payMode
       this.getData()
     },
+    mounted(){
+      window['onPayFailure'] = () => {
+        this.onPayFailure()
+      }
+      window['onPaySuccess'] = () => {
+        this.onPaySuccess()
+      }
+    },
     methods: {
+      onPayFailure() {
+       /* this.$vux.alert.show({
+          title: '提示',
+          content: "取消",
+          onShow () {
+          },
+          onHide () {
+          }
+        })*/
+
+       this.$router.push({path:'/ForThePayment'})
+
+      },
+      onPaySuccess(){
+     /*   this.$vux.alert.show({
+          title: '提示',
+          content: "成功",
+          onShow () {
+          },
+          onHide () {
+          }
+        })*/
+        this.$router.push({path:'/ToSendTheGoods'})
+
+      },
       BuyNow(){
         //立即购买
 
         if(this.itemId != "" && this.payMode != "" && this.PayActive !="" && this.AddressInfo.id){
-
+          this.$vux.loading.show({
+            text: '请稍候...'
+          })
           this.$axiosApi.createOrder(this.itemId,this.payMode,this.PayActive,this.AddressInfo.id).then(res=>{
+            this.$vux.loading.hide()
             if(res.code == 200){
-
+              let thirdData = JSON.stringify(res.data.thirdData.data)
+              console.log(thirdData)
+              this.$store.dispatch('getUserInfo')
+              window.app.onWeChatPay(thirdData)
+            }else if(res.code == 2003){
+              this.$vux.alert.show({
+                title: '提示',
+                content: res.message,
+                onShow () {
+                },
+                onHide:()=> {
+                  this.$router.push({
+                    path:'/allOrders'
+                  })
+                }
+              })
             }else {
+              console.log(res,'res')
               this.$vux.alert.show({
                 title: '提示',
                 content: res.message,
@@ -135,17 +190,20 @@
               })
             }
           })
+        }else {
+          this.$vux.alert.show({
+            title: '提示',
+            content: '请完善信息',
+            onShow () {
+            },
+            onHide () {
+            }
+          })
         }
 
       },
       changeAddress(x){
-        if(x == 0){
-          this.$router.push({path: '/AddShippingAddress'})
-
-        }else {
-          this.$router.push({path: '/ShippingAddress'})
-
-        }
+        this.$router.push({path: '/ShippingAddress'})
       },
       getData() {
         if(this.itemId !=""){
@@ -153,14 +211,15 @@
             if (res.code == 200) {
               this.AddressInfo = res.data.find(v=>{
                 return v.isDefault == 1
-              })
+              }) || ""
             }
           })
 
           this.$axiosApi.orderItem(this.itemId,this.payMode).then(res => {
+            this.$vux.loading.hide()
             if (res.code == 200) {
               this.orderInfo = res.data
-              this.orderInfo.imgUrl = imgUrl(res.data.item.photo.split(',')[0])
+              this.orderInfo.imgUrl = imgUrl(res.data.item.photo.split(',')[1])
               this.orderInfoItem = res.data.item
 
               if (this.payMode == 1) {
@@ -252,7 +311,8 @@
             width: 7.125rem;
             height: 7.125rem;
             img {
-              width: 100%;
+              width: 7.125rem;
+              height: 7.125rem;
               border-radius: 0.5rem;
             }
           }

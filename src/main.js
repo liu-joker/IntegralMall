@@ -8,7 +8,6 @@ import '@/icons'
 import '@/styles/index.css'
 import store from './store'
 
-
 //import objectAssign from 'object-assign'
 import  './utils/templateCreated.js'
 import  { LoadingPlugin } from 'vux'

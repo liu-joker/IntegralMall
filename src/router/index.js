@@ -72,7 +72,7 @@ const routerList = [
     }
   },
   {
-    path: '/orderDetails',
+    path: '/orderDetails/:orderNum',
     name: 'orderDetails',
     component: () => import('@/views/orderDetails'),
     meta: {
@@ -119,6 +119,16 @@ const routerList = [
       title: '待收货'
     }
   },
+  {
+    path: '/share/:id/:active',
+    name: 'share',
+    component: () => import('@/views/share/index'),
+    meta: {
+      title: '商品分享'
+    }
+  },
+
+
 
   {path: '*', redirect: '/404', hidden: true}
 ]

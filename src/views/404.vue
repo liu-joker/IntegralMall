@@ -23,9 +23,10 @@
   .content_404{
     .center_404{
       margin-top: 11.25rem;
+      text-align: center;
       img{
         width:16.875rem;
-        margin: 0 auto;
+        margin-bottom: 1rem;
       }
       p{
         font-size: 1.75rem;

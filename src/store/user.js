@@ -1,7 +1,9 @@
 import axiosApi from '@/api/axios'
 const user = {
   state: {
-    userInfo: "",
+    userInfo: {
+      grade:0
+    },
   },
   mutations: {
     SET_USERINFO: (state, userInfo) => {

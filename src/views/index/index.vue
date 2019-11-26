@@ -12,7 +12,7 @@
     <div class="I_banner">
       <swiper auto dots-position="center" loop style="width: 100%;margin:0 auto;" :aspect-ratio="40.63/46.88" :interval=5000>
         <swiper-item class="swiper-demo-img" v-for="(x, index) in bannerList" :key="index">
-          <img :src="x.photo | imgUrl" alt="">
+          <img :src="x.photo | imgUrl" alt="" class="bannerImg">
         </swiper-item>
       </swiper>
     </div>
@@ -84,17 +84,14 @@
           {id:4,name:'爆款',imgUrl:pic_sort5},
         ],
         shopList:[
-          {id:0,imgUrl:"",name:'欧式多功能座椅',info:'进口原木支撑椅脚，坚硬耐用，可水洗坐垫，方便拆洗。',browse:132358},
-          {id:1,imgUrl:"",name:'九阳豆浆机',info:'进口原木支撑椅脚，坚硬耐用，可水洗坐垫，方便拆洗。',browse:132358},
-          {id:2,imgUrl:"",name:'九阳豆浆机',info:'进口原木支撑椅脚，坚硬耐用，可水洗坐垫，方便拆洗。',browse:132358},
-          {id:3,imgUrl:"",name:'九阳豆浆机',info:'进口原木支撑椅脚，坚硬耐用，可水洗坐垫，方便拆洗。',browse:132358},
-          {id:4,imgUrl:"",name:'九阳豆浆机',info:'进口原木支撑椅脚，坚硬耐用，可水洗坐垫，方便拆洗。',browse:132358},
+
         ]
       }
     },
      created() {
       this.getData()
       this.getBannerList()
+
     },
     methods: {
       GoodsDetails(x){
@@ -102,13 +99,26 @@
         this.$router.push({path:'/GoodsDetails/'+x.id})
       },
       getData(){
+        this.$vux.loading.show({
+          text: '加载中...'
+        })
         this.$axiosApi.itemList().then(res=>{
           if(res.code==200){
             //
+            let time = new Date().getTime()/100000000
             this.shopList = res.data.map(v=>{
               v.imgUrl = v.photo.split(',')[0]
-              v.browse = 132358
+              v.browse = (time + (v.name.length * v.resume.length)).toFixed(0)
               return v
+            })
+          }else {
+            this.$vux.alert.show({
+              title: '提示',
+              content: res.message,
+              onShow () {
+              },
+              onHide () {
+              }
             })
           }
         })
@@ -123,6 +133,16 @@
               v.typeName = res.data.shopType[index].typeName
               v.typeOrder = res.data.shopType[index].typeOrder
               return v
+            })
+            this.$vux.loading.hide()
+          }else {
+            this.$vux.alert.show({
+              title: '提示',
+              content: res.message,
+              onShow () {
+              },
+              onHide () {
+              }
             })
           }
         })
@@ -161,6 +181,12 @@
       }
     }
 
+    .I_banner{
+      .bannerImg{
+        width: 100%;
+        height: 100%;
+      }
+    }
     .I_select{
       background-color: #ffffff;
       padding: 1.25rem;
@@ -205,6 +231,7 @@
           font-family:PingFang SC;
           background-color: #ffffff;
           border-radius: 1rem;
+          overflow: hidden;
           margin-bottom: 1.25rem;
           .itemImg{
             width: 100%;

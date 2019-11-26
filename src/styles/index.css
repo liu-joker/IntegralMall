@@ -20,6 +20,8 @@ html {
   -webkit-text-size-adjust: none;
   text-size-adjust: none;
   font-size: 32px;
+}
+body{
 
 }
 
@@ -41,7 +43,6 @@ i, em {
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
   width: 100%;
-
   text-align: left;
 }
 
@@ -209,9 +210,11 @@ body .weui-cell__ft {
 }
 
 .weui-toast {
-  padding: 0 0.5rem;
+  padding: 0 1.5rem;
 }
-
+.vux-divider{
+  font-size: 1.5rem;
+}
 .InternetbankLogin .vux-tab .vux-tab-item {
   /*font-size: 2rem;*/
 

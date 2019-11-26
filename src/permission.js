@@ -2,6 +2,8 @@ import router from './router'
 import cookies from '@/utils/auth'
 import axios from '@/api/axios'
 import store from './store'
+import NProgress from 'nprogress' // Progress 进度条
+import 'nprogress/nprogress.css'// Progress 进度条样式
 
 const whiteList = ['/login'] // 不重定向白名单
 router.beforeEach((to, from, next) => {
@@ -10,15 +12,25 @@ router.beforeEach((to, from, next) => {
   }else {
     document.title = ''
   }
-  let token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJITEpDIiwiZXhwIjoxNTc0MDc2ODgzLCJ1c2VyIjoiMDIzY2RiOTkxMTk5NDBhMWIwZTBlYjRiNWY2MDA5OTUifQ.RXjxqjbGcx49zNRMfatEtLD1F1OdihqMVuOmb7j3FA3KcatxWTGUWrQUA3Dv0CYrjbWXj4uG8aD8kv7b3Vv03g"
+  // let token = window.app.getToken()
+  let token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJITEpDIiwiZXhwIjoxNTc1MzM5MDU5LCJ1c2VyIjoiMDIzY2RiOTkxMTk5NDBhMWIwZTBlYjRiNWY2MDA5OTUifQ.u9T16ia2fUmHOEbu7XQFcw0NPVoXZjM3QaksL3UcUDZPLjvebbZMrDXEJOPq5c9kk4PmDCKSGusLha8DpnFQDw"
+  // let token2 = ""
+  /*try {
+     token = window.app.getToken() || ""
+  } catch (e){
+    token = ""
+  }*/
   cookies.setToken(token)
-  if(token && !store.getters.userInfo){
+  // console.log(token2,"token2")
+  if(token !="" && !store.getters.userInfo.phone){
+    NProgress.start()
     store.dispatch('getUserInfo').then(response => {
       console.log(response)
       next()
+      NProgress.done()
     })
+  }else {
+    next()
   }
-
-  next()
 })
 

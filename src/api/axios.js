@@ -53,6 +53,21 @@ class loginApi {
     })
   };
 
+  //添加收货地址
+
+  static addAddress(name,phone,areaId,address) {
+    return request({
+      url: '/addAddress',
+      method: 'post',
+      data: {
+        areaId:areaId,
+        address:address,
+        phone:phone,
+        name:name,
+      },
+    })
+  };
+
   //设置默认地址
   static setDefAddress(id) {
     return request({
@@ -120,6 +135,73 @@ class loginApi {
       },
     })
   };
+
+  //订单列表
+  static findUserShopOrder(pageNum,pageSize,status,payStatus,expressStatus) {
+    return request({
+      url: '/findUserShopOrder',
+      method: 'post',
+      data: {
+        pageNum:pageNum,
+        pageSize:pageSize,
+        status:status,
+        payStatus:payStatus,
+        expressStatus:expressStatus,
+      },
+    })
+  };
+
+  //取消订单
+  static cancelOrder(orderNum) {
+    return request({
+      url: '/cancelOrder',
+      method: 'post',
+      data: {
+        orderNum:orderNum,
+      },
+    })
+  };
+
+//积分详情
+  static userPoint(startTime,pageNum,pageSize) {
+    return request({
+      url: '/userPoint',
+      method: 'post',
+      data: {
+        startTime:startTime,
+        pageNum:pageNum,
+        pageSize:pageSize,
+      },
+    })
+  };
+
+  //订单详情
+  static findShopOrderDetails(orderNum) {
+    return request({
+      url: '/findShopOrderDetails',
+      method: 'post',
+      data: {
+        orderNum:orderNum,
+      },
+    })
+  };
+
+  //确认收货
+  static finishOrder(orderNum) {
+    return request({
+      url: '/finishOrder',
+      method: 'post',
+      data: {
+        orderNum:orderNum,
+      },
+    })
+  };
+
+
+
+
+
+
 
 
 

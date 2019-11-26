@@ -6,7 +6,7 @@
       <swiper auto dots-position="center" loop style="width: 100%;margin:0 auto;" :aspect-ratio="40.63/46.88"
               :interval=5000>
         <swiper-item class="swiper-demo-img" v-for="(item, index) in itemInfo.photoList" :key="index">
-          <img :src="item | imgUrl" alt="">
+          <img :src="item | imgUrl" alt="" class="bannerImg">
         </swiper-item>
       </swiper>
     </div>
@@ -14,7 +14,7 @@
       <div class="head">
         <div class="name">{{itemInfo.name}}</div>
         <div class="tag">会员折扣</div>
-        <div class="tag">U米减价</div>
+        <div class="tag" v-if="tagShow">U米减价</div>
       </div>
       <div class="num">
         <span class="PresentPrice" v-html="PresentPrice()"></span>
@@ -31,14 +31,12 @@
     </div>
 
     <div class="goodsInfo">
-      <div class="title">
+  <!--    <div class="title">
         商品详情
-      </div>
+      </div>-->
       <div class="goodsImgList">
         <div class="item" v-html="itemInfo.description">
-          <img :src="banner1" alt="" class="goodsInfoImg">
-          <img :src="banner1" alt="" class="goodsInfoImg">
-          <img :src="banner1" alt="" class="goodsInfoImg">
+
         </div>
       </div>
     </div>
@@ -50,7 +48,7 @@
           <div class="num" v-html="PresentPrice()"></div>
           <div>价格</div>
         </div>
-        <div class="share">
+        <div class="share" @click="share" v-if="$Cookie.getToken('token') != ''">
           <img :src="icon_share2" alt="" class="shareImg">
           <div>分享</div>
         </div>
@@ -102,6 +100,7 @@
         itemInfo: {},
         priceInfo: [],
         active: "",
+        tagShow: false,
         PresentPrice: function () {
           if(this.priceInfo.length !=0){
             let item = this.priceInfo.find(v => {
@@ -119,12 +118,34 @@
       }
     },
     created() {
+
       this.id = this.$route.params.id
       this.getData()
     },
     methods: {
+      share(){
+        this.$router.push({
+          path:'/share/'+this.id+'/'+this.active
+        })
+
+      },
       pay(){
         if(this.itemInfo.status == 2){
+          return
+        }
+
+        if(this.$Cookie.getToken() == ""){
+          this.$vux.confirm.show({
+            content: "请前往小米粒APP购买",
+            confirmText:'前往下载',
+            onCancel () {
+
+            },
+            onConfirm () {
+
+            }
+          })
+
           return
         }
 
@@ -135,39 +156,53 @@
 
       },
       getData() {
-        console.log(this.id)
+        this.$vux.loading.show({
+          text: '加载中...'
+        })
         const data = {
           itemId: this.id,
           grade: this.$store.getters.userInfo.grade,
         }
         this.$axiosApi.itemDetail(data.itemId, data.grade).then(res => {
-          this.itemInfo = res.data.item
-          this.itemInfo.photoList = res.data.item.photo.split(',')
-          this.priceInfo = res.data.priceInfo.map(v => {
+          this.$vux.loading.hide()
+          if(res.code == 200){
+            this.itemInfo = res.data.item
+            this.itemInfo.photoList = res.data.item.photo.split(',')
+            this.itemInfo.photoList.splice(0,1)
+            this.priceInfo = res.data.priceInfo.map(v => {
+              this.tagShow = true
+              //1金钱2积分3混合
+              if (v.payMode == 1) {
+                this.tagShow = false
+                v.itemName = '&yen;' + formatMoney(v.amount)
+              } else if (v.payMode == 2) {
+                v.itemName = v.coin + "U"
+              } else {
+                v.itemName = '&yen;' + formatMoney(v.amount) + "+" + v.coin + "U"
+              }
+              return v
 
-            //1金钱2积分3混合
-            if (v.payMode == 1) {
-              v.itemName = '&yen;' + formatMoney(v.amount)
-            } else if (v.payMode == 2) {
-              v.itemName = v.coin + "U"
+            })
+            let active = this.priceInfo.find(v => {
+              return v.payMode == 1
+            })
+
+            if (active) {
+              this.active = active.payMode
             } else {
-              v.itemName = '&yen;' + formatMoney(v.amount) + "+" + v.coin + "U"
+              this.active = this.priceInfo[0].payMode
             }
-            return v
-
-          })
-          let active = this.priceInfo.find(v => {
-            return v.payMode == 1
-          })
-
-          if (active) {
-            this.active = active.payMode
-          } else {
-            this.active = this.priceInfo[0].payMode
+          }else {
+            this.$vux.alert.show({
+              title: '提示',
+              content: res.message,
+              onShow () {
+              },
+              onHide () {
+              }
+            })
           }
 
-
-          console.log(this.itemInfo)
         })
       }
     }
@@ -181,6 +216,10 @@
     min-height: 100vh;
 
     .G_banner {
+      .bannerImg{
+        width: 100%;
+        height: 100%;
+      }
     }
     .Banner_info {
       padding: 1.875rem;
@@ -258,7 +297,8 @@
       .goodsImgList {
         .item {
           img {
-            width: 100%;
+            width: 100% !important;
+            height: auto !important;
           }
         }
       }

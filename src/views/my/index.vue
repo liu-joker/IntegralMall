@@ -61,22 +61,26 @@
           title:'收货地址',
           type:'url',
           url:"/ShippingAddress",
-          value:''
+          value:'',
+          funType:'url'
         },{
           title:'我的U米',
           type:'url',
           url:"/MyUmi",
-          value:''
+          value:'',
+          funType:'url'
         },{
           title:'联系客服',
           type:'url',
           url:"/ShippingAddress",
-          value:''
+          value:'',
+          funType:'AppUrl'
         },{
           title:'帮助',
           type:'url',
           url:"/HelpCenter",
-          value:''
+          value:'',
+          funType:'url'
         },]
       }
     },
@@ -105,11 +109,13 @@
         }
       },
       onClick(x){
-        if(x.type == 'url'){
+        if(x.funType == 'url'){
           console.log(x)
           this.$router.push({
             path:x.url
           })
+        }else if(x.funType == 'AppUrl') {
+          window.app.contactService()
         }
       }
     }

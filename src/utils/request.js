@@ -19,9 +19,7 @@ service.interceptors.request.use(config => {
   // console.log(headers.indexOf("application/x-www-form-urlencoded"))
   //console.log(config.data)
   if(headers==undefined || headers.indexOf("application/x-www-form-urlencoded")!=-1){
-      console.log(config.data)
       config.data=qs.stringify(config.data);
-      console.log(config.data)
   }
 
   config.headers['token'] = cookies.getToken()
@@ -45,34 +43,38 @@ service.interceptors.response.use(
      */
     const res = response.data
 
+    if (res.code != '200'){
 
-    // console.log(99999)
-    // console.log(response.data)
-
-
-    if (response.data.resp_code == '000000'){
-      AlertModule.show({
-        title: 'VUX is Cool',
-        content: this.$t('Do you agree?'),
-        onShow () {
-          console.log('Module: I\'m showing')
-        },
-        onHide () {
-          console.log('Module: I\'m hiding now')
+      let message = ""
+        if(res.code=='401' || res.code=='402' || res.code=='0'){
+          try {
+            window.app.onLoginErro()
+            return
+          } catch (e) {
+            message="登录失效，请重新登录!"
+          }
+          AlertModule.show({
+            title: '提示',
+            content: message,
+          })
+          return Promise.reject(res)
+        }else if(res.code=='405') {
+          message="请先实名！"
+          AlertModule.show({
+            title: '提示',
+            content: message,
+            onHide(){
+              window.app.closePage();
+            }
+          })
+          return
         }
-      })
-      return Promise.reject(response.data)
-    }else {
-      return response.data
+
+
     }
-
-
-
-
+    return res
   },
   error => {
-    console.log()
-
 
     var errordata=error.response.data
 
@@ -80,12 +82,12 @@ service.interceptors.response.use(
     if(error.code == 'ECONNABORTED' && error.message.indexOf('timeout')!=-1 && !originalRequest._retry){
       error.message="请求超时！"
     }
-    console.log('err' + error)// for debug
+    console.log('err' + errordata)// for debug
 
     //error.message="系统错误，请联系客服！"
 
     if (errordata.code!='200'){
-      if(errordata.code=='401' || errordata.code=='402'){
+      if(errordata.code=='401' || errordata.code=='402' || errordata.code=='0'){
         try {
           window.app.onLoginErro()
           return

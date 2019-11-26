@@ -1,65 +1,109 @@
 <template>
 
   <div class="TheDetail">
-    <div class="TheDetail_content">
-      <group>
-        <datetime format="YYYY-MM" start-date="2018-01-01" v-model="time" @on-change="onChange">
-          <div class="select_title">
-            <span>{{year}}年{{month}}月</span>
-            <span class="triangle"></span>
+    <scroller lock-x @on-scroll-bottom="onScrollBottom" ref="scrollerBottom2" :scroll-bottom-offst="300">
+      <div class="TheDetail_content">
+        <group>
+          <datetime format="YYYY-MM" start-date="2018-01-01" v-model="time" @on-change="onChange">
+            <div class="select_title">
+              <span>{{year}}年{{month}}月</span>
+              <span class="triangle"></span>
+            </div>
+          </datetime>
+        </group>
+        <div class="list">
+          <div class="item" v-for="(x,index) in pointList" :key="index">
+            <div class="left">
+              <div class="info">{{x.remark}}</div>
+              <div class="time">{{x.createTime}}</div>
+            </div>
+            <div class="right" :class="x.point>0?'add':''">{{x.point}}</div>
           </div>
-        </datetime>
-      </group>
-      <div class="list">
-        <div class="item">
-          <div class="left">
-            <div class="info">购买商品成功增加U米</div>
-            <div class="time">2019-10-25</div>
-          </div>
-          <div class="right">+60.00</div>
-        </div>
-        <div class="item">
-          <div class="left">
-            <div class="info">购买商品成功增加U米</div>
-            <div class="time">2019-10-25</div>
-          </div>
-          <div class="right add">-60.00</div>
+          <load-more tip="正在加载..." class="loadingMore" v-if="onFetching"></load-more>
+          <divider v-if="pageSize > info.total">到底了</divider>
         </div>
       </div>
-
-    </div>
+    </scroller>
   </div>
 
 </template>
 
 <script>
-  import {Group, Datetime} from 'vux'
+  import {Group, Datetime, LoadMore, Scroller,Divider} from 'vux'
 
   export default {
     name: 'TheDetail',
     components: {
       Group,
-      Datetime
+      Datetime,
+      Scroller,
+      Divider,
+      LoadMore
     },
     data() {
       return {
         time: (new Date().getFullYear()) + '-' + (new Date().getMonth() + 1),
+        pageNum: 1,
+        pageSize: 10,
+        onFetching : false,
+        info : '',
+
+        pointList: []
       }
     },
-    computed:{
-      year:function () {
+    computed: {
+      year: function () {
         return new Date(this.time).getFullYear()
       },
-      month:function () {
+      month: function () {
         return new Date(this.time).getMonth() + 1
       }
     },
     created() {
-      console.log()
+      this.getData()
     },
     methods: {
+      onScrollBottom(){
+        if (this.onFetching){
+
+        } else {
+          this.onFetching = true;
+          if(this.pageSize > this.info.total) return  this.onFetching = false;
+          this.pageSize += 10;
+          this.getData()
+        }
+      },
+      getData() {
+        let startTime = this.time
+        let pageNum = this.pageNum
+        let pageSize = this.pageSize
+        this.$vux.loading.show({
+          text: '加载中...'
+        })
+        this.$axiosApi.userPoint(startTime, pageNum, pageSize).then(res => {
+          this.$vux.loading.hide()
+          if (res.code == 200) {
+            this.pointList = res.data.list
+            this.info = res.data
+            this.onFetching = false
+            this.$nextTick(() => {
+              this.$refs.scrollerBottom2.reset()
+            })
+          } else {
+            this.$vux.alert.show({
+              title: '提示',
+              content: res.message,
+              onShow() {
+              },
+              onHide() {
+              }
+            })
+          }
+        })
+      },
       onChange() {
         console.log(this.time)
+        this.getData()
       }
     }
   }
@@ -72,8 +116,8 @@
     background-color: #F4F4F4;
     padding-top: 0.625rem;
 
-    .weui-cell{
-     padding: 0;
+    .weui-cell {
+      padding: 0;
     }
     .TheDetail_content {
       background-color: #fff;
@@ -124,6 +168,11 @@
       border-top: 1rem solid #323232;
       border-left: 1rem solid transparent;
       border-right: 1rem solid transparent;
+    }
+    .no-more{
+      font-size: 0.75rem;
+      text-align: center;
+      padding-top: 0.5rem;
     }
   }
 </style>
