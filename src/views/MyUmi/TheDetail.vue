@@ -47,7 +47,6 @@
         pageSize: 10,
         onFetching : false,
         info : '',
-
         pointList: []
       }
     },

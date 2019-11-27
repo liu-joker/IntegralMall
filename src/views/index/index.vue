@@ -95,7 +95,6 @@
     },
     methods: {
       GoodsDetails(x){
-        console.log(x)
         this.$router.push({path:'/GoodsDetails/'+x.id})
       },
       getData(){

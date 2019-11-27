@@ -72,12 +72,12 @@
         let name = this.form.name
         let phone = this.form.phone
         let info = this.form.info
-        let areaId = this.form.address[2] || ""
-        this.$vux.loading.show({
-          text: '请稍候...'
-        })
-        if (name != "" && phone != "" && info != "" && areaId != "") {
+        let areaId = this.form.address[2] || "" //区编号
 
+        if (name != "" && phone != "" && info != "" && areaId != "") {
+          this.$vux.loading.show({
+            text: '请稍候...'
+          })
           this.$axiosApi.addAddress(name,phone,areaId,info).then(res=>{
             this.$vux.loading.hide()
             if(res.code == 200){

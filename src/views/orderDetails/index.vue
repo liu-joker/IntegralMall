@@ -110,14 +110,12 @@
 </template>
 
 <script>
-  import pic_sort2 from "@/assets/images/pic_sort2.png"
   import {formatMoney, imgUrl, formatDate} from "@/filters"
   import Clipboard from 'clipboard'//点击复制组件
   export default {
     name: 'orderDetails',
     data() {
       return {
-        pic_sort2: pic_sort2,
         PayActive: 0,
         AddressInfo: {},
         orderNum: '',
@@ -136,7 +134,7 @@
         var clipboard = new Clipboard('.tag-read')
 
         clipboard.on('success', e => {
-          this.$vux.toast.show({text: '已复制到粘贴板',position: 'top',type:"text",width:"20em"})
+          this.$vux.toast.show({text: '文字已复制到粘贴板',position: 'top',type:"text",width:"20em"})
           // 释放内存
           console.log(1)
 

@@ -33,20 +33,18 @@ require('es6-promise').polyfill()
 import axiosApi from '@/api/axios'
 Vue.prototype.$axiosApi = axiosApi;
 
-console.log(111)
 
 import Cookie from '@/utils/auth'
 Vue.prototype.$Cookie = Cookie;
-/*import VideoPlayer from 'vue-video-player'
-require('video.js/dist/video-js.css')
-require('vue-video-player/src/custom-theme.css')
-Vue.use(VideoPlayer)*/
+
 import { ConfirmPlugin } from 'vux'
 Vue.use(ConfirmPlugin)
 import * as filters from './filters'
 Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key])
 })
+import VueWechatTitle from 'vue-wechat-title';
+Vue.use(VueWechatTitle)
 /** i18n **/
 /*let store = new Vuex.Store({
   modules: {

@@ -8,7 +8,7 @@
         <span>收货地址</span>
       </div>
       <div class="addAddress">
-        <div class="AddressContent" v-if="AddressInfo == ''"@click="changeAddress(0)">
+        <div class="AddressContent" v-if="AddressInfo == ''" @click="changeAddress(0)">
           <svg-icon slot="label" class="form_icon" icon-class="add2"></svg-icon>
           新增收货地址
         </div>
@@ -28,8 +28,11 @@
       <div class="O_content">
         <div class="goods">
           <div class="img">
-            <img :src="orderInfo.imgUrl" alt="">
+            <div class="img_p">
+              <img :src="orderInfo.imgUrl" alt="">
+            </div>
           </div>
+
           <div class="textInfo">
             <div>{{orderInfoItem.name}}</div>
             <div class="numInfo">
@@ -57,14 +60,14 @@
           </div>
         </div>
       </div>
-      <div class="method">
+      <div class="method" v-if="payMode != 2">
         <div class="method_content">
           <div class="label">选择支付方式：</div>
           <div class="payList">
-           <!-- <div class="item" :class="PayActive == 3?'active':''" @click="PayActive = 3">
-              <span class="round"></span>
-              银联支付
-            </div>-->
+            <!-- <div class="item" :class="PayActive == 3?'active':''" @click="PayActive = 3">
+               <span class="round"></span>
+               银联支付
+             </div>-->
             <div class="item" :class="PayActive == 2?'active':''" @click="PayActive = 2">
               <span class="round"></span>
               微信支付
@@ -87,27 +90,54 @@
         立即购买
       </div>
     </div>
+
+
+    <popup v-model="dialogShow" position="bottom" show-mask>
+      <div class="popupD">
+        <div class="head_p">
+          <div class="passwordD">
+            <div :class="index<password.length?'round':''" v-for="(x,index) in 6" :key="index"></div>
+          </div>
+        </div>
+        <div class="center_p">
+          <div class="Number">
+            <div class="item" v-for="(x,index) in 12" :key="index" @click="numberClick(x)">
+              <span v-if="x == 10"> </span>
+              <span v-else-if="x == 11">0</span>
+              <img v-else-if="x == 12" class="delete" :src="icon_cancel">
+              <span v-else>{{x}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </popup>
+
   </div>
 
 </template>
 
 <script>
-  import pic_sort2 from "@/assets/images/pic_sort2.png"
-  import {formatMoney,imgUrl} from "@/filters"
+  import {formatMoney, imgUrl} from "@/filters"
+  import {Popup} from 'vux'
+  import icon_cancel from "@/assets/images/icon_cancel.png"
 
   export default {
     name: 'confirmAnOrder',
+    components: {
+      Popup
+    },
     data() {
       return {
-        pic_sort2: pic_sort2,
-        PresentPrice: "&yen;500.00",
+        icon_cancel: icon_cancel,
         PayActive: 2,
         AddressInfo: {},
-        itemId:'',
-        payMode:'',
-        orderInfo:{},
-        orderInfoItem:{},
-
+        itemId: '',
+        payMode: '',
+        orderInfo: {},
+        orderInfoItem: {},
+        payInfo:'',
+        dialogShow: false,
+        password: ''
       }
     },
     created() {
@@ -118,7 +148,7 @@
       this.payMode = this.$route.params.payMode
       this.getData()
     },
-    mounted(){
+    mounted() {
       window['onPayFailure'] = () => {
         this.onPayFailure()
       }
@@ -127,95 +157,158 @@
       }
     },
     methods: {
+      numberClick(x) {
+
+        if (x < 10 || x == 11) {
+
+          if (this.password.length == 6) {
+            return
+          }
+
+          let num = x == 11 ? 0 : x
+          console.log(num)
+
+          this.password = this.password + String(num)
+          if (this.password.length == 6) {
+            let orderNum = this.payInfo.orderNum
+            let password = this.password
+            this.$vux.loading.show({
+              text: '请稍候...'
+            })
+            this.$axiosApi.pay(orderNum,password).then(res=>{
+              this.$vux.loading.hide()
+              this.password = ""
+              this.dialogShow = false
+              if(res.code == 200){
+                //708 支付密码错误
+                if(res.data.respCode == 10000){
+                  this.$vux.alert.show({
+                    content:'购买成功',
+                    onShow() {
+                    },
+                    onHide: () => {
+                      this.$router.push({
+                        path: '/ToSendTheGoods'
+                      })
+                    }
+                  })
+                }else {
+                  this.$vux.alert.show({
+                    title: '提示',
+                    content: res.message,
+                    onShow() {
+                    },
+                    onHide() {
+                    }
+                  })
+                }
+              }else {
+                this.$vux.alert.show({
+                  title: '提示',
+                  content: res.message,
+                  onShow() {
+                  },
+                  onHide() {
+                  }
+                })
+              }
+            })
+          }
+
+        } else if (x == 12) {
+          this.password = this.password.substring(0, this.password.length - 1)
+          console.log(this.password)
+        }
+      },
       onPayFailure() {
-       /* this.$vux.alert.show({
-          title: '提示',
-          content: "取消",
-          onShow () {
-          },
-          onHide () {
-          }
-        })*/
-
-       this.$router.push({path:'/ForThePayment'})
-
+        this.$router.push({path: '/ForThePayment'})
       },
-      onPaySuccess(){
-     /*   this.$vux.alert.show({
-          title: '提示',
-          content: "成功",
-          onShow () {
-          },
-          onHide () {
-          }
-        })*/
-        this.$router.push({path:'/ToSendTheGoods'})
-
+      onPaySuccess() {
+        this.$router.push({path: '/ToSendTheGoods'})
       },
-      BuyNow(){
+      BuyNow() {
         //立即购买
 
-        if(this.itemId != "" && this.payMode != "" && this.PayActive !="" && this.AddressInfo.id){
+        if (this.itemId != "" && this.payMode != "" && this.PayActive != "" && this.AddressInfo.id) {
+
+
+          if(this.payMode == 2){
+            this.PayActive = 4
+          }
           this.$vux.loading.show({
             text: '请稍候...'
           })
-          this.$axiosApi.createOrder(this.itemId,this.payMode,this.PayActive,this.AddressInfo.id).then(res=>{
+          this.$axiosApi.createOrder(this.itemId, this.payMode, this.PayActive, this.AddressInfo.id).then(res => {
             this.$vux.loading.hide()
-            if(res.code == 200){
-              let thirdData = JSON.stringify(res.data.thirdData.data)
-              console.log(thirdData)
+            if (res.code == 200) {
+              this.payInfo = res.data
+
+              if (res.data.passType == 0) {
+                //第三方支付
+                let thirdData = JSON.stringify(res.data.thirdData.data)
+                window.app.onWeChatPay(thirdData)
+              } else if (res.data.passType == 1){
+                //支付密码
+                this.password=''
+                this.dialogShow = true
+              }else{
+                //短信支付
+              }
+
+
+
               this.$store.dispatch('getUserInfo')
-              window.app.onWeChatPay(thirdData)
-            }else if(res.code == 2003){
+
+            } else if (res.code == 2003) {
               this.$vux.alert.show({
                 title: '提示',
                 content: res.message,
-                onShow () {
+                onShow() {
                 },
-                onHide:()=> {
+                onHide: () => {
                   this.$router.push({
-                    path:'/allOrders'
+                    path: '/allOrders'
                   })
                 }
               })
-            }else {
-              console.log(res,'res')
+            } else {
+              console.log(res, 'res')
               this.$vux.alert.show({
                 title: '提示',
                 content: res.message,
-                onShow () {
+                onShow() {
                 },
-                onHide () {
+                onHide() {
                 }
               })
             }
           })
-        }else {
+        } else {
           this.$vux.alert.show({
             title: '提示',
             content: '请完善信息',
-            onShow () {
+            onShow() {
             },
-            onHide () {
+            onHide() {
             }
           })
         }
 
       },
-      changeAddress(x){
+      changeAddress(x) {
         this.$router.push({path: '/ShippingAddress'})
       },
       getData() {
-        if(this.itemId !=""){
+        if (this.itemId != "") {
           this.$axiosApi.addressList().then(res => {
             if (res.code == 200) {
-              this.AddressInfo = res.data.find(v=>{
+              this.AddressInfo = res.data.find(v => {
                 return v.isDefault == 1
               }) || ""
             }
           })
 
-          this.$axiosApi.orderItem(this.itemId,this.payMode).then(res => {
+          this.$axiosApi.orderItem(this.itemId, this.payMode).then(res => {
             this.$vux.loading.hide()
             if (res.code == 200) {
               this.orderInfo = res.data
@@ -230,13 +323,13 @@
                 this.orderInfo.itemName = '&yen;' + formatMoney(res.data.amount) + "+" + res.data.coin + "U"
               }
 
-            }else {
+            } else {
               this.$vux.alert.show({
                 title: '提示',
                 content: res.message,
-                onShow () {
+                onShow() {
                 },
-                onHide () {
+                onHide() {
                 }
               })
             }
@@ -310,10 +403,20 @@
             margin-right: 2rem;
             width: 7.125rem;
             height: 7.125rem;
-            img {
-              width: 7.125rem;
-              height: 7.125rem;
-              border-radius: 0.5rem;
+            position: relative;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            .img_p{
+              position: absolute;
+              left: 50%;
+              top:0;
+              transform: translate(-50%,0);
+              width: 8.25rem;
+              img {
+                display: inline-block;
+                height: 7.125rem;
+                width: auto;
+              }
             }
           }
           .textInfo {
@@ -446,6 +549,77 @@
         line-height: 6.2rem;
         font-size: 2rem;
         color: #ffffff;
+      }
+    }
+    .popupD {
+      border-radius: 1.5rem 1.5rem 0 0;
+
+      .head_p {
+        padding: 3.75rem 1.875rem 1.875rem;
+        .text {
+          .amount {
+            text-align: center;
+            color: #646464;
+            font-size: 1.75rem;
+            .info_amount {
+              color: #323232;
+              padding: 1.875rem 6.25rem;
+            }
+          }
+
+        }
+        .passwordD {
+          background-color: #F5F5F5;
+          border: 2px solid #E8E8E8;
+          border-radius: 2.75rem;
+          height: 5.5rem;
+          width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: space-around;
+          > div {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 5.25rem;
+            width: 16.6%;
+            flex: 1;
+            border-right: 2px solid #E8E8E8;
+            &.round:after {
+              content: " ";
+              display: block;
+              width: 1.25rem;
+              height: 1.25rem;
+              background-color: #000000;
+              border-radius: 0.625rem;
+            }
+            &:last-child {
+              border: none;
+            }
+          }
+        }
+      }
+      .center_p {
+        .Number {
+          display: flex;
+          flex-wrap: wrap;
+          .item {
+            width: calc(33.33% - 2px);
+            height: 7.12rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-top: 2px solid #E8E8E8;
+            border-right: 2px solid #E8E8E8;
+            font-weight: bold;
+            font-size: 3rem;
+
+            .delete {
+              width: 4.875rem;
+              height: 3rem;
+            }
+          }
+        }
       }
     }
   }

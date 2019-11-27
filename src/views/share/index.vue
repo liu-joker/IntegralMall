@@ -25,9 +25,11 @@
         </div>
       </div>
       <div class="Img_list">
-        <div class="list" >
+        <div class="list">
           <div class="item" v-for="(x,index) in imgList" :key="index">
-            <img :src="x.img" alt="">
+            <div class="img">
+              <img :src="x.img" alt="">
+            </div>
           </div>
         </div>
         <div class="img_l_foot">
@@ -109,34 +111,34 @@
     },
     methods: {
       share(x) {
-        console.log(x)
-
         let item = this.priceInfo.find(v => {
           return v.payMode == this.activePay
         }).itemName
-
-
         let imgList = []
-
         if (this.showType == 1) {
           //选择图片分享
-          const compact = arr => arr.filter(res=>res.active!=false)
-          imgList = compact(this.imgList).map(v=>v.img)
+          const compact = arr => arr.filter(res => res.active != false)
+          imgList = compact(this.imgList).map(v => v.img)
         } else {
-          imgList = this.imgList.map(v=>v.img)
+          imgList = this.imgList.map(v => v.img)
+        }
+        if(imgList.length == 0){
+          this.$vux.toast.show({text: '请选择要分享的图片', position: 'top', type: "text", width: "20em"})
+          return
         }
         console.log(imgList)
+//        let userId = "111"
+        let userId = this.$store.getters.userId
         let data = {
           "pri": item,
-          "originalPri": '￥'+formatMoney(this.itemInfo.showAmount),
+          "originalPri": '¥' + formatMoney(this.itemInfo.showAmount),
           "title": this.itemInfo.resume || '1111',
           "images": imgList,
-          "qrCodeLink": "http://192.168.1.34:8088/GoodsDetails/" + this.id,
+          "qrCodeLink": "http://192.168.1.34:8088/GoodsDetails/" + this.id + '?' + userId,
           "type": x
         }
 
         console.log(JSON.stringify(data))
-
         window.app.shareOfApp(JSON.stringify(data))
         this.popupShow = false
       },
@@ -159,7 +161,7 @@
               }
               return t
             }))
-            this.imgList.splice(0,1)
+            this.imgList.splice(0, 1)
             this.priceInfo = res.data.priceInfo.map(v => {
               this.tagShow = true
               //1金钱2积分3混合
@@ -198,9 +200,8 @@
       copyText() {
         var clipboard = new Clipboard('.tag-read')
 
-        console.log(111)
         clipboard.on('success', e => {
-          this.$vux.toast.show({text: '已复制到粘贴板',position: 'top',type:"text",width:"20em"})
+          this.$vux.toast.show({text: '文字已复制到粘贴板', position: 'top', type: "text", width: "20em"})
           // 释放内存
           console.log(1)
 
@@ -208,7 +209,7 @@
         })
         clipboard.on('error', e => {
           // 不支持复制
-          this.$vux.toast.show({text: '该浏览器不支持复制',position: 'top',type:"text",width:"20em"})
+          this.$vux.toast.show({text: '该浏览器不支持复制', position: 'top', type: "text", width: "20em"})
           // 释放内存
           clipboard.destroy()
         })
@@ -289,14 +290,26 @@
           .item {
             margin-bottom: 0.94rem;
             margin-right: 0.94rem;
+            width: 13rem;
+            height: 13rem;
+            position: relative;
+            overflow: hidden;
             &:nth-child(3n) {
               margin-right: 0rem;
             }
-            img {
-              width: 13rem;
-              height: 13rem;
-              margin: 0;
-              padding: 0;
+            .img{
+              position: absolute;
+              left: 50%;
+              top:0;
+              transform: translate(-50%,0);
+              width: 15rem;
+              img {
+                display: inline-block;
+                height: 13rem;
+                width: auto;
+                margin: 0;
+                padding: 0;
+              }
             }
           }
         }
@@ -318,23 +331,36 @@
     .popupContent {
       background-color: #ffffff;
       padding-bottom: 3rem;
+      padding-top: 1.875rem;
       .imgList {
         padding: 1.875rem;
+        padding-top: 0;
         display: flex;
         flex-wrap: wrap;
         justify-content: flex-start;
         align-items: center;
         .item {
-          position: relative;
           margin-bottom: 1.875rem;
           margin-right: 0.94rem;
+          width: 13rem;
+          height: 13rem;
+          position: relative;
+          overflow: hidden;
           &:nth-child(3n) {
-            margin-right: 0rem;
+            margin-right: 0;
           }
           .Itemimg {
+            position: absolute;
+            left: 50%;
+            top:0;
+            transform: translate(-50%,0);
+            width: 15rem;
             img {
-              width: 12.75rem;
-              height: 12.75rem;
+              display: inline-block;
+              height: 13rem;
+              width: auto;
+              margin: 0;
+              padding: 0;
             }
           }
           .imgActive {

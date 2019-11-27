@@ -141,8 +141,8 @@
             onCancel () {
 
             },
-            onConfirm () {
-
+            onConfirm:()=> {
+              location.href = 'https://www.hlxiaoxiong.com/h5/#/?userID='+this.$route.query.userId
             }
           })
 

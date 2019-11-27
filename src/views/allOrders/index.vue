@@ -18,7 +18,9 @@
             <div class="goods">
               <div class="goodsItem">
                 <div class="img">
-                  <img :src="x.photoList[1] | imgUrl" alt="">
+                  <div class="img_p">
+                    <img :src="x.photoList[1] | imgUrl" alt="">
+                  </div>
                 </div>
                 <div class="textInfo">
                   <div>{{x.itemName}}</div>
@@ -50,7 +52,6 @@
 </template>
 
 <script>
-  import pic_sort2 from "@/assets/images/pic_sort2.png"
   import {formatMoney} from "@/filters"
   import { LoadMore,Scroller,Divider} from 'vux'
   export default {
@@ -62,7 +63,6 @@
     },
     data() {
       return {
-        pic_sort2: pic_sort2,
         pageNum: 1,
         pageSize: 10,
         orderList: [],
@@ -298,11 +298,22 @@
               margin-right: 2rem;
               width: 7.125rem;
               height: 7.125rem;
-              img {
-                width: 100%;
-                height: 100%;
-                border-radius: 0.5rem;
+              position: relative;
+              border-radius: 0.5rem;
+              overflow: hidden;
+              .img_p{
+                position: absolute;
+                left: 50%;
+                top:0;
+                transform: translate(-50%,0);
+                width: 8.25rem;
+                img {
+                  display: inline-block;
+                  height: 7.125rem;
+                  width: auto;
+                }
               }
+
             }
             .textInfo {
               padding-right: 3.5rem;

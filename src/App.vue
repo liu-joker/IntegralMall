@@ -11,7 +11,7 @@
     </div>-->
 
     <keep-alive :include="cachedViews">
-      <router-view/>
+      <router-view v-wechat-title="$route.meta.title"></router-view>
     </keep-alive>
   </div>
 </template>
