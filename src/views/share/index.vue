@@ -21,7 +21,7 @@
         <div class="name">{{itemInfo.name}}</div>
         <div>{{itemInfo.resume}}</div>
         <div class="S_c_foot">
-          <div class="copy_but tag-read" :data-clipboard-text="itemInfo.resume" @click="copyText">复制文字</div>
+          <div class="copy_but tag-read" type="button" :data-clipboard-text="itemInfo.resume" @click="copyText">复制文字</div>
         </div>
       </div>
       <div class="Img_list">
@@ -128,13 +128,13 @@
         }
         console.log(imgList)
 //        let userId = "111"
-        let userId = this.$store.getters.userId
+        let userId = this.$store.getters.userInfo.userId
         let data = {
           "pri": item,
           "originalPri": '¥' + formatMoney(this.itemInfo.showAmount),
           "title": this.itemInfo.resume || '1111',
           "images": imgList,
-          "qrCodeLink": "http://192.168.1.34:8088/GoodsDetails/" + this.id + '?' + userId,
+          "qrCodeLink": "https://www.hlxiaoxiong.com/IntegralMall/#/GoodsDetails/" + this.id + '?userId=' + userId,
           "type": x
         }
 

@@ -101,7 +101,7 @@
         </div>
         <div class="center_p">
           <div class="Number">
-            <div class="item" v-for="(x,index) in 12" :key="index" @click="numberClick(x)">
+            <div class="item" v-for="(x,index) in 12" :key="index" @click.stop="numberClick(x)">
               <span v-if="x == 10"> </span>
               <span v-else-if="x == 11">0</span>
               <img v-else-if="x == 12" class="delete" :src="icon_cancel">
@@ -111,7 +111,6 @@
         </div>
       </div>
     </popup>
-
   </div>
 
 </template>
@@ -135,7 +134,7 @@
         payMode: '',
         orderInfo: {},
         orderInfoItem: {},
-        payInfo:'',
+        payInfo: '',
         dialogShow: false,
         password: ''
       }
@@ -158,16 +157,12 @@
     },
     methods: {
       numberClick(x) {
-
         if (x < 10 || x == 11) {
-
           if (this.password.length == 6) {
             return
           }
-
           let num = x == 11 ? 0 : x
           console.log(num)
-
           this.password = this.password + String(num)
           if (this.password.length == 6) {
             let orderNum = this.payInfo.orderNum
@@ -175,15 +170,15 @@
             this.$vux.loading.show({
               text: '请稍候...'
             })
-            this.$axiosApi.pay(orderNum,password).then(res=>{
+            this.$axiosApi.pay(orderNum, password).then(res => {
               this.$vux.loading.hide()
               this.password = ""
               this.dialogShow = false
-              if(res.code == 200){
+              if (res.code == 200) {
                 //708 支付密码错误
-                if(res.data.respCode == 10000){
+                if (res.data.respCode == 10000) {
                   this.$vux.alert.show({
-                    content:'购买成功',
+                    content: '购买成功',
                     onShow() {
                     },
                     onHide: () => {
@@ -192,7 +187,7 @@
                       })
                     }
                   })
-                }else {
+                } else {
                   this.$vux.alert.show({
                     title: '提示',
                     content: res.message,
@@ -202,7 +197,7 @@
                     }
                   })
                 }
-              }else {
+              } else {
                 this.$vux.alert.show({
                   title: '提示',
                   content: res.message,
@@ -232,7 +227,7 @@
         if (this.itemId != "" && this.payMode != "" && this.PayActive != "" && this.AddressInfo.id) {
 
 
-          if(this.payMode == 2){
+          if (this.payMode == 2) {
             this.PayActive = 4
           }
           this.$vux.loading.show({
@@ -247,14 +242,13 @@
                 //第三方支付
                 let thirdData = JSON.stringify(res.data.thirdData.data)
                 window.app.onWeChatPay(thirdData)
-              } else if (res.data.passType == 1){
+              } else if (res.data.passType == 1) {
                 //支付密码
-                this.password=''
+                this.password = ''
                 this.dialogShow = true
-              }else{
+              } else {
                 //短信支付
               }
-
 
 
               this.$store.dispatch('getUserInfo')
@@ -406,11 +400,11 @@
             position: relative;
             border-radius: 0.5rem;
             overflow: hidden;
-            .img_p{
+            .img_p {
               position: absolute;
               left: 50%;
-              top:0;
-              transform: translate(-50%,0);
+              top: 0;
+              transform: translate(-50%, 0);
               width: 8.25rem;
               img {
                 display: inline-block;

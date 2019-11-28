@@ -5,7 +5,6 @@ import Router from 'vue-router'
 Vue.use(Router)
 
 const routerList = [
-  {path: '/404', component: () => import('@/views/404'), hidden: true},
 
   {
     path: '/',
@@ -129,12 +128,12 @@ const routerList = [
   },
 
 
-
+  {path: '/404', component: () => import('@/views/404'), hidden: true},
   {path: '*', redirect: '/404', hidden: true}
 ]
 
 export default new Router({
   scrollBehavior: () => ({y: 0}),
-  mode: 'history',
+  // mode: 'history',
   routes: routerList
 })

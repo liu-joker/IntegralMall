@@ -126,6 +126,7 @@
 
       getBannerList(){
         this.$axiosApi.itemAdvert().then(res=>{
+          this.$vux.loading.hide()
           if(res.code == 200){
             this.bannerList = res.data.shopAdvert
             this.selectList = this.selectList.map((v,index)=>{
@@ -133,7 +134,6 @@
               v.typeOrder = res.data.shopType[index].typeOrder
               return v
             })
-            this.$vux.loading.hide()
           }else {
             this.$vux.alert.show({
               title: '提示',

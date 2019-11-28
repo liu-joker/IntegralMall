@@ -66,7 +66,7 @@
           <p>
             订单编号：{{orderInfo.orderNum}}
           </p>
-          <div class="but tag-read"  :data-clipboard-text="orderInfo.orderNum" @click="copyText">复制</div>
+          <div class="but tag-read" type="button" :data-clipboard-text="orderInfo.orderNum" @click="copyText">复制</div>
         </div>
         <div class="item">
           <p>

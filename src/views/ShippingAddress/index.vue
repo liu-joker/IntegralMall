@@ -67,6 +67,7 @@
                 text: '操作成功',
                 width: 'auto'
               })
+              this.getData()
             }else {
               this.$vux.alert.show({
                 title: '提示',
@@ -99,6 +100,7 @@
                   text: '操作成功',
                   width: 'auto'
                 })
+                this.getData()
               }else {
                 this.$vux.alert.show({
                   title: '提示',

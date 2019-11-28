@@ -5,7 +5,8 @@
     <div class="M_head">
 
       <div class="userInfo">
-        <img :src="$store.getters.userInfo.photo | imgUrl" alt="" class="userImg">
+        <img :src="userPhoto()" alt=""
+             class="userImg">
         <span class="phone">{{$store.getters.userInfo.phone}}</span>
       </div>
       <div class="allOrders">
@@ -29,7 +30,8 @@
 
     <div class="cellList">
       <group>
-        <cell :title="x.title" :value="x.value" @click.native="onClick(x)" v-for="(x,index) in cellList" :key="index"  :is-link="x.type=='url'" class="cellItem"></cell>
+        <cell :title="x.title" :value="x.value" @click.native="onClick(x)" v-for="(x,index) in cellList" :key="index"
+              :is-link="x.type=='url'" class="cellItem"></cell>
       </group>
     </div>
 
@@ -43,7 +45,9 @@
   import icon_dfukuan from "@/assets/images/icon_dfukuan.png"
   import icon_dfahuo from "@/assets/images/icon_dfahuo.png"
   import icon_dshou from "@/assets/images/icon_dshou.png"
-  import { Group,Cell } from 'vux'
+  import pic_head from "@/assets/images/pic_head@2x.png"
+  import {Group, Cell} from 'vux'
+  import {formatMoney, imgUrl} from "@/filters"
 
   export default {
     name: 'index',
@@ -54,67 +58,75 @@
     data() {
       return {
         pic_sort4: pic_sort4,
+        pic_head: pic_head,
         icon_dfukuan: icon_dfukuan,
         icon_dfahuo: icon_dfahuo,
         icon_dshou: icon_dshou,
-        cellList:[{
-          title:'收货地址',
-          type:'url',
-          url:"/ShippingAddress",
-          value:'',
-          funType:'url'
-        },{
-          title:'我的U米',
-          type:'url',
-          url:"/MyUmi",
-          value:'',
-          funType:'url'
-        },{
-          title:'联系客服',
-          type:'url',
-          url:"/ShippingAddress",
-          value:'',
-          funType:'AppUrl'
-        },{
-          title:'帮助',
-          type:'url',
-          url:"/HelpCenter",
-          value:'',
-          funType:'url'
-        },]
+        cellList: [{
+          title: '收货地址',
+          type: 'url',
+          url: "/ShippingAddress",
+          value: '',
+          funType: 'url'
+        }, {
+          title: '我的U米',
+          type: 'url',
+          url: "/MyUmi",
+          value: '',
+          funType: 'url'
+        }, {
+          title: '联系客服',
+          type: 'url',
+          url: "/ShippingAddress",
+          value: '',
+          funType: 'AppUrl'
+        }, {
+          title: '帮助',
+          type: 'url',
+          url: "/HelpCenter",
+          value: '',
+          funType: 'url'
+        },],
+        userPhoto:function () {
+          if(this.$store.getters.userInfo.photo  && this.$store.getters.userInfo.photo !=""){
+            return imgUrl(this.$store.getters.userInfo.photo)
+          }else {
+            return this.pic_head
+          }
+        }
       }
     },
     created() {
 
     },
     methods: {
-      allOrders(){
+      allOrders() {
         this.$router.push({
-          path:'/allOrders'
+          path: '/allOrders'
         })
       },
-      OrderStatus(x){
-        if(x == 0){
+      OrderStatus(x) {
+        if (x == 0) {
           this.$router.push({
-            path:'/ForThePayment'
+            path: '/ForThePayment'
           })
-        }else if(x == 1){
+        } else if (x == 1) {
           this.$router.push({
-            path:'/ToSendTheGoods'
+            path: '/ToSendTheGoods'
           })
-        }else {
+        } else {
           this.$router.push({
-            path:'/ForTheGoods'
+            path: '/ForTheGoods'
           })
         }
       },
-      onClick(x){
-        if(x.funType == 'url'){
+      onClick(x) {
+        if (x.funType == 'url') {
           console.log(x)
           this.$router.push({
-            path:x.url
+            path: x.url
           })
-        }else if(x.funType == 'AppUrl') {
+        } else if (x.funType == 'AppUrl') {
           window.app.contactService()
         }
       }
@@ -128,13 +140,13 @@
     background-color: #f4f4f4;
     min-height: 100vh;
 
-    .weui-cell_access .weui-cell__ft:after{
+    .weui-cell_access .weui-cell__ft:after {
       width: 1.5rem;
       height: 1.5rem;
       margin-top: -0.75rem;
     }
-    .weui-cell:before{
-      left:2rem;
+    .weui-cell:before {
+      left: 2rem;
     }
 
     .M_head {
@@ -161,33 +173,33 @@
         text-align: right;
       }
     }
-    .FeatureList{
-     margin-top: 1px;
+    .FeatureList {
+      margin-top: 1px;
       background-color: #ffffff;
       padding: 1.75rem 0;
       display: flex;
       align-items: center;
       justify-content: space-around;
-      .item{
+      .item {
         display: flex;
         align-items: center;
         justify-content: center;
         flex-direction: column;
         font-size: 1.5rem;
-        >img{
+        > img {
           margin-bottom: 0.75rem;
           width: 3.5rem;
           height: 3.5rem;
         }
       }
     }
-    .cellList{
+    .cellList {
       background-color: #fff;
       margin-top: 0.625rem;
-      .weui-cells{
+      .weui-cells {
         margin-top: 0;
       }
-      .cellItem{
+      .cellItem {
         font-size: 2rem;
         padding: 2rem 1.5rem 2rem 2rem;
       }

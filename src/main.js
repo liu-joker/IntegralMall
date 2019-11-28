@@ -33,6 +33,8 @@ require('es6-promise').polyfill()
 import axiosApi from '@/api/axios'
 Vue.prototype.$axiosApi = axiosApi;
 
+import fastclick from"fastclick";
+fastclick.attach(document.body)
 
 import Cookie from '@/utils/auth'
 Vue.prototype.$Cookie = Cookie;
