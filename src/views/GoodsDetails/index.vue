@@ -13,8 +13,8 @@
     <div class="Banner_info">
       <div class="head">
         <div class="name">{{itemInfo.name}}</div>
-        <div class="tag">会员折扣</div>
-        <div class="tag" v-if="tagShow">U米减价</div>
+        <div class="tag">自营</div>
+        <div class="tag" v-if="tagShow">U米兑换</div>
       </div>
       <div class="num">
         <span class="PresentPrice" v-html="PresentPrice()"></span>
@@ -31,9 +31,9 @@
     </div>
 
     <div class="goodsInfo">
-  <!--    <div class="title">
-        商品详情
-      </div>-->
+      <!--    <div class="title">
+            商品详情
+          </div>-->
       <div class="goodsImgList">
         <div class="item" v-html="itemInfo.description">
 
@@ -54,7 +54,7 @@
         </div>
       </div>
       <div class="right" :class="itemInfo.status == 2?'disable':''" @click="pay">
-        立即购买
+        免费领取
       </div>
     </div>
 
@@ -92,17 +92,12 @@
         icon_browse: icon_browse,
         icon_share2: icon_share2,
         bannerList: [banner1, banner1, banner1],
-        selectList: [
-          {id: 0, name: '&yen;500.00', type: 1},
-          {id: 1, name: '&yen;300.00+300U', type: 2},
-          {id: 2, name: '800U', type: 3},
-        ],
         itemInfo: {},
         priceInfo: [],
         active: "",
         tagShow: false,
         PresentPrice: function () {
-          if(this.priceInfo.length !=0){
+          if (this.priceInfo.length != 0) {
             let item = this.priceInfo.find(v => {
               return v.payMode == this.active
             })
@@ -112,7 +107,7 @@
               return ""
             }
           }
-         return ""
+          return ""
         },
         id: ''
       }
@@ -123,26 +118,26 @@
       this.getData()
     },
     methods: {
-      share(){
+      share() {
         this.$router.push({
-          path:'/share/'+this.id+'/'+this.active
+          path: '/share/' + this.id + '/' + this.active
         })
 
       },
-      pay(){
-        if(this.itemInfo.status == 2){
+      pay() {
+        if (this.itemInfo.status == 2) {
           return
         }
 
-        if(this.$Cookie.getToken() == ""){
+        if (this.$Cookie.getToken() == "") {
           this.$vux.confirm.show({
-            content: "请前往小米粒APP购买",
-            confirmText:'前往下载',
-            onCancel () {
+            content: "请前往小米粒APP领取",
+            confirmText: '前往下载',
+            onCancel() {
 
             },
-            onConfirm:()=> {
-              location.href = 'https://www.hlxiaoxiong.com/h5/#/?userID='+this.$route.query.userId
+            onConfirm: () => {
+              location.href = 'https://www.hlxiaoxiong.com/h5/#/?userID=' + this.$route.query.userId
             }
           })
 
@@ -152,7 +147,7 @@
         let itemId = this.itemInfo.id;
         let payMode = this.active;
 
-        this.$router.push({path:'/confirmAnOrder/'+payMode+'/'+itemId})
+        this.$router.push({path: '/confirmAnOrder/' + payMode + '/' + itemId})
 
       },
       getData() {
@@ -165,21 +160,14 @@
         }
         this.$axiosApi.itemDetail(data.itemId, data.grade).then(res => {
           this.$vux.loading.hide()
-          if(res.code == 200){
+          if (res.code == 200) {
             this.itemInfo = res.data.item
             this.itemInfo.photoList = res.data.item.photo.split(',')
-            this.itemInfo.photoList.splice(0,1)
+            this.itemInfo.photoList.splice(0, 1)
             this.priceInfo = res.data.priceInfo.map(v => {
               this.tagShow = true
               //1金钱2积分3混合
-              if (v.payMode == 1) {
-                this.tagShow = false
-                v.itemName = '&yen;' + formatMoney(v.amount)
-              } else if (v.payMode == 2) {
-                v.itemName = v.coin + "U"
-              } else {
-                v.itemName = '&yen;' + formatMoney(v.amount) + "+" + v.coin + "U"
-              }
+              v.itemName = '¥' + formatMoney(v.amount) + "+" + v.coin + "U米"
               return v
 
             })
@@ -192,13 +180,13 @@
             } else {
               this.active = this.priceInfo[0].payMode
             }
-          }else {
+          } else {
             this.$vux.alert.show({
               title: '提示',
               content: res.message,
-              onShow () {
+              onShow() {
               },
-              onHide () {
+              onHide() {
               }
             })
           }
@@ -216,7 +204,7 @@
     min-height: 100vh;
 
     .G_banner {
-      .bannerImg{
+      .bannerImg {
         width: 100%;
         height: 100%;
       }
@@ -342,6 +330,7 @@
           .shareImg {
             width: 2.875rem;
             height: 2.875rem;
+            margin-bottom: 0.25rem;
           }
         }
       }
@@ -353,7 +342,7 @@
         line-height: 6.2rem;
         font-size: 2rem;
         color: #ffffff;
-        &.disable{
+        &.disable {
           color: #FEFEFE;
           background-color: #BDBDBD;
           border-color: #BDBDBD;

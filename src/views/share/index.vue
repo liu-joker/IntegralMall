@@ -21,7 +21,7 @@
         <div class="name">{{itemInfo.name}}</div>
         <div>{{itemInfo.resume}}</div>
         <div class="S_c_foot">
-          <div class="copy_but tag-read" type="button" :data-clipboard-text="itemInfo.resume" @click="copyText">复制文字</div>
+          <x-button class="copy_but tag-read"  :data-clipboard-text="itemInfo.resume" @click.native="copyText">复制文字</x-button>
         </div>
       </div>
       <div class="Img_list">
@@ -79,14 +79,15 @@
   import icon_selecting from "@/assets/images/icon_selecting.png"
   import icon_weixin from "@/assets/images/icon_weixin.png"
   import icon_pengyouq from "@/assets/images/icon_pengyouq.png"
-  import {Popup} from 'vux'
+  import {Popup,XButton } from 'vux'
   import Clipboard from 'clipboard'//点击复制组件
   import {formatMoney, imgUrl, formatDate} from "@/filters"
 
   export default {
     name: 'share',
     components: {
-      Popup
+      Popup,
+      XButton
     },
     data() {
       return {
@@ -132,7 +133,7 @@
         let data = {
           "pri": item,
           "originalPri": '¥' + formatMoney(this.itemInfo.showAmount),
-          "title": this.itemInfo.resume || '1111',
+          "title": this.itemInfo.resume,
           "images": imgList,
           "qrCodeLink": "https://www.hlxiaoxiong.com/IntegralMall/#/GoodsDetails/" + this.id + '?userId=' + userId,
           "type": x
@@ -167,11 +168,9 @@
               //1金钱2积分3混合
               if (v.payMode == 1) {
                 this.tagShow = false
-                v.itemName = '￥' + formatMoney(v.amount)
-              } else if (v.payMode == 2) {
-                v.itemName = v.coin + "U"
+                v.itemName = '¥' + formatMoney(v.amount)
               } else {
-                v.itemName = '￥' + formatMoney(v.amount) + "+" + v.coin + "U"
+                v.itemName = '¥' + formatMoney(v.amount) + "+" + v.coin + "U米"
               }
               return v
             })
@@ -199,17 +198,14 @@
       },
       copyText() {
         var clipboard = new Clipboard('.tag-read')
-
         clipboard.on('success', e => {
           this.$vux.toast.show({text: '文字已复制到粘贴板', position: 'top', type: "text", width: "20em"})
           // 释放内存
-          console.log(1)
-
           clipboard.destroy()
         })
         clipboard.on('error', e => {
           // 不支持复制
-          this.$vux.toast.show({text: '该浏览器不支持复制', position: 'top', type: "text", width: "20em"})
+          this.$vux.toast.show({text: '请长按文字选择复制', position: 'top', type: "text", width: "20em"})
           // 释放内存
           clipboard.destroy()
         })
@@ -324,8 +320,12 @@
       line-height: 2.375rem;
       border-radius: 2px;
       background-color: #2D2922;
+      display: inline-block;
+      padding: 0;
       &:active {
         opacity: 0.85;
+        background-color: #2D2922 !important;
+        color: #ffffff !important;
       }
     }
     .popupContent {

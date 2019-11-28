@@ -33,11 +33,16 @@ require('es6-promise').polyfill()
 import axiosApi from '@/api/axios'
 Vue.prototype.$axiosApi = axiosApi;
 
+//ios点击事件兼容问题
 import fastclick from"fastclick";
 fastclick.attach(document.body)
 
 import Cookie from '@/utils/auth'
 Vue.prototype.$Cookie = Cookie;
+
+
+import VueClipboard from 'vue-clipboard2'
+Vue.use(VueClipboard)
 
 import { ConfirmPlugin } from 'vux'
 Vue.use(ConfirmPlugin)

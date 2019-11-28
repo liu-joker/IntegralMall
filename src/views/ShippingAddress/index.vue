@@ -47,15 +47,12 @@
       }
     },
     created() {
-      this.$vux.loading.show({
-        text: '加载中...'
-      })
+
       this.getData()
     },
     methods: {
       setDefAddress(x) {
         //设置默认地址
-        console.log(x.isDefault)
         if (x.isDefault == 0) {
           this.$vux.loading.show({
             text: '请稍候...'
@@ -67,7 +64,7 @@
                 text: '操作成功',
                 width: 'auto'
               })
-              this.getData()
+              this.$router.go(-1)
             }else {
               this.$vux.alert.show({
                 title: '提示',

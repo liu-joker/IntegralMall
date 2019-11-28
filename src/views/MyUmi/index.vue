@@ -4,7 +4,7 @@
     <div class="MyUmi_content">
       <img :src="icon_umi" alt="">
       <div class="num">
-        <span>{{$store.getters.userInfo.coin}}</span>/U
+        <span>{{$store.getters.userInfo.coin}}</span>/U米
       </div>
       <div class="toUmiDetail">
         <span @click="toUmiDetail">查看U米明细>></span>

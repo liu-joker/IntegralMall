@@ -54,6 +54,13 @@
             <div class="label">所需U米 ：</div>
             <div class="Prices">{{orderInfo.coin}}</div>
           </div>
+          <div class="PricesItemInfo">
+            <div class="label"></div>
+            <div class="Prices needUM" @click="toHelp">
+              <img :src="icon_hqum" alt="">
+              <div>获取U米</div>
+            </div>
+          </div>
           <div class="PricesItemInfo defaultPrices">
             <div class="label">实际支付价格：</div>
             <div class="Prices" v-html="orderInfo.itemName"></div>
@@ -87,7 +94,7 @@
         </div>
       </div>
       <div class="right" @click="BuyNow">
-        立即购买
+        免费领取
       </div>
     </div>
 
@@ -119,6 +126,7 @@
   import {formatMoney, imgUrl} from "@/filters"
   import {Popup} from 'vux'
   import icon_cancel from "@/assets/images/icon_cancel.png"
+  import icon_hqum from "@/assets/images/icon_hqum.png"
 
   export default {
     name: 'confirmAnOrder',
@@ -128,6 +136,7 @@
     data() {
       return {
         icon_cancel: icon_cancel,
+        icon_hqum: icon_hqum,
         PayActive: 2,
         AddressInfo: {},
         itemId: '',
@@ -156,6 +165,11 @@
       }
     },
     methods: {
+      toHelp(){
+        this.$router.push({
+          path:'/HelpCenter'
+        })
+      },
       numberClick(x) {
         if (x < 10 || x == 11) {
           if (this.password.length == 6) {
@@ -178,12 +192,24 @@
                 //708 支付密码错误
                 if (res.data.respCode == 10000) {
                   this.$vux.alert.show({
-                    content: '购买成功',
+                    content: '领取成功',
                     onShow() {
                     },
                     onHide: () => {
                       this.$router.push({
                         path: '/ToSendTheGoods'
+                      })
+                    }
+                  })
+                } else if(res.code == 2007){
+                  this.$vux.alert.show({
+                    title: '提示',
+                    content: res.message,
+                    onShow() {
+                    },
+                    onHide: () => {
+                      this.$router.push({
+                        path: '/HelpCenter'
                       })
                     }
                   })
@@ -265,7 +291,19 @@
                   })
                 }
               })
-            } else {
+            } else if(res.code == 2007){
+              this.$vux.alert.show({
+                title: '提示',
+                content: res.message,
+                onShow() {
+                },
+                onHide: () => {
+                  this.$router.push({
+                    path: '/HelpCenter'
+                  })
+                }
+              })
+            }else {
               console.log(res, 'res')
               this.$vux.alert.show({
                 title: '提示',
@@ -308,15 +346,7 @@
               this.orderInfo = res.data
               this.orderInfo.imgUrl = imgUrl(res.data.item.photo.split(',')[1])
               this.orderInfoItem = res.data.item
-
-              if (this.payMode == 1) {
-                this.orderInfo.itemName = '&yen;' + formatMoney(res.data.amount)
-              } else if (this.payMode == 2) {
-                this.orderInfo.itemName = res.data.coin + "U"
-              } else {
-                this.orderInfo.itemName = '&yen;' + formatMoney(res.data.amount) + "+" + res.data.coin + "U"
-              }
-
+              this.orderInfo.itemName = '¥' + formatMoney(res.data.amount) + "+" + res.data.coin + "U米"
             } else {
               this.$vux.alert.show({
                 title: '提示',
@@ -447,6 +477,19 @@
               .Prices {
                 font-size: 1.75rem;
                 font-weight: bold;
+              }
+            }
+            .needUM{
+              display: flex;
+              align-items: center;
+              justify-content: flex-end;
+              font-size: 1.25rem;
+              color: #F89F04;
+              img{
+                width: 1.25rem;
+                height: 1.25rem;
+                margin-right: 0.5rem;
+                display: inline-block;
               }
             }
             &:last-child {

@@ -203,16 +203,7 @@
           this.$vux.loading.hide()
           if (res.code == 200) {
             this.orderList = res.data.list.map(v => {
-              if (v.coin == 0) {
-                //金额
-                v.itemAmount = '&yen;' + formatMoney(v.amount)
-              } else if (v.amount == 0) {
-                //积分
-                v.itemAmount = v.coin + "U"
-              } else {
-                //现金加积分
-                v.itemAmount = '&yen;' + formatMoney(v.amount) + "+" + v.coin + "U"
-              }
+              v.itemAmount = '¥' + formatMoney(v.amount) + "+" + v.coin + "U米"
               v.photoList = v.itemPhoto.split(',')
               return v
             })

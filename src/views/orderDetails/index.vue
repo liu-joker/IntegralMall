@@ -44,8 +44,8 @@
             <div class="Prices">-&yen;{{(orderInfo.showAmount - orderInfo.amount) | formatMoney}}</div>
           </div>
           <div class="PricesItemInfo">
-            <div class="label">U米折扣 ：</div>
-            <div class="Prices">-{{orderInfo.coin}}</div>
+            <div class="label">所需U米 ：</div>
+            <div class="Prices">{{orderInfo.coin}}</div>
           </div>
           <div class="PricesItemInfo defaultPrices">
             <div class="label">实际支付价格：</div>
@@ -66,7 +66,7 @@
           <p>
             订单编号：{{orderInfo.orderNum}}
           </p>
-          <div class="but tag-read" type="button" :data-clipboard-text="orderInfo.orderNum" @click="copyText">复制</div>
+          <x-button class="but tag-read" :data-clipboard-text="orderInfo.orderNum" @click.native="copyText">复制</x-button>
         </div>
         <div class="item">
           <p>
@@ -94,7 +94,7 @@
       </div>
 
       <div class="logisticsList">
-        <div class="item" v-for="(x,index) in expressDetail" :key="index"  :class="index == 0?'active':''">
+        <div class="item" v-for="(x,index) in expressDetail" :key="index" :class="index == 0?'active':''">
           <div class="time">
             {{x.time}}
           </div>
@@ -111,9 +111,14 @@
 
 <script>
   import {formatMoney, imgUrl, formatDate} from "@/filters"
+  import {XButton} from 'vux'
+
   import Clipboard from 'clipboard'//点击复制组件
   export default {
     name: 'orderDetails',
+    components: {
+      XButton
+    },
     data() {
       return {
         PayActive: 0,
@@ -125,8 +130,7 @@
       }
     },
     created() {
-       this.orderNum = this.$route.params.orderNum
-      console.log(this.orderNum,"000")
+      this.orderNum = this.$route.params.orderNum
       this.getData()
     },
     methods: {
@@ -134,7 +138,7 @@
         var clipboard = new Clipboard('.tag-read')
 
         clipboard.on('success', e => {
-          this.$vux.toast.show({text: '文字已复制到粘贴板',position: 'top',type:"text",width:"20em"})
+          this.$vux.toast.show({text: '文字已复制到粘贴板', position: 'top', type: "text", width: "20em"})
           // 释放内存
           console.log(1)
 
@@ -142,7 +146,7 @@
         })
         clipboard.on('error', e => {
           // 不支持复制
-          this.$vux.toast.show({text: '该浏览器不支持复制',position: 'top',type:"text",width:"20em"})
+          this.$vux.toast.show({text: '请长按文字选择复制', position: 'top', type: "text", width: "20em"})
           // 释放内存
           clipboard.destroy()
         })
@@ -167,16 +171,7 @@
 
               this.orderInfo = res.data.orderDetail
               this.orderInfo.imgUrl = imgUrl(this.orderInfo.itemPhoto.split(',')[0])
-              if (this.orderInfo.coin == 0) {
-                //金额
-                this.orderInfo.itemAmount = '&yen;' + formatMoney(this.orderInfo.amount)
-              } else if (this.orderInfo.amount == 0) {
-                //积分
-                this.orderInfo.itemAmount = this.orderInfo.coin + "U"
-              } else {
-                //现金加积分
-                this.orderInfo.itemAmount = '&yen;' + formatMoney(this.orderInfo.amount) + "+" + this.orderInfo.coin + "U"
-              }
+              this.orderInfo.itemAmount = '¥' + formatMoney(this.orderInfo.amount) + "+" + this.orderInfo.coin + "U"
 
               if (res.data.expressDetail) {
                 let list = res.data.expressDetail.msg.context
@@ -199,7 +194,7 @@
                   return v
                 })
                 console.log(this.expressDetail)
-              }else {
+              } else {
                 this.expressDetail = []
               }
 
@@ -353,8 +348,12 @@
             line-height: 1.875rem;
             border-radius: 2px;
             background-color: #2D2922;
+            display: inline-block;
+            padding: 0;
             &:active {
               opacity: 0.85;
+              background-color: #2D2922 !important;
+              color: #ffffff !important;
             }
           }
         }
@@ -377,9 +376,9 @@
             text-align: right;
             margin-right: 1.5rem;
           }
-          .itemCenter{
+          .itemCenter {
             padding: 0.5rem 0;
-            .radio{
+            .radio {
               display: block;
               width: 1rem;
               height: 1rem;
@@ -396,13 +395,13 @@
             color: #868686;
           }
 
-          &.active{
-            .itemCenter{
-              .radio{
+          &.active {
+            .itemCenter {
+              .radio {
                 background-color: #FF9B36;
               }
             }
-            .info{
+            .info {
               color: #323232;
             }
           }
