@@ -1,3 +1,4 @@
+<!--订单详情-->
 <template>
 
   <div class="confirmAnOrder">
@@ -170,7 +171,7 @@
             if (res.code == 200) {
 
               this.orderInfo = res.data.orderDetail
-              this.orderInfo.imgUrl = imgUrl(this.orderInfo.itemPhoto.split(',')[0])
+              this.orderInfo.imgUrl = imgUrl(this.orderInfo.itemPhoto.split(',')[1])
               this.orderInfo.itemAmount = '¥' + formatMoney(this.orderInfo.amount) + "+" + this.orderInfo.coin + "U"
 
               if (res.data.expressDetail) {
