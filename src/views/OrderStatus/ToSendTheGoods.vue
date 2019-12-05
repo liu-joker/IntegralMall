@@ -90,7 +90,6 @@
           if(this.pageSize > this.info.total) return  this.onFetching = false;
           this.pageSize += 10;
           this.getData()
-
         }
       },
       openOrderDetails(x) {
@@ -167,7 +166,7 @@
           this.$vux.loading.hide()
           if (res.code == 200) {
             this.orderList = res.data.list.map(v => {
-              v.itemAmount = '¥' + formatMoney(v.amount) + "+" + v.coin + "U"
+              v.itemAmount = '¥' + formatMoney(v.amount) + "+" + v.coin + "U米"
               v.photoList = v.itemPhoto.split(',')
               return v
             })
@@ -339,7 +338,6 @@
       color: #868686;
       background-color: #f4f4f4;
     }
-
   }
 
 

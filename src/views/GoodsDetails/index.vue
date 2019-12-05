@@ -130,16 +130,29 @@
         }
 
         if (this.$Cookie.getToken() == "") {
-          this.$vux.confirm.show({
-            content: "请前往小米粒APP领取",
-            confirmText: '前往下载',
-            onCancel() {
+          if(this.$route.query.userId){
+            this.$vux.confirm.show({
+              content: "请前往小米粒APP领取",
+              confirmText: '前往下载',
+              onCancel() {
 
-            },
-            onConfirm: () => {
-              location.href = 'https://www.hlxiaoxiong.com/h5/#/?userID=' + this.$route.query.userId
-            }
-          })
+              },
+              onConfirm: () => {
+                location.href = 'https://www.hlxiaoxiong.com/h5/#/?userID=' + this.$route.query.userId
+              }
+            })
+          }else {
+            this.$vux.alert.show({
+              title: '提示',
+              content: "缺少重要参数",
+              onShow() {
+              },
+              onHide() {
+              }
+            })
+          }
+
+
 
           return
         }

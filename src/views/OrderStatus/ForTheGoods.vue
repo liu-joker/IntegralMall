@@ -206,7 +206,7 @@
           this.$vux.loading.hide()
           if (res.code == 200) {
             this.orderList = res.data.list.map(v => {
-              v.itemAmount = '¥' + formatMoney(v.amount) + "+" + v.coin + "U"
+              v.itemAmount = '¥' + formatMoney(v.amount) + "+" + v.coin + "U米"
               v.photoList = v.itemPhoto.split(',')
               return v
             })

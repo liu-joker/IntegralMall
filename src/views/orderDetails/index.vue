@@ -172,7 +172,7 @@
 
               this.orderInfo = res.data.orderDetail
               this.orderInfo.imgUrl = imgUrl(this.orderInfo.itemPhoto.split(',')[1])
-              this.orderInfo.itemAmount = '¥' + formatMoney(this.orderInfo.amount) + "+" + this.orderInfo.coin + "U"
+              this.orderInfo.itemAmount = '¥' + formatMoney(this.orderInfo.amount) + "+" + this.orderInfo.coin + "U米"
 
               if (res.data.expressDetail) {
                 let list = res.data.expressDetail.msg.context
