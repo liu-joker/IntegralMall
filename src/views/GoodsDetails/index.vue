@@ -233,6 +233,7 @@
         justify-content: flex-start;
         .name {
           margin-right: 1.4rem;
+          flex: 1;
         }
         .tag {
           color: #AD822F;
