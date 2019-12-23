@@ -205,6 +205,32 @@ class loginApi {
     })
   };
 
+  //获取收银台商户信息
+  static getAgentH5(agentId) {
+    return request({
+      url: '/getAgentH5?agentId='+agentId,
+      method: 'get',
+      data: {
+      },
+    })
+  };
+
+  //扫码下单
+  static scanOrder(agentId,amount,payType,brandId,appType,phone) {
+    return request({
+      url: '/scanOrder',
+      method: 'post',
+      data: {
+        agentId:agentId,
+        amount:amount,
+        payType:payType,
+        brandId:brandId,
+        appType:appType,
+        phone:phone,
+      },
+    })
+  };
+
 }
 
 

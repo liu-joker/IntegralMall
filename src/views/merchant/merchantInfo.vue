@@ -1,0 +1,396 @@
+<template>
+
+  <div class="merchantInfo">
+
+    <div class="headTitle">
+      <div class="h_title">天安数码城多媒体工作室（原天安集美题斜互联媒体工作室</div>
+      <div class="evaluate">
+        <span class="start" :style="startStyle"></span>
+        <span>4.5分</span>
+      </div>
+    </div>
+    <div class="m_content">
+      <div class="sticky">
+        <tab :line-width="1" custom-bar-width="3.75rem" bar-active-color="#4385FF" active-color="#323232"
+             default-color="#646464" class="stickyTab">
+          <tab-item @click.native="returnTop(0)" :selected="tabActive==0">概况</tab-item>
+          <tab-item @click.native="returnTop(1)" :selected="tabActive==1">相册</tab-item>
+        </tab>
+      </div>
+      <div class="swiperTab">
+        <swiper v-model="tabActive" :show-dots="false" :threshold="10000" :min-moving-distance="10000">
+          <swiper-item  class="swiperItem" >
+            <div class="tab-swiper tab-swiper1" v-show="tabActive == 0">
+              <div class="bannerImg">
+                <img :src="pic_sjgk" alt="">
+              </div>
+              <div class="addressInfo">
+                <div class="addressOrName">
+                  <div class="left">
+                    <img :src="icon_dingnwei" alt="">
+                  </div>
+                  <div class="right">
+                    <div class="item_l">
+                      <div class="address_text">
+                        福田区车公庙天安数码创新科技广场二期东座506
+                      </div>
+                      <div class="distance">距离您  3.6km</div>
+                    </div>
+                    <div class="item_r">
+                      <div class="icon_item">
+                        <img :src="icon_daohang" alt="">
+                        导航
+                      </div>
+                      <div class="icon_item">
+                        <img :src="icon_phone" alt="">
+                        电话
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="businessHours">
+                  <div class="img">
+                    <img :src="icon_open" alt="">
+                  </div>
+                  <p>营业时间:8:00-21:00</p>
+                </div>
+              </div>
+              <div class="m_card">
+                <div class="card_title">
+                  商家介绍
+                </div>
+                <div class="PresentationInfo">
+                  广州甄果商贸有限公司坐落于中国最大的进口水果集散地-广州,甄果商贸依托于广州江南水果批发市场,为每一个客户甄选最优质的进口水果!
+                </div>
+              </div>
+              <div class="m_card">
+                <div class="card_title">
+                  经营范围
+                </div>
+                <div class="PresentationInfo">
+                  <p>1. 婚纱摄影</p>
+                  <p>2. 写真</p>
+                  <p>3. COS服装</p>
+                  <p>4. 淘宝服装摆拍</p>
+                  <p>5. 摄影</p>
+                  <p>6. 后期照片，影视加工制作</p>
+                </div>
+              </div>
+            </div>
+          </swiper-item>
+          <swiper-item  class="swiperItem">
+            <div class="tab-swiper" v-show="tabActive != 0">
+              <div class="imgList">
+                <div class="item" v-for="(x,index) in imgList" :key="index">
+                  <img :src="x" alt="">
+                </div>
+              </div>
+            </div>
+          </swiper-item>
+        </swiper>
+
+      </div>
+      <div class="pay" v-show="tabActive == 0">
+        付 款
+      </div>
+    </div>
+  </div>
+
+</template>
+
+<script>
+  import pic_sjgk from "@/assets/images/pic_sjgk.png"
+  import icon_dingnwei from "@/assets/images/icon_dingnwei.png"
+  import icon_daohang from "@/assets/images/icon_daohang.png"
+  import icon_phone from "@/assets/images/icon_phone.png"
+  import icon_open from "@/assets/images/icon_open.png"
+  import pic_sjxc from "@/assets/images/pic_sjxc.png"
+  import {
+    Sticky,
+    Tab,
+    TabItem,
+    Swiper,
+    SwiperItem
+  } from 'vux'
+
+  export default {
+    name: 'merchantInfo',
+    components: {
+      Sticky,
+      Tab,
+      TabItem,
+      Swiper,
+      SwiperItem
+    },
+    data() {
+      return {
+        pic_sjgk: pic_sjgk,
+        icon_dingnwei: icon_dingnwei,
+        icon_daohang: icon_daohang,
+        icon_phone: icon_phone,
+        icon_open: icon_open,
+        startStyle: {
+          'background-position': '0px -20.5rem' //0.5start = -2.5rem
+        },
+        tabActive: 0,
+        imgList: [pic_sjxc, pic_sjxc, pic_sjxc, pic_sjxc]
+      }
+    },
+
+    created() {
+
+    },
+    methods: {
+      returnTop: function (x) {
+        this.tabActive = x
+        if (x == 1) {
+//          this.$refs.tab2.scrollIntoView({block: "start", behavior: "smooth"});
+        } else if (x == 0) {
+//          this.$refs.tab1.scrollIntoView({block: "start", behavior: "smooth"});
+        }
+      }
+    }
+  }
+</script>
+
+<style rel="stylesheet/less" lang="less">
+
+  .merchantInfo {
+    min-height: 100vh;
+    background-color: #f4f4f4;
+    .headTitle {
+      padding: 1.875rem 1.875rem 0;
+      background-color: #fff;
+      .h_title {
+        color: #323232;
+        font-size: 2rem;
+        font-weight: bold;
+        margin-bottom: 1.25rem;
+      }
+      .evaluate {
+        color: #646464;
+        font-size: 1.25rem;
+        display: flex;
+        align-items: baseline;
+        justify-content: flex-start;
+        .start {
+          display: inline-block;
+          width: 8.375rem;
+          height: 1.5rem;
+          background: url('~@/assets/images/start.png') no-repeat;
+          background-size: 8.375rem 22.5rem;
+          margin-right: 0.5rem;
+          background-position: 0px -0.5rem;
+        }
+      }
+    }
+    .m_content {
+      .sticky {
+        padding: 3rem 1.875rem 2.875rem;
+        background-color: #fff;
+
+        .stickyTab {
+          width: 50%;
+          .vux-tab-container {
+            height: auto;
+          }
+          .vux-tab {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            height: auto;
+            .vux-tab-item {
+              font-size: 1.875rem;
+              color: #646464;
+              position: relative;
+              z-index: 2;
+              line-height: 1.875rem;
+              text-align: left;
+            }
+            .vux-tab-selected {
+              font-size: 2.375rem;
+              color: #323232;
+              font-weight: bold;
+              line-height: 2.375rem;
+            }
+            .vux-tab-ink-bar {
+              z-index: 1;
+              height: auto !important;
+            }
+            .vux-tab-bar-inner {
+              width: 4.5rem !important;
+              background-color: #F89F04 !important;
+              height: 0.75rem !important;
+              margin: 0;
+            }
+          }
+
+        }
+        .vux-tab-item {
+          background: transparent;
+        }
+      }
+      .swiperTab {
+        .vux-swiper {
+          height: auto !important;
+          overflow: auto;
+          overflow-y: scroll;
+          overflow-x: hidden;
+          width: 100%;
+          .swiperItem {
+            width: 100%;
+            position: relative;
+            .tab-swiper1{
+              padding: 0 0 6.75rem;
+            }
+          }
+          .bannerImg {
+            padding: 0 1.875rem;
+            background-color: #fff;
+            img {
+              width: 100%;
+              border-radius: 5px;
+            }
+          }
+          .addressInfo {
+            background-color: #fff;
+            padding: 1.625rem 1.875rem 1.75rem;
+            .addressOrName {
+              display: flex;
+              align-items: baseline;
+              justify-content: flex-start;
+              .left {
+                margin-right: 1.5rem;
+                img {
+                  width: 2.25rem;
+                  height: 2.25rem;
+                }
+              }
+              .right {
+                flex: 1;
+                border-bottom: 1px solid #EAEAEA;
+                padding-bottom: 1rem;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                .item_l {
+                  flex: 1;
+                  text-align: left;
+                  padding-right: 1.5rem;
+                  border-right: 1px solid #EAEAEA;
+                  .address_text {
+                    font-size: 1.75rem;
+                    color: #323232;
+                  }
+                  .distance {
+                    margin-top: 0.25rem;
+                    font-size: 1.25rem;
+                    color: #8C8C8C;
+                  }
+                }
+                .item_r {
+                  display: flex;
+                  align-items: center;
+                  justify-content: space-between;
+                  padding-left: 2rem;
+                  .icon_item {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    font-size: 1.25rem;
+                    color: #8c8c8c;
+                    &:first-child {
+                      margin-right: 2.875rem;
+                    }
+                    img {
+                      width: 2.75rem;
+                      height: 2.75rem;
+                      margin-bottom: 0.75rem;
+                    }
+                  }
+
+                }
+              }
+            }
+            .businessHours {
+              display: flex;
+              align-items: center;
+              justify-content: flex-start;
+              margin-top: 1.875rem;
+              .img {
+                img {
+                  width: 2.25rem;
+                  height: 2.25rem;
+                  margin-right: 1.5rem;
+                }
+              }
+              > p {
+                flex: 1;
+                font-size: 1.75rem;
+                color: #323232;
+              }
+            }
+          }
+          .card_title {
+
+            font-size: 2rem;
+            font-weight: bold;
+            color: #323232;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eaeaea;
+          }
+          .m_card {
+            padding: 1.75rem 1.875rem 2rem;
+            margin-top: 1.25rem;
+            background-color: #ffffff;
+            .PresentationInfo {
+              padding-top: 1.5rem;
+              font-size: 1.75rem;
+              color: #323232;
+            }
+          }
+          .M_Presentation {
+
+          }
+
+          .imgList {
+            padding: 0 1.875rem 0;
+            background-color: #fff;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            .item{
+              margin-bottom: 1.375rem;
+              img{
+                width: 20rem;
+                height: 20rem;
+                border-radius: 4px;
+              }
+            }
+          }
+        }
+        /*   .vux-swiper-item {
+             position: relative !important;
+           }*/
+      }
+      .pay {
+        width: 100%;
+        height: 6.75rem;
+        background-color: #F89F04;
+        font-size: 2.375rem;
+        color: #ffffff;
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        &:active {
+          opacity: 0.9;
+        }
+      }
+    }
+  }
+
+</style>

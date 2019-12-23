@@ -13,8 +13,11 @@
     <div class="Banner_info">
       <div class="head">
         <div class="name">{{itemInfo.name}}</div>
-        <div class="tag">自营</div>
-        <div class="tag" v-if="tagShow">U米兑换</div>
+        <div class="tagList">
+          <div class="tag">自营</div>
+          <div class="tag" v-if="tagShow">U米兑换</div>
+        </div>
+
       </div>
       <div class="num">
         <span class="PresentPrice" v-html="PresentPrice()"></span>
@@ -229,19 +232,27 @@
         font-size: 1.75rem;
         color: #323232;
         display: flex;
-        align-items: center;
+        align-items: baseline;
         justify-content: flex-start;
         .name {
           margin-right: 1.4rem;
-          flex: 1;
+          max-width: 80%;
+          display: flex;
+          flex-wrap: wrap;
         }
-        .tag {
-          color: #AD822F;
-          border: 1px solid #AD822F;
-          border-radius: 2px;
-          font-size: 0.875rem;
-          margin-right: 0.625rem;
-          padding: 0.125rem;
+        .tagList{
+          display: flex;
+          align-items: center;
+          justify-content: flex-start;
+          flex: 1;
+          .tag {
+            color: #AD822F;
+            border: 1px solid #AD822F;
+            border-radius: 2px;
+            font-size: 0.875rem;
+            margin-right: 0.625rem;
+            padding: 0.125rem;
+          }
         }
       }
       .num {

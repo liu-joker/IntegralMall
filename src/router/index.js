@@ -126,6 +126,38 @@ const routerList = [
       title: '商品分享'
     }
   },
+  {
+    path: '/payment',
+    name: 'payment',
+    component: () => import('@/views/payment/index'),
+    meta: {
+      title: '支付'
+    }
+  },
+  {
+    path: '/callbackPageS',
+    name: 'callbackPageS',
+    component: () => import('@/views/payment/callbackPageS'),
+    meta: {
+      title: '支付结果'
+    }
+  },
+  {
+    path: '/errorPayPage',
+    name: 'errorPayPage',
+    component: () => import('@/views/payment/errorPayPage'),
+    meta: {
+      title: '支付'
+    }
+  },
+  {
+    path: '/merchantInfo',
+    name: 'merchantInfo',
+    component: () => import('@/views/merchant/merchantInfo'),
+    meta: {
+      title: '商家详情'
+    }
+  },
 
 
   {path: '/404', component: () => import('@/views/404'), hidden: true},

@@ -6,6 +6,7 @@ import Cookies from 'js-cookie'
 const StatisticsPromotion = 'statisticsPromotion'
 const TokenKey = 'User-Token'
 const UserInfo = 'User-Info'
+const wxUserPhone = 'User-Phone'
 
 class cookies {
 
@@ -42,6 +43,16 @@ class cookies {
 
   static removeStatisticsPromotion() {
     return Cookies.remove(StatisticsPromotion)
+  }
+
+  static getwxUserPhone() {
+    return Cookies.get(wxUserPhone)
+  }
+
+  static setwxUserPhone(phone,Time) {
+    return Cookies.set(wxUserPhone, phone,{
+      expires: Time
+    })
   }
 
 }

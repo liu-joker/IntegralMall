@@ -1,6 +1,11 @@
 export function imgUrl(x) {
-  let baseUrl = 'http://img.cdn.hljcxiaoxiong.com/'
-  return baseUrl + x
+  if(x.indexOf('http') > -1){
+    return x
+  }else {
+    let baseUrl = 'http://img.cdn.hljcxiaoxiong.com/'
+    return baseUrl + x
+  }
+
 }
 
 export function formatMoney(x) {
@@ -73,3 +78,24 @@ export function formatDate(time) {
   return date
 }
 
+export function environment() {
+  let payEnv;
+
+  //1微信2自家app3其他
+// 判断微信还是支付宝
+  if (/MicroMessenger/.test(window.navigator.userAgent)) {
+// 微信
+    payEnv = '1';
+  } else if (/AlipayClient/.test(window.navigator.userAgent)) {
+// 支付宝
+    payEnv = '3';
+  } else {
+    try {
+      window.app.getToken()
+      payEnv = '2';
+    }catch(error) {
+      payEnv = '3';
+    }
+  }
+  return payEnv
+}
