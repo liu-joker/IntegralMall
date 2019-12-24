@@ -159,12 +159,10 @@
 
      this.environment = environment()
       //1微信2手机app3其他
-//     this.environment = 2
       if(environment() == 3){
-
-      /*  this.$router.push({
+        this.$router.push({
           path:'/errorPayPage'
-        })*/
+        })
 
         console.log('其他浏览器')
 

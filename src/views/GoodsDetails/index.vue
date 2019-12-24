@@ -155,8 +155,6 @@
             })
           }
 
-
-
           return
         }
 
@@ -245,6 +243,7 @@
           align-items: center;
           justify-content: flex-start;
           flex: 1;
+          min-width: 10rem;
           .tag {
             color: #AD822F;
             border: 1px solid #AD822F;

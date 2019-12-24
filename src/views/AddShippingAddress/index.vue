@@ -72,7 +72,7 @@
         let name = this.form.name
         let phone = this.form.phone
         let info = this.form.info
-        let areaId = this.form.address[2] || this.form.address[1] || ""//区编号
+        let areaId = this.form.address[2] || this.form.address[1] || "" //区编号
         console.log(this.form.address,areaId)
         if (name != "" && phone != "" && info != "" && areaId != "") {
           this.$vux.loading.show({
