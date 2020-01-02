@@ -211,7 +211,7 @@ body .weui-cell__ft {
 
 .weui-toast {
   padding: 0 2rem;
-  width: auto;
+  width: auto !important;
 }
 .vux-divider{
   font-size: 1.5rem;

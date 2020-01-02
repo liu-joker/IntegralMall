@@ -218,9 +218,13 @@
     min-height: 100vh;
 
     .G_banner {
-      .bannerImg {
-        width: 100%;
-        height: 100%;
+      .swiper-demo-img{
+        text-align: center;
+        background-color: #fff;
+        .bannerImg {
+          width: auto;
+          height: 100%;
+        }
       }
     }
     .Banner_info {

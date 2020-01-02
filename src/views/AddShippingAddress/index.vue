@@ -87,9 +87,7 @@
                 width: 'auto'
               })
               setTimeout(()=>{
-                this.$router.push({
-                  path:"/ShippingAddress"
-                })
+                this.$router.go(-1)
               },1500)
             }else {
               this.$vux.alert.show({

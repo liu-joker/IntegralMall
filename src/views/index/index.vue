@@ -8,44 +8,73 @@
         <img :src="icon_my" alt="" class="icon_my">
       </div>
     </div>
-
-    <div class="I_banner">
-      <swiper auto dots-position="center" loop style="width: 100%;margin:0 auto;" :aspect-ratio="40.63/46.88" :interval=5000>
-        <swiper-item class="swiper-demo-img" v-for="(x, index) in bannerList" :key="index">
-          <img :src="x.photo | imgUrl" alt="" class="bannerImg">
-        </swiper-item>
-      </swiper>
-    </div>
-
-    <div class="I_select">
-      <div class="list">
-        <div class="item" v-for="(x,index) in selectList" :key="index">
-          <div class="name">{{x.typeName}}</div>
-          <img :src="x.imgUrl" alt="">
+    <scroller lock-x @on-scroll-bottom="onScrollBottom" ref="scrollerBottom2" :scroll-bottom-offst="300"
+              v-if="!noDataShow">
+      <div>
+        <div class="I_banner">
+          <swiper auto dots-position="center" loop style="width: 100%;margin:0 auto;" :aspect-ratio="40.63/46.88"
+                  :interval=5000>
+            <swiper-item class="swiper-demo-img" v-for="(x, index) in bannerList" :key="index">
+              <img :src="x.photo | imgUrl" alt="" class="bannerImg">
+            </swiper-item>
+          </swiper>
         </div>
-      </div>
-    </div>
 
-
-    <div class="I_shopList">
-      <div class="list">
-        <div class="item" v-for="(x,index) in shopList" :key="index" @click="GoodsDetails(x)">
-          <img :src="x.imgUrl | imgUrl" alt="" class="itemImg">
-          <div class="item_info">
-            <div class="name">{{x.name}}</div>
-            <div class="S_info">{{x.resume}}</div>
-            <div class="item_foot">
-              <div class="left">
-                <img :src="icon_browse" alt="" class="eye">
-                {{x.browse}}次浏览
-              </div>
-              <div class="right">
-                <div class="but">详情</div>
+        <div class="I_select"
+             :style="moreItem?'height:'+Math.ceil((selectListC.length+1)/5)*8.625+'rem':'height:8.625rem'">
+          <div class="list fadeIn animated">
+            <div class="item fadeIn animated" v-for="(x,index) in selectListC" :key="index" @click="selectType(x)"
+                 v-if="moreItem?true:index<4">
+              <div class="name">{{x.typeName}}</div>
+              <img :src="x.imgUrl" alt="">
+            </div>
+            <div v-if="!moreItem" class="item moreItem fadeIn animated">
+              <div class="name" @click="moreItem = true" v-show="selectListC.length !=0">
+                <span>更多</span>
+                <span>分类</span>
               </div>
             </div>
+            <div class="item fadeIn animated" @click="selectType({id:'all'})" v-if="selectListC.length !=0 && moreItem">
+              <div class="name">
+                全部
+              </div>
+            </div>
+            <div class="item fadeIn animated" @click="moreItem = false" v-if="selectListC.length !=0 && moreItem">
+              <div class="name">
+                <<
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="I_shopList">
+          <div class="list">
+            <div class="item" v-for="(x,index) in shopList" :key="index" @click="GoodsDetails(x)">
+              <img :src="x.imgUrl | imgUrl" alt="" class="itemImg">
+              <div class="item_info">
+                <div class="name">{{x.name}}</div>
+                <div class="S_info">{{x.resume}}</div>
+                <div class="item_foot">
+                  <div class="left">
+                    <img :src="icon_browse" alt="" class="eye">
+                    {{x.browse}}次浏览
+                  </div>
+                  <div class="right">
+                    <div class="but">详情</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <load-more tip="正在加载..." class="loadingMore" v-if="onFetching"></load-more>
+            <divider v-if="pageSize > info.total && shopList.length>0">到底了</divider>
           </div>
         </div>
       </div>
+
+    </scroller>
+    <div class="noItem">
+      <div class="noData" v-if="shopList.length == 0">暂无商品</div>
     </div>
   </div>
 
@@ -62,13 +91,17 @@
   import pic_commodity1 from "@/assets/images/pic_commodity1.png"
   import pic_commodity2 from "@/assets/images/pic_commodity2.png"
   import icon_browse from "@/assets/images/icon_browse.png"
-  import {Swiper,SwiperItem} from 'vux'
+  import {Swiper, SwiperItem,Scroller, LoadMore, Divider} from 'vux'
+  import {imgUrl} from "@/filters";
 
   export default {
     name: 'index',
     components: {
       Swiper,
-      SwiperItem
+      SwiperItem,
+      Scroller,
+      LoadMore,
+      Divider,
     },
     data() {
       return {
@@ -76,47 +109,101 @@
         banner1: banner1,
         icon_browse: icon_browse,
         bannerList: {},
-        selectList:[
-          {id:0,name:'家居',imgUrl:pic_sort1},
-          {id:1,name:'电器',imgUrl:pic_sort2},
-          {id:2,name:'热门',imgUrl:pic_sort3},
-          {id:3,name:'推荐',imgUrl:pic_sort4},
-          {id:4,name:'爆款',imgUrl:pic_sort5},
+        selectList: [
+          {id: 0, name: '家居', imgUrl: pic_sort1},
+          {id: 1, name: '电器', imgUrl: pic_sort2},
+          {id: 2, name: '热门', imgUrl: pic_sort3},
+          {id: 3, name: '推荐', imgUrl: pic_sort4},
+          {id: 4, name: '爆款', imgUrl: pic_sort5},
         ],
-        shopList:[
-
-        ]
+        selectList2: [],
+        shopList: [],
+        pageNum: 1,
+        pageSize: 10,
+        moreItem: false,
+        noDataShow: false,
+        onFetching: false,
+        info:''
       }
     },
-     created() {
+    computed: {
+      selectListC: function () {
+        if (this.moreItem) {
+          return this.selectList2.filter((v, index) => {
+            return index < 13
+          })
+        } else {
+          return this.selectList2.filter((v, index) => {
+            return index < 4
+          })
+        }
+      },
+    },
+    created() {
+
+
       this.getData()
       this.getBannerList()
 
+
     },
     methods: {
-      GoodsDetails(x){
-        this.$router.push({path:'/GoodsDetails/'+x.id})
+      onScrollBottom() {
+        if (this.onFetching) {
+        } else {
+          this.onFetching = true;
+          if (this.pageSize > this.info.total) return this.onFetching = false;
+          this.pageSize += 10;
+          this.getData()
+
+        }
       },
-      getData(){
+      selectType(x) {
+        console.log(x)
+//        this.$router.push({path: '/commodityTypeList?id=' + x.id})
+        this.$router.push({path: '/commodityTypeList?id=' + x.id})
+
+      },
+      GoodsDetails(x) {
+        this.$router.push({path: '/GoodsDetails/' + x.id})
+      },
+      getData() {
         this.$vux.loading.show({
           text: '加载中...'
         })
-        this.$axiosApi.itemList().then(res=>{
-          if(res.code==200){
+
+        let itemType = ""
+        let third = 0
+        let pageNum = 1
+        let pageSize = this.pageSize
+        this.$axiosApi.itemList(itemType, third, pageNum, pageSize).then(res => {
+          if (res.code == 200) {
             //
-            let time = new Date().getTime()/100000000
-            this.shopList = res.data.map(v=>{
+            this.$vux.loading.hide()
+            let time = new Date().getTime() / 100000000
+            this.info = res.data
+
+            this.shopList = res.data.list.map(v => {
               v.imgUrl = v.photo.split(',')[0]
-              v.browse = (time + (v.name.length * v.resume.length)).toFixed(0)
+              let resume = 550
+              v.browse = (time + (v.name.length * resume)).toFixed(0)
               return v
             })
-          }else {
+            if (this.shopList.length == 0) {
+              this.noDataShow = true
+            } else {
+              this.noDataShow = false
+            }
+            this.onFetching = false
+
+
+          } else {
             this.$vux.alert.show({
               title: '提示',
               content: res.message,
-              onShow () {
+              onShow() {
               },
-              onHide () {
+              onHide() {
               }
             })
           }
@@ -124,31 +211,31 @@
 
       },
 
-      getBannerList(){
-        this.$axiosApi.itemAdvert().then(res=>{
+      getBannerList() {
+        this.$axiosApi.itemAdvert().then(res => {
           this.$vux.loading.hide()
-          if(res.code == 200){
+          if (res.code == 200) {
             this.bannerList = res.data.shopAdvert
-            this.selectList = this.selectList.map((v,index)=>{
-              v.typeName = res.data.shopType[index].typeName
-              v.typeOrder = res.data.shopType[index].typeOrder
+            let selectList = res.data.shopType.map((v, index) => {
+              v.imgUrl = imgUrl(v.photo)
               return v
             })
-          }else {
+            this.selectList2 = selectList
+            console.log(this.selectList2)
+          } else {
             this.$vux.alert.show({
               title: '提示',
               content: res.message,
-              onShow () {
+              onShow() {
               },
-              onHide () {
+              onHide() {
               }
             })
           }
         })
-
       },
-      toMy(){
-        this.$router.push({path:'/my'})
+      toMy() {
+        this.$router.push({path: '/my'})
       }
     }
   }
@@ -158,6 +245,7 @@
 
   .Index {
     background-color: #f4f4f4;
+
     .I_head {
       display: flex;
       align-items: center;
@@ -180,41 +268,54 @@
       }
     }
 
-    .I_banner{
-      .bannerImg{
+    .I_banner {
+      .bannerImg {
         width: 100%;
         height: 100%;
       }
     }
-    .I_select{
+    .I_select {
       background-color: #ffffff;
       padding: 1.25rem;
-      .list{
+      height: auto;
+      transition: height 0.6s;
+      .list {
         display: flex;
         align-items: center;
-        justify-content: space-between;
-        .item{
-          margin-right: 0.625rem;
-          width: 8.375rem;
-          height: 8.375rem;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+        background-color: #ffffff;
+        .item:nth-child(5n) {
+          margin-right: 0;
+        }
+        .item {
+          margin-bottom: calc((100% - (5 * 8rem)) / 4);
+          margin-right: calc((100% - (5 * 8rem)) / 4);
+          width: 8rem;
+          height: 8rem;
           position: relative;
-          >img{
-            width: 8.375rem;
-            height: 8.375rem;
+          &.moreItem {
+            .name {
+              flex-direction: column;
+            }
           }
-          .name{
+          > img {
+            width: 100%;
+            height: 100%;
+          }
+          .name {
             position: absolute;
-            background:rgba(15,15,18,0.6);
+            background: rgba(15, 15, 18, 0.6);
             width: 100%;
             height: 100%;
             color: #ffffff;
-            font-size:1.88rem;
-            font-family:PingFang SC;
+            font-size: 1.88rem;
+            font-family: PingFang SC;
             display: flex;
             align-items: center;
             justify-content: center;
           }
-          &:last-child{
+          &:last-child {
             margin-right: 0;
           }
         }
@@ -222,50 +323,52 @@
 
     }
 
-    .I_shopList{
-      .list{
+    .I_shopList {
+      background-color: #f4f4f4;
+      .list {
         padding: 1.25rem;
-        .item{
+        .item {
           width: 100%;
-          font-family:PingFang SC;
+          font-family: PingFang SC;
           background-color: #ffffff;
           border-radius: 1rem;
           overflow: hidden;
           margin-bottom: 1.25rem;
-          .itemImg{
+
+          .itemImg {
             width: 100%;
             height: 20rem;
           }
-          .item_info{
+          .item_info {
             padding: 1.875rem;
-            .name{
+            .name {
               font-size: 1.875rem;
               color: #000000;
               margin-bottom: 1rem;
             }
-            .S_info{
+            .S_info {
               font-size: 1.5rem;
               color: #646464;
             }
-            .item_foot{
+            .item_foot {
               margin-top: 3rem;
               display: flex;
               align-items: center;
               justify-content: space-between;
-              .left{
+              .left {
                 display: flex;
                 align-items: center;
                 justify-content: flex-start;
                 color: #8C8C8C;
                 font-size: 1.5rem;
-                .eye{
+                .eye {
                   width: 1.75rem;
                   height: 1.75rem;
                   margin-right: 0.5rem;
                 }
               }
-              .right{
-                .but{
+              .right {
+                .but {
                   padding: 0.5rem 1.625rem;
                   background-color: #2D2922;
                   color: #fefefe;
@@ -279,6 +382,16 @@
             }
           }
 
+        }
+      }
+      .noItem {
+        .noData {
+          width: 100%;
+          padding: 9.5rem 0;
+          text-align: center;
+          font-size: 2rem;
+          color: #868686;
+          background-color: #f4f4f4;
         }
       }
     }

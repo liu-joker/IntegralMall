@@ -216,7 +216,7 @@
                 } else {
                   this.$vux.alert.show({
                     title: '提示',
-                    content: res.message,
+                    content: res.data.msg,
                     onShow() {
                     },
                     onHide() {
@@ -242,7 +242,7 @@
         }
       },
       onPayFailure() {
-        this.$router.push({path: '/ForThePayment'})
+        this.$router.push({path: '/allOrders'})
       },
       onPaySuccess() {
         this.$router.push({path: '/ToSendTheGoods'})

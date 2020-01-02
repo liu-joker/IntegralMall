@@ -1,10 +1,14 @@
 export function imgUrl(x) {
-  if(x.indexOf('http') > -1){
-    return x
-  }else {
-    let baseUrl = 'http://img.cdn.hljcxiaoxiong.com/'
-    return baseUrl + x
+  if(x){
+    if(x.indexOf('http') > -1){
+      return x
+    }else {
+      let baseUrl = 'http://img.cdn.hljcxiaoxiong.com/'
+      return baseUrl + x
+    }
   }
+  return ""
+
 
 }
 

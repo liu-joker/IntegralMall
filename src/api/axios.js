@@ -4,9 +4,9 @@ import request from '@/utils/request'
 class loginApi {
 
   //首页商品列表
-  static itemList() {
+  static itemList(itemType,third,pageNum,pageSize) {
     return request({
-      url: '/itemList',
+      url: '/itemList?itemType='+itemType+'&third='+third+'&pageNum='+pageNum+'&pageSize='+pageSize,
       method: 'get',
       data: {},
       headers: {"Content-Type": "application/x-www-form-urlencoded;charset=utf-8"}
@@ -227,6 +227,23 @@ class loginApi {
         brandId:brandId,
         appType:appType,
         phone:phone,
+      },
+    })
+  };
+
+
+
+  //商户
+
+  //商户详情
+  static agentDetail(agentId,lng,lat) {
+    return request({
+      url: '/agentDetail',
+      method: 'post',
+      data: {
+        agentId:agentId,
+        lng:lng,
+        lat:lat,
       },
     })
   };

@@ -23,6 +23,14 @@ const routerList = [
     }
   },
   {
+    path: '/commodityTypeList',
+    name: 'commodityTypeList',
+    component: () => import('@/views/index/commodityTypeList'),
+    meta: {
+      title: '小米粒商城'
+    }
+  },
+  {
     path: '/my',
     name: 'my',
     component: () => import('@/views/my'),

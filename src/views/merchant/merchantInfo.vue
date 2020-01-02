@@ -3,7 +3,7 @@
   <div class="merchantInfo">
 
     <div class="headTitle">
-      <div class="h_title">天安数码城多媒体工作室（原天安集美题斜互联媒体工作室</div>
+      <div class="h_title">{{info.shopName}}</div>
       <div class="evaluate">
         <span class="start" :style="startStyle"></span>
         <span>4.5分</span>
@@ -14,15 +14,15 @@
         <tab :line-width="1" custom-bar-width="3.75rem" bar-active-color="#4385FF" active-color="#323232"
              default-color="#646464" class="stickyTab">
           <tab-item @click.native="returnTop(0)" :selected="tabActive==0">概况</tab-item>
-          <tab-item @click.native="returnTop(1)" :selected="tabActive==1">相册</tab-item>
+          <!--<tab-item @click.native="returnTop(1)" :selected="tabActive==1">相册</tab-item>-->
         </tab>
       </div>
       <div class="swiperTab">
         <swiper v-model="tabActive" :show-dots="false" :threshold="10000" :min-moving-distance="10000">
-          <swiper-item  class="swiperItem" >
+          <swiper-item class="swiperItem">
             <div class="tab-swiper tab-swiper1" v-show="tabActive == 0">
               <div class="bannerImg">
-                <img :src="pic_sjgk" alt="">
+                <img :src="info.frontPhoto | imgUrl" alt="">
               </div>
               <div class="addressInfo">
                 <div class="addressOrName">
@@ -32,19 +32,22 @@
                   <div class="right">
                     <div class="item_l">
                       <div class="address_text">
-                        福田区车公庙天安数码创新科技广场二期东座506
+                        {{info.district}}{{info.address}}
                       </div>
-                      <div class="distance">距离您  3.6km</div>
+                      <!--<div class="distance">距离您  3.6km</div>-->
                     </div>
                     <div class="item_r">
-                      <div class="icon_item">
-                        <img :src="icon_daohang" alt="">
-                        导航
-                      </div>
-                      <div class="icon_item">
-                        <img :src="icon_phone" alt="">
-                        电话
-                      </div>
+                      <!--  <div class="icon_item">
+                          <img :src="icon_daohang" alt="">
+                          导航
+                        </div>-->
+                      <a :href="'tel:'+info.contactPhone">
+                        <div class="icon_item">
+
+                          <img :src="icon_phone" alt="">
+                          电话
+                        </div>
+                      </a>
                     </div>
                   </div>
                 </div>
@@ -52,7 +55,7 @@
                   <div class="img">
                     <img :src="icon_open" alt="">
                   </div>
-                  <p>营业时间:8:00-21:00</p>
+                  <p>营业时间:{{info.openTime}}</p>
                 </div>
               </div>
               <div class="m_card">
@@ -60,7 +63,7 @@
                   商家介绍
                 </div>
                 <div class="PresentationInfo">
-                  广州甄果商贸有限公司坐落于中国最大的进口水果集散地-广州,甄果商贸依托于广州江南水果批发市场,为每一个客户甄选最优质的进口水果!
+                  {{info.selfIntroduce}}
                 </div>
               </div>
               <div class="m_card">
@@ -68,17 +71,14 @@
                   经营范围
                 </div>
                 <div class="PresentationInfo">
-                  <p>1. 婚纱摄影</p>
-                  <p>2. 写真</p>
-                  <p>3. COS服装</p>
-                  <p>4. 淘宝服装摆拍</p>
-                  <p>5. 摄影</p>
-                  <p>6. 后期照片，影视加工制作</p>
+                  <pre v-html="info.key1">
+
+                  </pre>
                 </div>
               </div>
             </div>
           </swiper-item>
-          <swiper-item  class="swiperItem">
+          <swiper-item class="swiperItem">
             <div class="tab-swiper" v-show="tabActive != 0">
               <div class="imgList">
                 <div class="item" v-for="(x,index) in imgList" :key="index">
@@ -130,17 +130,30 @@
         icon_phone: icon_phone,
         icon_open: icon_open,
         startStyle: {
-          'background-position': '0px -20.5rem' //0.5start = -2.5rem
+          'background-position': '0px -18rem' //0.5start = -2.5rem
         },
         tabActive: 0,
-        imgList: [pic_sjxc, pic_sjxc, pic_sjxc, pic_sjxc]
+        imgList: [pic_sjxc, pic_sjxc, pic_sjxc, pic_sjxc],
+        info: ''
       }
     },
 
     created() {
-
+      this.info = '112把\n' +
+        '可口可乐了'
+      this.getData()
     },
     methods: {
+      getData() {
+        let agentId = "1"
+        let lng = null
+        let lat = null
+        this.$axiosApi.agentDetail(agentId, lng, lat).then(res => {
+          if (res.code == 200) {
+            this.info = res.data
+          }
+        })
+      },
       returnTop: function (x) {
         this.tabActive = x
         if (x == 1) {
@@ -240,15 +253,18 @@
           .swiperItem {
             width: 100%;
             position: relative;
-            .tab-swiper1{
+            .tab-swiper1 {
               padding: 0 0 6.75rem;
             }
           }
           .bannerImg {
             padding: 0 1.875rem;
             background-color: #fff;
+            height: 16.25rem;
+            overflow: hidden;
             img {
               width: 100%;
+              height: auto;
               border-radius: 5px;
             }
           }
@@ -347,6 +363,14 @@
               padding-top: 1.5rem;
               font-size: 1.75rem;
               color: #323232;
+              pre {
+                font-family: PingFang SC;
+                line-height: 1.5em;
+                margin: 0;
+                padding: 0;
+                font-size: 1.75rem;
+                color: #323232;
+              }
             }
           }
           .M_Presentation {
@@ -360,9 +384,9 @@
             flex-wrap: wrap;
             justify-content: space-between;
             align-items: center;
-            .item{
+            .item {
               margin-bottom: 1.375rem;
-              img{
+              img {
                 width: 20rem;
                 height: 20rem;
                 border-radius: 4px;
@@ -387,7 +411,7 @@
         align-items: center;
         justify-content: center;
         &:active {
-          opacity: 0.9;
+          background-color: #d08504;
         }
       }
     }

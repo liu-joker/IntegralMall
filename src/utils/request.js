@@ -64,7 +64,7 @@ service.interceptors.response.use(
             title: '提示',
             content: message,
             onHide(){
-              window.app.closePage();
+            //  window.app.closePage();
             }
           })
           return
