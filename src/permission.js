@@ -10,12 +10,12 @@ console.log(1)
 router.beforeEach((to, from, next) => {
 
   console.log(to)
-  let token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJITEpDIiwiZXhwIjoxNTc4NTM1Njc3LCJ1c2VyIjoiNjAyYTY5OTQwMWNmNDQ4MWE3NGI3ZDNlZmM2OGQzYWQifQ.40ScYSgKXPvkafHZvzO2KoJTwJWUvWEHSuYlXN_OXdhLMtDfKUM2PHvPosiAP4cFTObtW6kiw-ZJm8X-ToTGow"
-/*  try {
+  let token = ""
+  try {
     token = window.app.getToken() || ""
   } catch (e){
     token = ""
-  }*/
+  }
   console.log(whiteList.indexOf(to.path),1)
   cookies.setToken(token)
   if(token !="" && !store.getters.userInfo.phone && whiteList.indexOf(to.name)==-1){

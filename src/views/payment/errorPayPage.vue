@@ -4,7 +4,7 @@
     <div class="errContent">
       <img :src="pic_zf_whz" alt="" class="img">
       <p class="info">请使用小米粒APP或微信扫码</p>
-      <!--<x-button class="but" @click.native="submit">确定</x-button>-->
+      <x-button class="but" @click.native="submit">去下载</x-button>
 
     </div>
   </div>
@@ -22,23 +22,17 @@
     },
     data() {
       return {
-        pic_zf_whz: pic_zf_whz
+        pic_zf_whz: pic_zf_whz,
+        userId: ''
       }
     },
     created() {
+      this.userId = this.$route.query.userId
 
     },
     methods: {
       submit() {
-
-        /*if(navigator.userAgent.indexOf("Firefox") != -1 || navigator.userAgent.indexOf("Chrome") != -1){
-          window.location.href = "about:blank";
-          window.close();
-        }else{
-          window.opener = null;
-          window.open("", "_self");
-          window.close();
-        }*/
+        location.href = 'https://www.hlxiaoxiong.com/h5/#/?userID=' + this.$route.query.userId
       }
     }
   }

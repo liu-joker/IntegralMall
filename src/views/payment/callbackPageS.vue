@@ -43,16 +43,19 @@
         amount:'0',
         point:'0',
         isUser:0,
+        preUser:"",
       }
     },
     created() {
       this.amount = formatMoney(this.$route.query.amount)
       this.point = this.$route.query.point
       this.isUser = this.$route.query.isUser || 0
+      this.preUser = this.$route.query.preUser
     },
     methods: {
       download(){
-
+        if(!this.preUser || this.preUser == "") return
+        location.href = 'https://www.hlxiaoxiong.com/h5/#/?userID=' + this.preUser
       }
     }
   }

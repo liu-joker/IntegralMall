@@ -60,13 +60,13 @@ service.interceptors.response.use(
           return Promise.reject(res)
         }else if(res.code=='405') {
           message="请先实名！"
-          AlertModule.show({
+        /*  AlertModule.show({
             title: '提示',
             content: message,
             onHide(){
             //  window.app.closePage();
             }
-          })
+          })*/
           return
         }
 

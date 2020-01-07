@@ -19,8 +19,8 @@ Vue.prototype.axios = axios;
 import  { ToastPlugin } from 'vux'
 Vue.use(ToastPlugin)
 
-import VueScroller  from 'vue-scroller'
-Vue.use(VueScroller)
+import VueScroller from "vue-scroller"
+Vue.use(VueScroller);
 
 Vue.config.productionTip = false
 Vue.use(Vuex)

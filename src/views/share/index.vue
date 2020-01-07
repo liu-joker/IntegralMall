@@ -133,7 +133,7 @@
         let data = {
           "pri": item,
           "originalPri": '¥' + formatMoney(this.itemInfo.showAmount),
-          "title": this.itemInfo.resume,
+          "title": this.itemInfo.name,
           "images": imgList,
           "qrCodeLink": "https://www.hlxiaoxiong.com/IntegralMall/#/GoodsDetails/" + this.id + '?userId=' + userId,
           "type": x

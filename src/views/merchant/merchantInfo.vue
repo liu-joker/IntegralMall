@@ -90,9 +90,9 @@
         </swiper>
 
       </div>
-      <div class="pay" v-show="tabActive == 0">
+      <!--<div class="pay" v-show="tabActive == 0" @click.native="ToPayPage">
         付 款
-      </div>
+      </div>-->
     </div>
   </div>
 
@@ -134,18 +134,23 @@
         },
         tabActive: 0,
         imgList: [pic_sjxc, pic_sjxc, pic_sjxc, pic_sjxc],
-        info: ''
+        info: '',
+        brandId: '',
+        agentId: '',
       }
     },
 
     created() {
-      this.info = '112把\n' +
-        '可口可乐了'
+      this.agentId = this.$route.query.agentId
+      this.brandId = this.$route.query.brandId
       this.getData()
     },
     methods: {
+      ToPayPage() {
+        this.$router.push({path: '/payment?agentId=' + this.agentId + '&brandId=' + this.brandId})
+      },
       getData() {
-        let agentId = "1"
+        let agentId = this.agentId
         let lng = null
         let lat = null
         this.$axiosApi.agentDetail(agentId, lng, lat).then(res => {

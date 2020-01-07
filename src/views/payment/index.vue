@@ -12,7 +12,7 @@
 
       <divider class="dividerText">支付金额</divider>
       <div class="payAmount">
-        <div class="diy_input" @click="popupShow = true">
+        <div class="diy_input" @click="diyInput">
           <div class="input_num">
             <span class="amountIcon">¥</span>
             {{form.amount}}
@@ -48,10 +48,15 @@
         <divider class="dividerText">返还U米账号</divider>
 
         <group class="form_item">
-          <x-input placeholder="请输入手机号" class="item" type="tel" is-type="china-mobile" v-model="form.phone"
+         <!-- <x-input placeholder="请输入手机号" class="item" type="tel" is-type="china-mobile" v-model="form.phone"
                    :is-type="phoneType" :max="11"
-                   ref="phone" text-align="center" @on-focus="popupShow = false" :show-clear="false">
-          </x-input>
+                   ref="phone" text-align="center" :readonly="readonly" :disabled="readonly" :show-clear="false" @on-focus="stopKeyborad">
+          </x-input>-->
+          <div class="diy_input" @click="stopKeyborad">
+            <div class="input_num">
+              {{form.phone}}
+            </div>
+          </div>
           <p class="pInfo">温馨提示：未填写返还U米手机号将无法获得U米。</p>
         </group>
       </div>
@@ -62,9 +67,12 @@
         <div class="popupContent">
           <div class="popup_head">
             <div class="diy_input">
-              <div class="input_num">
+              <div class="input_num" v-if="keyboardType == 1">
                 <span class="amountIcon">¥</span>
                 {{form.amount}}
+              </div>
+              <div class="input_num" v-if="keyboardType == 2">
+                {{form.phone}}
               </div>
             </div>
           </div>
@@ -138,30 +146,38 @@
         icon_cancel2: icon_cancel2,
         shopName:"",
         popupShow:true,
+        readonly:true,
+        keyboardType:1,
         brandId:'',
         environment:'',
         form:{
           phone:'',
           amount:'',
+          userId:'',
           agentId:'',
           radioValue:7,//7微信6支付宝
-        }
+        },
+        amountDisabled:false
       }
     },
     created() {
+      this.form.userId = this.$route.query.userId
       this.form.agentId = this.$route.query.agentId
       this.form.brandId = this.$route.query.brandId
+      if(this.$route.query.amount && this.$route.query.amount!='null'){
+        this.form.amount = this.$route.query.amount
+        this.amountDisabled = true
+      }
   //    console.log(this.agentId)
-      console.log(this.urlencode(location.href.split('#')[0] + '#' + location.href.split('#')[1]))
 //      this.getCode()
 
      this.form.phone = this.$Cookie.getwxUserPhone() || ""
 
      this.environment = environment()
       //1微信2手机app3其他
-      if(environment() == 3){
+      if(this.environment == 3){
         this.$router.push({
-          path:'/errorPayPage'
+          path:'/errorPayPage?agentId='+this.form.userId
         })
 
         console.log('其他浏览器')
@@ -171,19 +187,34 @@
 
     },
     methods: {
-      urlencode (str) {
+      diyInput(){
+        if(this.keyboardType != 1){
+          this.popupShow = false
+          setTimeout(()=>{
+            this.popupShow = true
+          },100)
+        }else{
+          this.popupShow = true
+        }
+        this.keyboardType = 1
 
-        str = (str + '').toString();
-
-        return encodeURIComponent(str).replace(/!/g, '%21').replace(/'/g, '%27').replace(/\(/g, '%28').
-
-        replace(/\)/g, '%29').replace(/\*/g, '%2A').replace(/%20/g, '+');
 
       },
-      getCode(){
-        var url_code = "https://open.weixin.qq.com/connect/oauth2/authorize?appid="+'wx5dc131e834011c7c'+"&redirect_uri="+this.urlencode(location.href.split('#')[0] + '#' + location.href.split('#')[1])+"&response_type=code&scope=snsapi_base&state=1&connect_redirect=1#wechat_redirect";
+      stopKeyborad () {
+        if(this.keyboardType != 2){
+          this.popupShow = false
+          setTimeout(()=>{
+            this.popupShow = true
+          },100)
+        }else{
+          this.popupShow = true
+        }
+        this.readonly = true
+        this.keyboardType = 2
+        setTimeout(() => {
+          this.readonly = false
+        }, 200);
 
-        window.location.href = url_code;
       },
       getData(){
         this.$vux.loading.show({
@@ -214,30 +245,63 @@
       },
       numberClick(x){
 
-        if(x == 12){
-          //显示
-          this.popupShow = false
-        }else if(x<12){
-          let num = x
+        if(this.keyboardType == 1){
+          if(this.amountDisabled && x!=12 && x!=14){
+            return
+          }
+          if(x == 12){
+            //显示
+            this.popupShow = false
+          }else if(x<12){
+            let num = x
 
-          if(this.form.amount.indexOf('.') > -1 &&(this.form.amount.length-this.form.amount.indexOf('.'))>2) return false;
-          if(x == 11) {
+            if(this.form.amount.indexOf('.') > -1 &&(this.form.amount.length-this.form.amount.indexOf('.'))>2) return false;
+            if(x == 11) {
+              if (this.form.amount!="" && Number(this.form.amount)==0 && x!=10 && this.form.amount.length == 1) return false;
+              num = 0
+            }
+            if(x == 10){
+              if (this.form.amount.indexOf('.') > -1 || this.form.amount=="") return false;
+              num = '.'
+            }
+            if(Number(Number(this.form.amount + String(num)))>=1000000) return false
             if (this.form.amount!="" && Number(this.form.amount)==0 && x!=10 && this.form.amount.length == 1) return false;
-            num = 0
+            this.form.amount += String(num)
+          }else if(x == 13){
+            this.form.amount = this.form.amount.substring(0, this.form.amount.length - 1)
+          }else if(x == 14){
+            this.submit()
           }
-          if(x == 10){
-            if (this.form.amount.indexOf('.') > -1 || this.form.amount=="") return false;
-            num = '.'
+        }else if(this.keyboardType == 2){
+          if(x == 12){
+            //显示
+            this.popupShow = false
+          }else if(x<12){
+            let num = x
+
+            if(this.form.phone.indexOf('.') > -1 &&(this.form.phone.length-this.form.phone.indexOf('.'))>2) return false;
+            if(x == 11) {
+              if (this.form.phone=="") return false;
+              num = 0
+            }
+            if(x == 10){
+              return
+              if (this.form.phone.indexOf('.') > -1 || this.form.phone=="") return false;
+              num = '.'
+            }
+            if(Number(Number(this.form.phone + String(num)))>=99999999999) return false
+            if (this.form.phone!="" && Number(this.form.phone)==0 && x!=10 && this.form.phone.length == 1) return false;
+            this.form.phone += String(num)
+          }else if(x == 13){
+            this.form.phone = String(this.form.phone).substring(0, this.form.phone.length - 1)
+          }else if(x == 14){
+            this.submit()
           }
-          console.log()
-          if(Number(Number(this.form.amount + String(num)))>=1000000) return false
-          if (this.form.amount!="" && Number(this.form.amount)==0 && x!=10 && this.form.amount.length == 1) return false;
-          this.form.amount += String(num)
-        }else if(x == 13){
-          this.form.amount = this.form.amount.substring(0, this.form.amount.length - 1)
-        }else if(x == 14){
-          this.submit()
         }
+
+
+
+
       },
       submit(){
 
@@ -267,7 +331,7 @@
 
         let brandId = this.form.brandId
         let appType = this.environment
-        let phone = this.form.phone
+        let phone = String(this.form.phone)
         if(amount<10){
           this.$vux.toast.show({
             text: '最低付款不得小于0.1元',
@@ -309,6 +373,25 @@
     .weui-cells{
       margin-top: 0;
     }
+    .diy_input{
+      background-color: #F4F4F4;
+      height: 5.5rem;
+      font-size: 2.625rem;
+      color: #323232;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 2px;
+      .input_num{
+        display: flex;
+        align-items: baseline;
+        justify-content: center;
+      }
+      .amountIcon{
+        font-size: 1.875rem;
+        margin-right: 0.875rem;
+      }
+    }
     .pay_content {
       .p_head {
         padding: 3rem 2rem;
@@ -335,25 +418,7 @@
       .payAmount{
         margin: 2.5rem 0;
         padding: 0 1.875rem;
-        .diy_input{
-          background-color: #F4F4F4;
-          height: 5.5rem;
-          font-size: 2.625rem;
-          color: #323232;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          border-radius: 2px;
-          .input_num{
-            display: flex;
-            align-items: baseline;
-            justify-content: center;
-          }
-          .amountIcon{
-            font-size: 1.875rem;
-            margin-right: 0.875rem;
-          }
-        }
+
       }
       .payType{
         padding: 0 6.25rem;
@@ -462,12 +527,12 @@
           .right{
             width: 11.625rem;
             >div{
-              height: 50%;
               display: flex;
               align-items: center;
               justify-content: center;
             }
             .delete{
+              height: 25%;
               .icon_cancel{
                 width: 3.375rem;
                 height: 2.5rem;
@@ -476,6 +541,7 @@
               }
             }
             .payEdit{
+              height:75%;
               background-color: #F89F04;
               font-size: 2.625rem;
               color: #ffffff;

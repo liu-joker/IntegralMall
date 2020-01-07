@@ -242,10 +242,14 @@
         align-items: center;
         justify-content: space-between;
         flex-wrap: wrap;
+        .item:nth-child(2n) {
+          margin-right: 0;
+        }
         .item {
-          width: 20rem;
+          width:  calc((100% - (1.25rem)) / 2);
           background-color: #fff;
           margin-bottom: 1rem;
+          margin-right: 1rem;
           .img {
             width: 100%;
             height: 18.25rem;
