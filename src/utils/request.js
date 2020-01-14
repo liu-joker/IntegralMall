@@ -58,15 +58,14 @@ service.interceptors.response.use(
             content: message,
           })
           return Promise.reject(res)
-        }else if(res.code=='405') {
-          message="请先实名！"
-        /*  AlertModule.show({
+        }else {
+          message=res.message
+          AlertModule.show({
             title: '提示',
             content: message,
             onHide(){
-            //  window.app.closePage();
             }
-          })*/
+          })
           return
         }
 
@@ -95,16 +94,8 @@ service.interceptors.response.use(
           error.message="登录失效，请重新登录！"
         }
 
-      }else if(errordata.code=='405') {
-        error.message="请先实名！"
-        AlertModule.show({
-          title: '提示',
-          content: error.message,
-          onHide(){
-            window.app.closePage();
-          }
-        })
-        return
+      }else {
+        error.message=errordata.message
       }
 
     }

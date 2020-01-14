@@ -159,8 +159,9 @@
         }
       },
       selectType(x) {
-        console.log(x)
+//        console.log(x)
 //        this.$router.push({path: '/commodityTypeList?id=' + x.id})
+        this.$store.dispatch('SetSelectItem',x.id)
         this.$router.push({path: '/commodityTypeList?id=' + x.id})
 
       },

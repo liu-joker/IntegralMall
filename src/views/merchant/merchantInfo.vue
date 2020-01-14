@@ -197,8 +197,9 @@
           height: 1.5rem;
           background: url('~@/assets/images/start.png') no-repeat;
           background-size: 8.375rem 22.5rem;
-          margin-right: 0.5rem;
           background-position: 0px -0.5rem;
+          margin-right: 0.5rem;
+
         }
       }
     }

@@ -22,7 +22,7 @@
     data() {
       return {
         bodyHeight: '',
-        cachedViews: ['index']
+        cachedViews: ['index','commodityTypeList']
       }
     }
   }

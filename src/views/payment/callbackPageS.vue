@@ -47,7 +47,7 @@
       }
     },
     created() {
-      this.amount = formatMoney(this.$route.query.amount)
+      this.amount = this.$route.query.amount
       this.point = this.$route.query.point
       this.isUser = this.$route.query.isUser || 0
       this.preUser = this.$route.query.preUser

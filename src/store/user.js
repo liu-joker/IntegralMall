@@ -4,11 +4,15 @@ const user = {
     userInfo: {
       grade:0
     },
+    selectItem:'all'
   },
   mutations: {
     SET_USERINFO: (state, userInfo) => {
       state.userInfo = userInfo
-    }
+    },
+    SET_SELECTITEM: (state, data) => {
+      state.selectItem = data
+    },
   },
   actions: {
     getUserInfo({commit}) {
@@ -22,6 +26,9 @@ const user = {
           reject(error)
         })
       })
+    },
+    SetSelectItem({commit}, data) {
+      commit('SET_SELECTITEM', data)
     },
   }
 }

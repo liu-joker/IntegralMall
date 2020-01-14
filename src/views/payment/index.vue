@@ -177,7 +177,7 @@
       //1微信2手机app3其他
       if(this.environment == 3){
         this.$router.push({
-          path:'/errorPayPage?agentId='+this.form.userId
+          path:'/errorPayPage?userId='+this.form.userId
         })
 
         console.log('其他浏览器')

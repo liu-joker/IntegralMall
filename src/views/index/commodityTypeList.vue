@@ -83,15 +83,17 @@
       }
     },
     computed: {},
-    created() {
-      console.log(this.selectValue,'selectValue')
-      this.selectValue = this.selectValue == ""?this.$route.query.id:this.selectValue
-      // this.$route.query.id
-      // this.$route.params.id
 
+    activated(){
+      this.selectValue = this.selectValue == ""?this.$store.getters.selectItem:this.selectValue
       this.getBannerList()
       this.getData()
+      console.log(this.$store.getters.selectItem,'111')
     },
+    deactivated(){
+      this.selectValue = ""
+    },
+
     methods: {
       GoodsDetails(x) {
         this.$router.push({path: '/GoodsDetails/' + x.id})
@@ -109,11 +111,14 @@
       selectData(i) {
         this.firstGet=true
         this.pageSize = 10
+
         if(i != 'all'){
           this.selectValue = i.id
         }else {
           this.selectValue = 'all'
         }
+        this.$store.dispatch('SetSelectItem',this.selectValue)
+
         this.getData()
       },
       getData(type) {
