@@ -8,8 +8,7 @@
         <img :src="icon_my" alt="" class="icon_my">
       </div>
     </div>
-    <scroller lock-x @on-scroll-bottom="onScrollBottom" ref="scrollerBottom2" :scroll-bottom-offst="300"
-              v-if="!noDataShow">
+    <!--<scroller lock-x @on-scroll-bottom="onScrollBottom" ref="scrollerBottom2" :scroll-bottom-offst="300" v-if="!noDataShow">-->
       <div>
         <div class="I_banner">
           <swiper auto dots-position="center" loop style="width: 100%;margin:0 auto;" :aspect-ratio="40.63/46.88"
@@ -72,7 +71,7 @@
         </div>
       </div>
 
-    </scroller>
+    <!--</scroller>-->
     <div class="noItem">
       <div class="noData" v-if="shopList.length == 0">暂无商品</div>
     </div>
@@ -119,7 +118,7 @@
         selectList2: [],
         shopList: [],
         pageNum: 1,
-        pageSize: 10,
+        pageSize: 20,
         moreItem: false,
         noDataShow: false,
         onFetching: false,
@@ -174,7 +173,7 @@
         })
 
         let itemType = ""
-        let third = 0
+        let third = "" //0
         let pageNum = 1
         let pageSize = this.pageSize
         this.$axiosApi.itemList(itemType, third, pageNum, pageSize).then(res => {
