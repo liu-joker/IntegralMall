@@ -11,10 +11,9 @@
     <div class="center">
       <div class="item">
         <p>实付：￥{{ amount | formatMoney}}</p>
-        <p v-if="isUser == 1">获得U米：<span class="yellow">{{point}}</span></p>
-        <div class="noPhone" v-else>
-          <p>未填写或非小米粒账号，无法获取U米</p>
-          <p class="download">下载小米粒，注册消费返还U米，<span @click="download">前往下载>></span></p>
+        <p>获得U米：<span class="yellow">{{point}}</span></p>
+        <div class="noPhone">
+          <p class="download">U米可前往小米粒免费兑换商品，<span @click="download">前往下载>></span></p>
         </div>
       </div>
     </div>
@@ -98,7 +97,7 @@
         .noPhone{
           font-size: 2.125rem;
           color: #323232;
-          margin-top: 4.75rem;
+          margin-top: 2.75rem;
           p{
             margin-bottom: 1.75rem;
           }
@@ -106,6 +105,7 @@
             font-size: 1.5rem;
             span{
               color: #F89F04;
+              text-decoration:underline;
             }
           }
         }

@@ -146,6 +146,9 @@
 
 
     },
+    activated(){
+      this.$store.dispatch('getUserInfo')
+    },
     methods: {
       onScrollBottom() {
         if (this.onFetching) {

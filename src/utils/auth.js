@@ -49,10 +49,8 @@ class cookies {
     return Cookies.get(wxUserPhone)
   }
 
-  static setwxUserPhone(phone,Time) {
-    return Cookies.set(wxUserPhone, phone,{
-      expires: Time
-    })
+  static setwxUserPhone(phone) {
+    return Cookies.set(wxUserPhone, phone)
   }
 
 }
