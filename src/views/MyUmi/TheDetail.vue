@@ -42,7 +42,7 @@
     },
     data() {
       return {
-        time: (new Date().getFullYear()) + '-' + (new Date().getMonth() + 1),
+        time: this.getTime(),
         pageNum: 1,
         pageSize: 10,
         onFetching : false,
@@ -62,6 +62,13 @@
       this.getData()
     },
     methods: {
+      getTime(){
+        let m = (new Date().getMonth() + 1)
+        if(m<10){
+          m = '0'+m
+        }
+       return (new Date().getFullYear()) + '-' + m
+      },
       onScrollBottom(){
         if (this.onFetching){
 

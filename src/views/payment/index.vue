@@ -12,7 +12,7 @@
 
       <divider class="dividerText">支付金额</divider>
       <div class="payAmount">
-        <div class="diy_input" @click="diyInput">
+        <div class="diy_input diy_input_b" @click="diyInput">
           <div class="input_num">
             <span class="amountIcon">¥</span>
             {{form.amount}}
@@ -45,19 +45,29 @@
       </div>
 
       <div class="formInfo" v-else-if="environment == 1">
-        <divider class="dividerText">返还U米账号</divider>
+        <divider class="dividerText">手机号</divider>
 
         <group class="form_item">
-          <!-- <x-input placeholder="请输入手机号" class="item" type="tel" is-type="china-mobile" v-model="form.phone"
-                    :is-type="phoneType" :max="11"
-                    ref="phone" text-align="center" :readonly="readonly" :disabled="readonly" :show-clear="false" @on-focus="stopKeyborad">
-           </x-input>-->
-          <div class="diy_input" @click="stopKeyborad">
-            <div class="input_num">
+          <div class="diy_input diy_input_b diy_input_phone" @click="stopKeyborad">
+            <div class="icon">
+              <img :src="icon_phone" alt="">
+            </div>
+            <div v-if="form.phone == ''" class="placeholder">
+              请输入手机号
+            </div>
+            <div class="input_num phone_num" v-else>
               {{form.phone}}
             </div>
           </div>
-          <p class="pInfo">温馨提示：未填写返还U米手机号将无法获得U米。</p>
+          <div class="info_p">
+            <div class="left">
+              温馨提示：
+            </div>
+            <div class="right">
+              <p class="pInfo">未填写返还U米手机号将无法获得U米。</p>
+              <p class="pInfo">填写的手机号码需为小米粒账号，否则无法获得U米。</p>
+            </div>
+          </div>
         </group>
       </div>
 
@@ -110,6 +120,7 @@
   import icon_choose_empty from "@/assets/images/icon_choose-empty.png"
   import icon_pack_up from "@/assets/images/icon_pack_up.png"
   import icon_cancel2 from "@/assets/images/icon_cancel2.png"
+  import icon_phone from "@/assets/images/icon_phone@2x.png"
   import {formatMoney, imgUrl, environment} from "@/filters"
 
   import {Popup, Divider, Group, XInput,} from 'vux'
@@ -143,6 +154,7 @@
         icon_choose_empty: icon_choose_empty,
         icon_pack_up: icon_pack_up,
         icon_cancel2: icon_cancel2,
+        icon_phone: icon_phone,
         shopName: "",
         popupShow: true,
         readonly: true,
@@ -172,8 +184,8 @@
 
       this.form.phone = this.$Cookie.getwxUserPhone() || ""
 
-     this.environment = environment()
-     // this.environment = 1
+      this.environment = environment()
+//      this.environment = 1
       //1微信2手机app3其他
       if (this.environment == 3) {
         this.$router.push({
@@ -303,7 +315,7 @@
       },
       submit() {
 
-       // this.$Cookie.setwxUserPhone(this.from.phone,100000000)
+        // this.$Cookie.setwxUserPhone(this.from.phone,100000000)
 
         let agentId = this.form.agentId
         let amount = Number(this.form.amount) * 100
@@ -386,13 +398,12 @@
     }
     .diy_input {
       background-color: #F4F4F4;
-      height: 5.5rem;
+      height: 5rem;
       font-size: 2.625rem;
       color: #323232;
       display: flex;
       align-items: center;
       justify-content: center;
-      border-radius: 2px;
       .input_num {
         display: flex;
         align-items: baseline;
@@ -402,6 +413,24 @@
         font-size: 1.875rem;
         margin-right: 0.875rem;
       }
+    }
+    .diy_input_phone {
+      position: relative;
+      .icon {
+        position: absolute;
+        left: 2.7rem;
+        width: 3.375rem;
+        height: 3.375rem;
+      }
+      .placeholder {
+        color: #BDBDBD;
+        font-size: 1.875rem;
+      }
+    }
+    .diy_input_b {
+      border-radius: 2.75rem;
+      border: 4px solid #F0F0F0;
+
     }
     .pay_content {
       .p_head {
@@ -473,11 +502,18 @@
             border-radius: 2px;
           }
         }
-        .pInfo {
+        .info_p {
+          display: flex;
+          align-items: baseline;
+          justify-content: flex-start;
           font-size: 1.375rem;
           color: #646464;
           margin-top: 1rem;
+          .pInfo {
+            margin-top: 0.5rem;
+          }
         }
+
       }
       .popupContent {
         /*background-color: #ffffff;*/
