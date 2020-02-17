@@ -14,7 +14,8 @@
         <tab :line-width="1" custom-bar-width="3.75rem" bar-active-color="#4385FF" active-color="#323232"
              default-color="#646464" class="stickyTab">
           <tab-item @click.native="returnTop(0)" :selected="tabActive==0">概况</tab-item>
-          <!--<tab-item @click.native="returnTop(1)" :selected="tabActive==1">相册</tab-item>-->
+          <tab-item @click.native="returnTop(1)" :selected="tabActive==1">相册</tab-item>
+          <tab-item @click.native="returnTop(2)" :selected="tabActive==2">评论</tab-item>
         </tab>
       </div>
       <div class="swiperTab">
@@ -79,10 +80,41 @@
             </div>
           </swiper-item>
           <swiper-item class="swiperItem">
-            <div class="tab-swiper" v-show="tabActive != 0">
+            <div class="tab-swiper" v-show="tabActive == 1">
               <div class="imgList">
                 <div class="item" v-for="(x,index) in imgList" :key="index">
                   <img :src="x" alt="">
+                </div>
+              </div>
+            </div>
+          </swiper-item>
+          <swiper-item class="swiperItem">
+            <div class="tab-swiper" v-show="tabActive == 2">
+              <div class="commentList">
+                <div class="item" v-for="(x,index) in 5" :key="index">
+                  <div class="c_i_content">
+                    <div class="left">
+                      <img :src="banner1" alt="">
+                    </div>
+                    <div class="right">
+                      <div class="r_head">
+                        <div class="r_top">
+                          <span>177****0755</span>
+                          <span class="time">2020.02.12</span>
+                        </div>
+                        <div class="r_bottom">
+                          <div class="userEvaluate">
+                            <span>评分</span>
+                            <span class="start" :style="UserStartStyle"></span>
+                            <span>¥265.21/人</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="i_foot">
+                        服务不好，价格贵，随意抬高价格！！！
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -101,6 +133,7 @@
 <script>
   import pic_sjgk from "@/assets/images/pic_sjgk.png"
   import icon_dingnwei from "@/assets/images/icon_dingnwei.png"
+  import banner1 from "@/assets/images/banner1.png"
   import icon_daohang from "@/assets/images/icon_daohang.png"
   import icon_phone from "@/assets/images/icon_phone.png"
   import icon_open from "@/assets/images/icon_open.png"
@@ -129,7 +162,11 @@
         icon_daohang: icon_daohang,
         icon_phone: icon_phone,
         icon_open: icon_open,
+        banner1: banner1,
         startStyle: {
+          'background-position': '0px -18rem' //0.5start = -2.5rem
+        },
+        UserStartStyle: {
           'background-position': '0px -18rem' //0.5start = -2.5rem
         },
         tabActive: 0,
@@ -143,7 +180,7 @@
     created() {
       this.agentId = this.$route.query.agentId
       this.brandId = this.$route.query.brandId
-      this.getData()
+      // this.getData()
     },
     methods: {
       ToPayPage() {
@@ -176,6 +213,15 @@
   .merchantInfo {
     min-height: 100vh;
     background-color: #f4f4f4;
+    .start {
+      display: inline-block;
+      width: 8.375rem;
+      height: 1.5rem;
+      background: url('~@/assets/images/start.png') no-repeat;
+      background-size: 8.375rem 22.5rem;
+      background-position: 0px -0.5rem;
+      margin-right: 0.5rem;
+    }
     .headTitle {
       padding: 1.875rem 1.875rem 0;
       background-color: #fff;
@@ -191,16 +237,7 @@
         display: flex;
         align-items: baseline;
         justify-content: flex-start;
-        .start {
-          display: inline-block;
-          width: 8.375rem;
-          height: 1.5rem;
-          background: url('~@/assets/images/start.png') no-repeat;
-          background-size: 8.375rem 22.5rem;
-          background-position: 0px -0.5rem;
-          margin-right: 0.5rem;
 
-        }
       }
     }
     .m_content {
@@ -396,6 +433,63 @@
                 width: 20rem;
                 height: 20rem;
                 border-radius: 4px;
+              }
+            }
+          }
+          .commentList {
+            background-color: #fff;
+            .item {
+              padding: 1.5rem 1.875rem 0;
+              &:last-child .c_i_content .right{
+                border: none;
+              }
+              .c_i_content{
+                display: flex;
+                align-items: flex-start;
+                justify-content: space-between;
+                .left{
+                  margin-right: 1.5rem;
+                  img{
+                    width: 4.5rem;
+                    height: 4.5rem;
+                    border-radius: 2.25rem;
+                  }
+                }
+
+                .right{
+                  flex: 1;
+                  border-bottom: 1px solid #EAEAEA;
+
+                  .r_head{
+                    .r_top{
+                      font-size: 2rem;
+                      color: #323232;
+                      display: flex;
+                      align-items: baseline;
+                      justify-content: space-between;
+                      .time{
+                        font-size: 1.5rem;
+                        color: #646464;
+                      }
+                    }
+                    .r_bottom{
+                      font-size: 1.5rem;
+                      color: #646464;
+                      display: flex;
+                      align-items: center;
+                      justify-content: flex-start;
+                      .start{
+                        margin-right: 1.5rem;
+                      }
+                    }
+                  }
+                  .i_foot{
+                    padding: 2.5rem 0 1.875rem;
+                    font-size: 1.75rem;
+                    color: #323232;
+                  }
+                }
+
               }
             }
           }
