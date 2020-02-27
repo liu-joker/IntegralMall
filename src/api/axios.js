@@ -248,6 +248,18 @@ class loginApi {
     })
   };
 
+  //商户评论列表
+  static getAgentCommont(agentId,orderBy,pageNum,pageSize) {
+    return request({
+      url: '/getAgentCommont?agentId='+agentId+'&orderBy='+orderBy+'&pageNum='+pageNum+'&pageSize='+pageSize,
+      method: 'get',
+      data: {
+
+      },
+    })
+  };
+
+
 }
 
 

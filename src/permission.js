@@ -14,11 +14,12 @@ router.beforeEach((to, from, next) => {
   try {
     token = window.app.getToken() || ""
   } catch (e){
-    token = ""
+    token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJITEpDIiwiZXhwIjoxNTgyNzY3NzI1LCJ1c2VyIjoiMmM1ZTk1NTczNzQ3NDljYTkwNjdlNzVkYWJmYmI3MDYifQ.gSNRSNGPoJsbns-cOxPc1lFRGI_M7Se1_D3fp5BC_3VD6TvOqn0O6CQ3nwS8YarWEzgoS0gI9EpMA9a_YywiCg"
+    token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJITEpDIiwiZXhwIjoxNTgzMjA0OTkzLCJ1c2VyIjoiNjAyYTY5OTQwMWNmNDQ4MWE3NGI3ZDNlZmM2OGQzYWQifQ.EP--K49TXsbP_PHlEyk_bzehyHN9q1iuvIli1hGjjsqRLNQLZeLis48wXQIoYNKREqTXAUagT3UpHffKedADrw"
   }
   console.log(whiteList.indexOf(to.path),1)
   cookies.setToken(token)
-  if(token !="" && !store.getters.userInfo.phone && whiteList.indexOf(to.name)==-1){
+  if(token !="" && !store.getters.userInfo.phone && whiteList.indexOf(to.name)==-1 && false){
     NProgress.start()
     store.dispatch('getUserInfo').then(response => {
       console.log(response)

@@ -25,9 +25,21 @@ Vue.use(VueScroller);
 Vue.config.productionTip = false
 Vue.use(Vuex)
 
-import  { AlertPlugin } from 'vux'
+import { AlertPlugin } from 'vux'
 Vue.use(AlertPlugin)
 
+import waterfall from 'vue-waterfall2'
+Vue.use(waterfall)
+
+import loading from '@/assets/loading3.gif'
+import failToLoad from '@/assets/failToLoad.png'
+
+import VueLazyload from 'vue-lazyload'
+// 使用VueLazyload并传入相应的配置
+Vue.use(VueLazyload, {
+  error: failToLoad,
+  // loading: loading,// 懒加载使用的图片
+})
 
 require('es6-promise').polyfill()
 import axiosApi from '@/api/axios'
@@ -50,6 +62,8 @@ import * as filters from './filters'
 Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key])
 })
+
+
 import VueWechatTitle from 'vue-wechat-title';
 Vue.use(VueWechatTitle)
 /** i18n **/

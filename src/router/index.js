@@ -9,9 +9,17 @@ const routerList = [
   {
     path: '/',
     name: 'index',
-    component: () => import('@/views/index'),
+    component: () => import('@/views/index_2'),
     meta: {
       title: '商城',
+    }
+  },
+  {
+    path: '/commodityTypeList',
+    name: 'commodityTypeList',
+    component: () => import('@/views/index_2/commodityTypeList'),
+    meta: {
+      title: '小米粒商城'
     }
   },
   {
@@ -20,14 +28,6 @@ const routerList = [
     component: () => import('@/views/GoodsDetails'),
     meta: {
       title: '商品详情'
-    }
-  },
-  {
-    path: '/commodityTypeList',
-    name: 'commodityTypeList',
-    component: () => import('@/views/index/commodityTypeList'),
-    meta: {
-      title: '小米粒商城'
     }
   },
   {

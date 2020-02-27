@@ -20,7 +20,7 @@
       </div>
       <div class="swiperTab">
         <swiper v-model="tabActive" :show-dots="false" :threshold="10000" :min-moving-distance="10000">
-          <swiper-item class="swiperItem">
+          <swiper-item class="swiperItem swiper_merchantInfo">
             <div class="tab-swiper tab-swiper1" v-show="tabActive == 0">
               <div class="bannerImg">
                 <img :src="info.frontPhoto | imgUrl" alt="">
@@ -83,39 +83,49 @@
             <div class="tab-swiper" v-show="tabActive == 1">
               <div class="imgList">
                 <div class="item" v-for="(x,index) in imgList" :key="index">
-                  <img :src="x" alt="">
+                  <img v-lazy="x" alt="">
                 </div>
               </div>
             </div>
           </swiper-item>
           <swiper-item class="swiperItem">
-            <div class="tab-swiper" v-show="tabActive == 2">
-              <div class="commentList">
-                <div class="item" v-for="(x,index) in 5" :key="index">
-                  <div class="c_i_content">
-                    <div class="left">
-                      <img :src="banner1" alt="">
-                    </div>
-                    <div class="right">
-                      <div class="r_head">
-                        <div class="r_top">
-                          <span>177****0755</span>
-                          <span class="time">2020.02.12</span>
-                        </div>
-                        <div class="r_bottom">
-                          <div class="userEvaluate">
-                            <span>评分</span>
-                            <span class="start" :style="UserStartStyle"></span>
-                            <span>¥265.21/人</span>
+            <div class="tab-swiper commentItem" v-show="tabActive == 2">
+              <scroller lock-x @on-scroll-bottom="onScrollBottom" ref="scrollerBottom2" :scroll-bottom-offst="300"
+                        v-if="!noDataShow" height="77.5vh">
+                <div class="commentList">
+                  <div class="itemC" :class="index == CommontList.length-1?'last-itemC':''"
+                       v-for="(x,index) in CommontList" :key="index">
+                    <div class="c_i_content">
+                      <div class="left">
+                        <img :src="x.img" alt="">
+                      </div>
+                      <div class="right">
+                        <div class="r_head">
+                          <div class="r_top">
+                            <span>{{x.userPhone}}</span>
+                            <span class="time">{{x.createTime}}</span>
+                          </div>
+                          <div class="r_bottom">
+                            <div class="userEvaluate">
+                              <span>评分</span>
+                              <span class="start" :style="x.UserStartStyle"></span>
+                              <span>¥{{x.amount2}}/人</span>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                      <div class="i_foot">
-                        服务不好，价格贵，随意抬高价格！！！
+                        <div class="i_foot">
+                          {{x.comment}}
+                        </div>
                       </div>
                     </div>
                   </div>
+                  <load-more tip="正在加载..." class="loadingMore" v-if="onFetching"></load-more>
+                  <divider v-if="CommontInfo && CommontList.length>0">到底了</divider>
                 </div>
+              </scroller>
+
+              <div class="noItem">
+                <div class="noData" v-if="CommontList.length == 0">暂无评论</div>
               </div>
             </div>
           </swiper-item>
@@ -138,7 +148,10 @@
   import icon_phone from "@/assets/images/icon_phone.png"
   import icon_open from "@/assets/images/icon_open.png"
   import pic_sjxc from "@/assets/images/pic_sjxc.png"
+  import {imgUrl, formatMoney} from "@/filters"
+
   import {
+    Scroller, LoadMore, Divider,
     Sticky,
     Tab,
     TabItem,
@@ -149,6 +162,7 @@
   export default {
     name: 'merchantInfo',
     components: {
+      Scroller, LoadMore, Divider,
       Sticky,
       Tab,
       TabItem,
@@ -174,13 +188,20 @@
         info: '',
         brandId: '',
         agentId: '',
+        pageNum: 1,
+        pageSize: 10,
+        CommontList: [],
+        CommontInfo: false,
+        onFetching: false,
+        noDataShow: false,
       }
     },
 
     created() {
       this.agentId = this.$route.query.agentId
-      this.brandId = this.$route.query.brandId
-      // this.getData()
+      //  this.brandId = this.$route.query.brandId
+      this.getData()
+      this.getCommontInfo()
     },
     methods: {
       ToPayPage() {
@@ -193,6 +214,43 @@
         this.$axiosApi.agentDetail(agentId, lng, lat).then(res => {
           if (res.code == 200) {
             this.info = res.data
+            this.imgList = eval(res.data.photo).map(v => {
+              return imgUrl(v)
+            })
+            console.log(this.imgList)
+          }
+        })
+      },
+      onScrollBottom() {
+        if (this.onFetching) {
+        } else {
+          this.onFetching = true;
+          if (this.CommontInfo) return this.onFetching = false;
+          this.pageSize += 10;
+          this.getCommontInfo()
+
+        }
+      },
+      getCommontInfo() {
+        //获取商户评论列表
+
+        let orderBy = 1
+        this.$axiosApi.getAgentCommont(this.agentId, orderBy, this.pageNum, this.pageSize).then(res => {
+          if (res.code == 200) {
+
+            if (res.data.length == this.CommontList.length) {
+              this.CommontInfo = true
+            }
+            this.CommontList = res.data.map(v => {
+              v.img = imgUrl(v.userPhoto)
+              v.amount2 = formatMoney(v.amount)
+              let s = (v.score - 1) * 5 + 0.5
+              v.UserStartStyle = {
+                'background-position': '0px -' + s + 'rem' //0.5start = -2.5rem
+              }
+              return v
+            })
+            this.onFetching = false
           }
         })
       },
@@ -212,7 +270,7 @@
 
   .merchantInfo {
     min-height: 100vh;
-    background-color: #f4f4f4;
+    background-color: #ffffff;
     .start {
       display: inline-block;
       width: 8.375rem;
@@ -296,8 +354,14 @@
           .swiperItem {
             width: 100%;
             position: relative;
+            &.swiper_merchantInfo{
+              background-color: #f4f4f4;
+            }
+            .commentItem {
+              max-height: 100vh;
+            }
             .tab-swiper1 {
-              padding: 0 0 6.75rem;
+              padding: 0 0 1.75rem;
             }
           }
           .bannerImg {
@@ -432,58 +496,62 @@
               img {
                 width: 20rem;
                 height: 20rem;
-                border-radius: 4px;
+                border-radius: 10px;
               }
             }
           }
           .commentList {
             background-color: #fff;
-            .item {
+            .itemC {
               padding: 1.5rem 1.875rem 0;
-              &:last-child .c_i_content .right{
-                border: none;
+              &.last-itemC {
+                .c_i_content {
+                  .right {
+                    border: none;
+                  }
+                }
               }
-              .c_i_content{
+              .c_i_content {
                 display: flex;
                 align-items: flex-start;
                 justify-content: space-between;
-                .left{
+                .left {
                   margin-right: 1.5rem;
-                  img{
+                  img {
                     width: 4.5rem;
                     height: 4.5rem;
                     border-radius: 2.25rem;
                   }
                 }
 
-                .right{
+                .right {
                   flex: 1;
                   border-bottom: 1px solid #EAEAEA;
 
-                  .r_head{
-                    .r_top{
+                  .r_head {
+                    .r_top {
                       font-size: 2rem;
                       color: #323232;
                       display: flex;
                       align-items: baseline;
                       justify-content: space-between;
-                      .time{
+                      .time {
                         font-size: 1.5rem;
                         color: #646464;
                       }
                     }
-                    .r_bottom{
+                    .r_bottom {
                       font-size: 1.5rem;
                       color: #646464;
                       display: flex;
                       align-items: center;
                       justify-content: flex-start;
-                      .start{
+                      .start {
                         margin-right: 1.5rem;
                       }
                     }
                   }
-                  .i_foot{
+                  .i_foot {
                     padding: 2.5rem 0 1.875rem;
                     font-size: 1.75rem;
                     color: #323232;
@@ -514,7 +582,18 @@
           background-color: #d08504;
         }
       }
+      .noItem {
+        .noData {
+          width: 100%;
+          padding: 9.5rem 0;
+          text-align: center;
+          font-size: 2rem;
+          color: #868686;
+          background-color: #f4f4f4;
+        }
+      }
     }
+
   }
 
 </style>
