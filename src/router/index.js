@@ -23,6 +23,14 @@ const routerList = [
     }
   },
   {
+    path: '/grabble',
+    name: 'grabble',
+    component: () => import('@/views/index_2/grabble'),
+    meta: {
+      title: '小米粒商城'
+    }
+  },
+  {
     path: '/GoodsDetails/:id',
     name: 'GoodsDetails',
     component: () => import('@/views/GoodsDetails'),

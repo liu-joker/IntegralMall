@@ -7,6 +7,7 @@ const StatisticsPromotion = 'statisticsPromotion'
 const TokenKey = 'User-Token'
 const UserInfo = 'User-Info'
 const wxUserPhone = 'User-Phone'
+const searchRecord = 'searchRecord'
 
 class cookies {
 
@@ -51,6 +52,18 @@ class cookies {
 
   static setwxUserPhone(phone) {
     return Cookies.set(wxUserPhone, phone)
+  }
+
+  static getSearchRecord() {
+    return Cookies.get(searchRecord)
+  }
+
+  static setSearchRecord(x) {
+    return Cookies.set(searchRecord, x)
+  }
+
+  static removeSearchRecord() {
+    return Cookies.remove(searchRecord)
   }
 
 }

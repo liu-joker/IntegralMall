@@ -5,11 +5,11 @@
     <div class="header">
       <div class="grabble" :style="headBgc" ref="grabble">
         <div class="left">
-          <x-input placeholder="搜索" class="grabble_inp" type="text" :max="20">
+          <x-input placeholder="搜索" class="grabble_inp" type="text" :max="20" @on-focus="grabble_fun">
             <svg-icon slot="label" class="form_icon" icon-class="grabble"></svg-icon>
           </x-input>
         </div>
-        <div class="right">
+        <div class="right"  @click="toMy">
           <img :src="icon_my" alt="" class="icon_my">
         </div>
       </div>
@@ -30,27 +30,26 @@
     </div>
     <div class="container">
       <div class="classification">
-        <div class="item" v-for="(x,index) in 4" :class="yellowClass(index)">
+        <div class="item" v-for="(x,index) in selectList2" :class="yellowClass(index)" @click="selectData(x)">
           <div class="item_head">
-            <div class="title">精选厨房</div>
-            <div class="title_info">美味来袭 精选厨房</div>
+            <div class="title">{{x.title}}</div>
+            <div class="title_info">{{x.info}}</div>
           </div>
           <div class="img_2">
-            <img src="http://img.cdn.hljcxiaoxiong.com/15748392698131127.png" alt="">
-            <img src="http://img.cdn.hljcxiaoxiong.com/1582585246000126223.png" alt="">
+            <img v-for="(y,index) in x.photoList" :src="y" alt="">
           </div>
         </div>
       </div>
 
       <div class="shopContent" ref="shopContent">
         <div class="select_head  fadeIn animated" ref="select_head" :style="select_headStyle">
-          <scroller :lock-y="true" :scrollbar-x='false'>
+          <scroller :lock-y="true" :scrollbar-x='false' ref="scroller">
             <div class="box1" :style="box1Style">
               <div class="box1-list" ref="box1">
                 <div class="box1-item" :class="i.id == selectValue?'active':''" v-for="(i,index) in selectList"
                      :key="index"
                      @click="selectData(i)">
-                  <div class="s_item_top">{{i.title}}</div>
+                  <div class="s_item_top">{{i.typeName}}</div>
                   <div class="s_item_bottom" :style="item_bottom">
                     <div class="text">
                       {{i.info}}
@@ -64,18 +63,18 @@
         </div>
 
         <div class="commodity_content">
-          <div class="list">
+          <div class="list fadeIn animated">
             <waterfall :col='waterfallData.col' :width="itemWidth" :gutterWidth="gutterWidth" :data="shopList"
                        @loadmore="loadmore">
               <template>
-                <div class="item fadeIn animated" v-for="(x,index) in shopList" :key="index">
+                <div class="item fadeIn animated" v-for="(x,index) in shopList" :key="index"  @click="GoodsDetails(x)">
                   <div class="img">
                     <img v-lazy="x.imgUrl" alt="">
                   </div>
                   <div class="text">
                     <div class="name">{{x.name}}</div>
                     <div class="foot">
-                      <div class="left">2000U米</div>
+                      <div class="left">{{x.coin}}U米</div>
                       <div class="right">
                         <img :src="icon_browse" alt="" class="eye">
                         {{x.browse}}
@@ -90,7 +89,7 @@
         </div>
       </div>
     </div>
-
+    <back-to-top></back-to-top>
   </div>
 
 </template>
@@ -99,14 +98,18 @@
   import icon_my from "@/assets/images/icon_my.png"
   import pic_backgroud from "@/assets/images/pic_backgroud.png"
   import banner1 from "@/assets/images/banner1.png"
-  import pic_sort1 from "@/assets/images/pic_sort1.png"
-  import pic_sort2 from "@/assets/images/pic_sort2.png"
-  import pic_sort3 from "@/assets/images/pic_sort3.png"
-  import pic_sort4 from "@/assets/images/pic_sort4.png"
-  import pic_sort5 from "@/assets/images/pic_sort5.png"
+  import pic_sort1 from "@/assets/images/-s-pic_electronics1@2x.png"
+  import pic_sort2 from "@/assets/images/-s-pic_electronics2@2x.png"
+  import pic_sort3 from "@/assets/images/-s-pic_kitchen1@2x.png"
+  import pic_sort4 from "@/assets/images/-s-pic_kitchen2@2x.png"
+  import pic_sort5 from "@/assets/images/-s-pic_motion1@2x.png"
+  import pic_sort6 from "@/assets/images/-s-pic_motion2@2x.png"
+  import pic_sort7 from "@/assets/images/-s-pic_travel1@2x.png"
+  import pic_sort8 from "@/assets/images/-s-pic_travel2@2x.png"
   import pic_commodity1 from "@/assets/images/pic_commodity1.png"
   import pic_commodity2 from "@/assets/images/pic_commodity2.png"
   import icon_browse from "@/assets/images/icon_browse.png"
+  import BackToTop from "@/components/BackToTop"
   import {Swiper, SwiperItem, Scroller, LoadMore, Divider, XInput} from 'vux'
   import {imgUrl} from "@/filters";
 
@@ -119,49 +122,62 @@
       LoadMore,
       Divider,
       XInput,
+      BackToTop
     },
     data() {
       return {
         icon_my: icon_my,
         pic_backgroud: pic_backgroud,
         icon_browse: icon_browse,
-        bannerList: [{photo: '1582585246000126223.png'}, {photo: '1582585246000126223.png'}, {photo: '1582585246000126223.png'},],
+        bannerList: [],
         scrollTop: 0,
-        swiperIndex:0,
+        swiperIndex: 0,
         indicatorList: '',
-        selectValue: '0',
-        selectList: [
-          {id: 0, title: '精选', info: '为你推荐'},
-          {id: 1, title: '精选', info: '为你推荐'},
-          {id: 2, title: '精选', info: '为你推荐'},
-          {id: 3, title: '精选', info: '为你推荐'},
-          {id: 4, title: '精选', info: '为你推荐'},
-          {id: 5, title: '精选', info: '为你推荐'},
-          {id: 6, title: '精选', info: '为你推荐'},
-          {id: 7, title: '精选', info: '为你推荐'},
-        ],
+        selectValue: 0,
+        selectList: [],
+        selectList2: [{
+          id:18,
+          title: '精选厨房',
+          info: '美味来袭 精选厨房',
+          photoList: [
+            pic_sort3,
+            pic_sort4
+          ]
+        }, {
+          id:12,
+          title: '运动健康',
+          info: '年轻无极限 运动我精彩',
+          photoList: [
+            pic_sort5,
+            pic_sort6
+          ]
+        }, {
+          id:1,
+          title: '电子数码',
+          info: '工作学习两不误',
+          photoList: [
+            pic_sort1,
+            pic_sort2
+          ]
+        }, {
+          id:5,
+          title: '旅行意义',
+          info: '一场说走就走的旅行',
+          photoList: [
+            pic_sort7,
+            pic_sort8
+          ]
+        },],
         box1Style: '',
         select_headStyle: '',
         select_headTop: '',
         grabbleHeight: 0,
         active_item: '',
-        shopList: [
-          {imgUrl: '15748392698131127.png', name: '京惠思创 JH9097 旅行洗漱包透明洗澡化妆袋防水收...袋', browse: '13235'},
-          {imgUrl: '15748392698131127.png', name: '京惠思创 JH9097 旅行洗漱包透明洗澡化妆袋防水收...袋', browse: '13235'},
-          {imgUrl: '15748392698131127.png', name: '京惠思创 JH9097 旅行洗漱包透明洗澡化妆袋防水收...袋', browse: '13235'},
-          {imgUrl: '15748392698131127.png', name: '京惠思创 JH9097 旅行洗漱包透明洗澡化妆袋防水收...袋', browse: '13235'},
-          {imgUrl: '15748392698131127.png', name: '京惠思创 JH9097 旅行洗漱包透明洗澡化妆袋防水收...袋', browse: '13235'},
-          {imgUrl: '15748392698131127.png', name: '京惠思创 JH9097 旅行洗漱包透明洗澡化妆袋防水收...袋', browse: '13235'},
-          {imgUrl: '15748392698131127.png', name: '京惠思创 JH9097 旅行洗漱包透明洗澡化妆袋防水收...袋', browse: '13235'},
-          {imgUrl: '15748392698131127.png', name: '京惠思创 JH9097 旅行洗漱包透明洗澡化妆袋防水收...袋', browse: '13235'},
-          {imgUrl: '15748392698131127.png', name: '京惠思创 JH9097 旅行洗漱包透明洗澡化妆袋防水收...袋', browse: '13235'},
-          {imgUrl: '15748392698131127.png', name: '京惠思创 JH9097 旅行洗漱包透明洗澡化妆袋防水收...袋', browse: '13235'},
-          {imgUrl: '15748392698131127.png', name: '京惠思创 JH9097 旅行洗漱包透明洗澡化妆袋防水收...袋', browse: '13235'},
-          {imgUrl: '15748392698131127.png', name: '京惠思创 JH9097 旅行洗漱包透明洗澡化妆袋防水收...袋', browse: '13235'},
-          {imgUrl: '15748392698131127.png', name: '京惠思创 JH9097 旅行洗漱包透明洗澡化妆袋防水收...袋', browse: '13235'},
-        ],
+        shopList: [],
         pageNum: 1,
         pageSize: 10,
+        third: 0,
+        itemType: '',
         info: '',
         onFetching: false,
         noDataShow: false,
@@ -209,13 +225,13 @@
       gutterWidth: function () {
         return 0.024 * document.documentElement.clientWidth
       },
-      indicator_item:function () {
+      indicator_item: function () {
         let w = this.bannerList.length * 1.875
-        this.indicatorList = `width:`+w +`rem;margin-left:`+ -w/2+`rem`
+        this.indicatorList = `width:` + w + `rem;margin-left:` + -w / 2 + `rem`
 
         let r = this.swiperIndex * 1.875
         let style = `
-        left:`+r+`rem
+        left:` + r + `rem
         `
         return style
       }
@@ -230,35 +246,100 @@
       this.handleScroll()
     },
     created() {
-      this.shopList.map(v=>{
-        v.imgUrl = imgUrl(v.imgUrl)
-        return v
-
-      })
-      this.$nextTick(x => {
-        let w = this.$refs.box1.offsetWidth + "px" || "100%"
-        this.box1Style = "width:" + w
-        console.log(this.box1Style)
-      })
-
+      this.getData()
+      this.getBannerList()
     },
     activated() {
-      // this.$store.dispatch('getUserInfo')
+       this.$store.dispatch('getUserInfo')
     },
     methods: {
-      loadmore() {
-        console.log('loadmore')
-        this.shopList = this.shopList.concat(this.shopList)
+      toMy() {
+        this.$router.push({path: '/my'})
       },
-      onScrollBottom() {
-        if (this.onFetching) {
-        } else {
-          this.onFetching = true;
-          if (this.pageSize > this.info.total) return this.onFetching = false;
-          this.pageSize += 10;
-          //   this.getData('onScrollBottom')
+      GoodsDetails(x) {
+        this.$router.push({path: '/GoodsDetails/' + x.id})
+      },
+      getBannerList() {
+        this.$axiosApi.itemAdvert().then(res => {
+          if (res.code == 200) {
+            this.bannerList = res.data.shopAdvert
+            let selectList = res.data.shopType.map((v, index) => {
+              v.imgUrl = imgUrl(v.photo)
+              return v
+            })
+            let active = [{
+              id: 0,
+              typeName: "精选",
+              info: '为你推荐'
+            }]
+            this.selectList = active.concat(selectList)
+            console.log(this.selectList)
+          } else {
+            this.$vux.alert.show({
+              title: '提示',
+              content: res.message,
+              onShow() {
+              },
+              onHide() {
+              }
+            })
+          }
+          this.$nextTick(x => {
+            let w = this.$refs.box1.offsetWidth + "px" || "100%"
+            this.box1Style = "width:" + w
+            console.log(this.box1Style)
+          })
+        })
+      },
+      getData(type) {
+        //
+        let itemType = this.itemType
+        let name = ""
+        let third = this.third //0
+        let pageNum = this.pageNum
+        let pageSize = this.pageSize
+        this.$axiosApi.itemList(itemType, third, pageNum, pageSize, name).then(res => {
+          if (res.code == 200) {
+            //
+            this.$vux.loading.hide()
+            let time = new Date().getTime() / 100000000
+            this.info = res.data
+            let shopList = res.data.list.map(v => {
+              v.imgUrl = imgUrl(v.photo.split(',')[0])
+              let resume = 550
+              v.browse = (time + (v.name.length * resume)).toFixed(0)
+              return v
+            })
+            if(type && type == 1){
+              this.shopList = shopList
+            }else {
+              this.shopList = this.shopList.concat(shopList)
+            }
+          } else {
+            this.$vux.alert.show({
+              title: '提示',
+              content: res.message,
+              onShow() {
+              },
+              onHide() {
+              }
+            })
+          }
+        })
 
-        }
+
+      },
+      grabble_fun() {
+        this.$router.push({
+          path: 'grabble'
+        })
+      },
+      loadmore() {
+//        this.shopList = this.shopList.concat(this.shopList)
+        console.log(this.shopList)
+        if(this.shopList.length == 0) return
+        this.pageNum += 1
+        this.getData()
       },
       // 获取滚动条高度
       handleScroll() {
@@ -276,15 +357,32 @@
       },
       //切换类别
       selectData(i) {
-        this.firstGet = true
-        this.pageSize = 10
+        if(this.selectValue == i.id) return
+        this.pageNum = 1
+        this.selectValue = i.id
 
-        if (i != 'all') {
-          this.selectValue = i.id
-        } else {
-          this.selectValue = 'all'
+        let w = this.$refs.box1.offsetWidth/this.selectList.length
+        let x = this.selectList.findIndex(o=>{
+          return o.id == i.id
+        })
+        let z = x<4?0:w*(x-1)
+        let t = document.body.scrollTop | document.documentElement.scrollTop
+        if(t>this.select_headTop){
+          document.body.scrollTop = document.documentElement.scrollTop = this.select_headTop
         }
-//        this.$store.dispatch('SetSelectItem2',this.selectValue)
+        if (i.id == 0) {
+          this.third = 0
+          this.itemType = ""
+          z = 0
+        } else {
+          this.third = ''
+          this.itemType = i.id
+        }
+        console.log(x,z)
+
+        this.$refs.scroller.reset({left:z},600,'ease-in-out')
+
+        this.getData(1)
       },
 
     }
@@ -323,6 +421,7 @@
             height: 3.75rem;
             border-radius: 1.875rem;
             font-size: 1.75rem;
+            border: 1px solid #DCDCDC;
             .form_icon {
               margin-left: 2rem;
               margin-right: 1rem;
@@ -347,19 +446,19 @@
           .bannerImg {
             width: calc(100% - 3.75rem);
             height: 100%;
+            border-radius: 0.625rem;
           }
         }
-        .indicatorList{
+        .indicatorList {
           position: absolute;
           z-index: 100;
           bottom: 10px;
           left: 50%;
-
           height: 0.375rem;
-          background:rgba(255,255,255,0.3);
+          background: rgba(255, 255, 255, 0.3);
           border-radius: 0.1875rem;
           min-width: 1.875rem;
-          .indicator_item{
+          .indicator_item {
             transition: 0.3s;
             min-width: 1.875rem;
             border-radius: 0.1875rem;
@@ -423,7 +522,7 @@
       .shopContent {
         position: relative;
         padding-top: 6.5625rem;
-
+        min-height: calc(100vh - 6.5625rem);
         .select_head {
           background-color: #ffffff;
           border-top: 1px solid #f4f4f4;
@@ -544,7 +643,7 @@
                   align-items: center;
                   justify-content: space-between;
                   font-size: 1.75rem;
-                  margin-top: 2.75rem;
+                  margin-top: 1.625rem;
                   .left {
                     color: #E84646;
                     font-weight: 500;

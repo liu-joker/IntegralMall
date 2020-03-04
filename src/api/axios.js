@@ -4,9 +4,9 @@ import request from '@/utils/request'
 class loginApi {
 
   //首页商品列表
-  static itemList(itemType,third,pageNum,pageSize) {
+  static itemList(itemType,third,pageNum,pageSize,name) {
     return request({
-      url: '/itemList?itemType='+itemType+'&third='+third+'&pageNum='+pageNum+'&pageSize='+pageSize,
+      url: '/itemList?itemType='+itemType+'&third='+third+'&pageNum='+pageNum+'&pageSize='+pageSize+'&name='+name,
       method: 'get',
       data: {},
       headers: {"Content-Type": "application/x-www-form-urlencoded;charset=utf-8"}
