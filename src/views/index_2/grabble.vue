@@ -4,12 +4,13 @@
     <div class="header">
       <div class="grabble" ref="grabble">
         <div class="left">
-          <x-input placeholder="搜索" class="grabble_inp" type="text" :max="20" ref="grabble_inp" @on-enter="getData" @on-focus="GrabbleShow = true" v-model="name">
+          <x-input placeholder="搜索" class="grabble_inp" type="text" :max="20" ref="grabble_inp" @on-enter="getData"
+                   @on-focus="GrabbleShow = true" v-model="name">
             <svg-icon slot="label" class="form_icon" icon-class="grabble"></svg-icon>
           </x-input>
         </div>
         <div class="right">
-          <span class="grabble_but" @click="getData">搜索</span>
+          <span class="grabble_but" @click="butGetData">搜索</span>
         </div>
       </div>
     </div>
@@ -21,7 +22,7 @@
           <waterfall :col='waterfallData.col' :width="itemWidth" :gutterWidth="gutterWidth" :data="shopList"
                      @loadmore="loadmore">
             <template>
-              <div class="item fadeIn animated" v-for="(x,index) in shopList" :key="index"  @click="GoodsDetails(x)">
+              <div class="item fadeIn animated" v-for="(x,index) in shopList" :key="index" @click="GoodsDetails(x)">
                 <div class="img">
                   <img v-lazy="x.imgUrl" alt="">
                 </div>
@@ -39,7 +40,8 @@
             </template>
           </waterfall>
         </div>
-        <divider class="period">没有更多商品了~</divider>
+        <div v-if="showShop" class="noItem">暂无商品</div>
+        <divider class="period" v-if="!showShop">没有更多商品了~</divider>
       </div>
     </div>
 
@@ -71,7 +73,7 @@
   import delect from "@/assets/images/delect.png"
   import {imgUrl} from "@/filters";
   import {XInput, Divider} from 'vux'
-  import BackToTop from  "@/components/BackToTop"
+  import BackToTop from "@/components/BackToTop"
 
   export default {
     name: 'grabble',
@@ -95,10 +97,11 @@
         shopList: [],
         search: [],
         pageNum: 1,
-        pageSize: 10,
+        pageSize: 20,
         third: '',
         itemType: '',
         name: '',
+        timer: null,
       }
     },
     computed: {
@@ -108,27 +111,46 @@
       gutterWidth: function () {
         return 0.024 * document.documentElement.clientWidth
       },
+      showShop:function () {
+        if(this.shopList.length!=0){
+          return false
+        }else {
+          return true
+        }
+      }
     },
     created() {
-      if(this.$Cookie.getSearchRecord()){
+      if (this.$Cookie.getSearchRecord()) {
         this.search = eval(this.$Cookie.getSearchRecord())
       }
       this.getData()
+
     },
     mounted() {
       this.$refs.grabble_inp.focus()
     },
     methods: {
+      butGetData(){
+        clearInterval(this.timer);
+        this.timer = null;
+        this.timer = setTimeout(() => {
+          this.getData()
+        }, 300)
+      },
       GoodsDetails(x) {
         this.$router.push({path: '/GoodsDetails/' + x.id})
       },
-      delectSearch(){
+      delectSearch() {
         this.$Cookie.removeSearchRecord()
         this.search = []
       },
-      searchContent(x){
+      searchContent(x) {
         this.name = x
-        this.getData()
+        clearInterval(this.timer);
+        this.timer = null;
+        this.timer = setTimeout(() => {
+          this.getData()
+        }, 300)
       },
       getData() {
         //
@@ -137,7 +159,7 @@
         let third = this.third //0
         let pageNum = this.pageNum
         let pageSize = this.pageSize
-        if(name == '') return
+        if (name == '') return
 
 
         this.$axiosApi.itemList(itemType, third, pageNum, pageSize, name).then(res => {
@@ -169,9 +191,13 @@
         })
       },
       loadmore() {
-        if(this.shopList.length == 0) return
-        this.pageNum += 1
-        this.getData()
+        if (this.shopList.length == 0) return
+        this.pageSize += 10
+        clearInterval(this.timer);
+        this.timer = null;
+        this.timer = setTimeout(() => {
+          this.getData()
+        }, 300)
       },
     }
   }
@@ -202,9 +228,9 @@
           display: flex;
           align-items: center;
           justify-content: space-between;
-          .callbackIcon{
+          .callbackIcon {
             margin-right: 1.875rem;
-            img{
+            img {
               width: 1.375rem;
             }
           }
@@ -216,7 +242,7 @@
             border-radius: 1.875rem;
             font-size: 1.75rem;
             border: 1px solid #DCDCDC;
-            &:before{
+            &:before {
               border: 0;
             }
             .form_icon {
@@ -346,14 +372,12 @@
           padding: 1.75rem 0;
         }
         .noItem {
-          .noData {
-            width: 100%;
-            padding: 9.5rem 0;
-            text-align: center;
-            font-size: 2rem;
-            color: #868686;
-            background-color: #f4f4f4;
-          }
+          width: 100%;
+          padding: 15.5rem 0;
+          text-align: center;
+          font-size: 2rem;
+          color: #868686;
+          /*background-color: #f4f4f4;*/
         }
 
       }
@@ -365,26 +389,26 @@
       bottom: 0;
       left: 0;
       background-color: #ffffff;
-      .searchTop{
+      .searchTop {
         display: flex;
         align-items: center;
         justify-content: space-between;
         padding: 1.875rem;
-        .left{
+        .left {
           font-size: 1.75rem;
           color: #323232;
         }
-        .right{
+        .right {
           width: 1.875rem;
         }
       }
-      .searchContent{
+      .searchContent {
         padding: 0 1.875rem;
         display: flex;
         flex-wrap: wrap;
         justify-content: flex-start;
         align-items: center;
-        .item{
+        .item {
           padding: 0 1.875rem;
           height: 2.875rem;
           border-radius: 1.4375rem;

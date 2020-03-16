@@ -4,7 +4,9 @@ const user = {
     userInfo: {
       grade:0
     },
-    selectItem:'all'
+    selectItem:'all',
+    brandId:'',
+    appName:''
   },
   mutations: {
     SET_USERINFO: (state, userInfo) => {
@@ -13,8 +15,20 @@ const user = {
     SET_SELECTITEM: (state, data) => {
       state.selectItem = data
     },
+    SET_BRANDID: (state, data) => {
+      state.brandId = data
+    },
+    SET_APPNAME: (state, data) => {
+      state.appName = data
+    },
   },
   actions: {
+    setAppName({commit},data){
+      commit('SET_APPNAME', data)
+    },
+    setBrindId({commit},data){
+      commit('SET_BRANDID', data)
+    },
     getUserInfo({commit}) {
       return new Promise((resolve, reject) => {
         axiosApi.shopUserinfo().then(response => {

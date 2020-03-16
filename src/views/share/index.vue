@@ -5,8 +5,8 @@
     <div class="head">
       <div class="title">
         <div class="left">
-          <img :src="shareLogo" alt="">
-          小米粒商城
+          <img :src="shareLogo | imgUrl" alt="">
+          {{appName}}商城
         </div>
         <div class="right">
           <div class="but" @click="showProp(2)">
@@ -91,7 +91,7 @@
     },
     data() {
       return {
-        shareLogo: shareLogo,
+        shareLogo: '51guanka.png',
         icon_share3: icon_share3,
         icon_selecting: icon_selecting,
         icon_weixin: icon_weixin,
@@ -100,6 +100,7 @@
         popupShow: false,
         showType: 1,
         id: '',
+        appName: this.$store.getters.appName,
         activePay: '',
         itemInfo: '',
         priceInfo: '',
@@ -109,6 +110,9 @@
       this.id = this.$route.params.id
       this.activePay = this.$route.params.active
       this.getData()
+      if (this.$store.getters.brandId == '30d05ab37977433da29018ed96612561') {
+        this.shareLogo = 'xinyongzhijia.png'
+      }
     },
     methods: {
       share(x) {

@@ -9,18 +9,25 @@
             <svg-icon slot="label" class="form_icon" icon-class="grabble"></svg-icon>
           </x-input>
         </div>
-        <div class="right"  @click="toMy">
+        <div class="right" @click="toMy">
           <img :src="icon_my" alt="" class="icon_my">
         </div>
       </div>
 
       <div class="banner_content">
-        <swiper auto dots-position="center" loop style="width: 100%;margin:0 auto;" :aspect-ratio="17.5/46.88"
+        <!--<swiper auto dots-position="center" loop style="width: 100%;margin:0 auto;" :aspect-ratio="17.5/46.88"
                 :interval=5000 :show-dots="false" v-model="swiperIndex">
           <swiper-item class="swiper-demo-img" v-for="(x, index) in bannerList" :key="index">
             <img :src="x.photo | imgUrl" alt="" class="bannerImg">
           </swiper-item>
+        </swiper>-->
+
+        <swiper :options="swiperOption" v-if="bannerList.length>1">
+          <swiper-slide class="swiper-demo-img" v-for="(x, index) in bannerList" :key="index">
+            <img :src="x.photo | imgUrl" alt="" class="bannerImg">
+          </swiper-slide>
         </swiper>
+
         <div class="indicatorList" :style="indicatorList">
           <div class="indicator_item" :style="indicator_item"></div>
         </div>
@@ -30,7 +37,7 @@
     </div>
     <div class="container">
       <div class="classification">
-        <div class="item" v-for="(x,index) in selectList2" :class="yellowClass(index)" @click="selectData(x)">
+        <div class="item" v-for="(x,index) in selectList2" :class="yellowClass(index)" @click="selectData2(x,index)">
           <div class="item_head">
             <div class="title">{{x.title}}</div>
             <div class="title_info">{{x.info}}</div>
@@ -46,9 +53,9 @@
           <scroller :lock-y="true" :scrollbar-x='false' ref="scroller">
             <div class="box1" :style="box1Style">
               <div class="box1-list" ref="box1">
-                <div class="box1-item" :class="i.id == selectValue?'active':''" v-for="(i,index) in selectList"
+                <div class="box1-item" :class="index == selectValue?'active':''" v-for="(i,index) in selectList"
                      :key="index"
-                     @click="selectData(i)">
+                     @click="selectData(i,index)">
                   <div class="s_item_top">{{i.typeName}}</div>
                   <div class="s_item_bottom" :style="item_bottom">
                     <div class="text">
@@ -63,29 +70,51 @@
         </div>
 
         <div class="commodity_content">
-          <div class="list fadeIn animated">
-            <waterfall :col='waterfallData.col' :width="itemWidth" :gutterWidth="gutterWidth" :data="shopList"
-                       @loadmore="loadmore">
-              <template>
-                <div class="item fadeIn animated" v-for="(x,index) in shopList" :key="index"  @click="GoodsDetails(x)">
-                  <div class="img">
-                    <img v-lazy="x.imgUrl" alt="">
-                  </div>
-                  <div class="text">
-                    <div class="name">{{x.name}}</div>
-                    <div class="foot">
-                      <div class="left">{{x.coin}}U米</div>
-                      <div class="right">
-                        <img :src="icon_browse" alt="" class="eye">
-                        {{x.browse}}
+
+
+          <swiper :options="swiperOption2" v-if="selectList.length>1" ref="mySwiper" class="swiper2">
+            <swiper-slide v-for="(item, index) in selectList" :key="index">
+
+              <div class="list" v-if="item.shopList">
+                <waterfall :col='waterfallData.col' :width="itemWidth" :gutterWidth="gutterWidth"
+                           :data="item.shopList"
+                           @loadmore="loadmore(item)" :key="index" v-if="index == selectValue">
+                  <template>
+                    <div class="item" v-for="(x,index) in item.shopList" :key="index"
+                         @click="GoodsDetails(x)">
+                      <div class="img">
+                        <img v-lazy="x.imgUrl" alt="" class="fadeIn animated">
+                        <!--<img :lazy-src="x.imgUrl" alt="">-->
+                        <!--<img :src="x.imgUrl" alt="">-->
+                      </div>
+                      <div class="text">
+                        <div class="name">{{x.name}}</div>
+                        <div class="foot">
+                          <div class="left">{{x.coin}}U米</div>
+                          <div class="right">
+                            <img :src="icon_browse" alt="" class="eye">
+                            {{x.browse}}
+                          </div>
+                        </div>
                       </div>
                     </div>
+                  </template>
+                </waterfall>
+                <div v-if="showShop" class="noItem">暂无商品</div>
+
+                <div class="period">
+                  <divider class="periodDivider  fadeIn animated" v-show="dividerShow && !showShop">
+                    没有更多商品了~
+                  </divider>
+                  <div class="periodLoading" v-show="!dividerShow">
+                    <load-more></load-more>
                   </div>
                 </div>
-              </template>
-            </waterfall>
-          </div>
-          <divider class="period">没有更多商品了~</divider>
+
+              </div>
+
+            </swiper-slide>
+          </swiper>
         </div>
       </div>
     </div>
@@ -110,14 +139,22 @@
   import pic_commodity2 from "@/assets/images/pic_commodity2.png"
   import icon_browse from "@/assets/images/icon_browse.png"
   import BackToTop from "@/components/BackToTop"
-  import {Swiper, SwiperItem, Scroller, LoadMore, Divider, XInput} from 'vux'
+  //  import {Swiper, SwiperItem, Scroller, LoadMore, Divider, XInput} from 'vux'
+  import {Scroller, LoadMore, Divider, XInput } from 'vux'
   import {imgUrl} from "@/filters";
+
+  import 'swiper/dist/css/swiper.css'////这里注意具体看使用的版本是否需要引入样式，以及具体位置。
+  import {swiper, swiperSlide} from 'vue-awesome-swiper'
+  import loading from '@/assets/loading3.gif'
 
   export default {
     name: 'index',
     components: {
-      Swiper,
-      SwiperItem,
+      swiper,
+      swiperSlide,
+
+      /*  Swiper,
+        SwiperItem,*/
       Scroller,
       LoadMore,
       Divider,
@@ -125,18 +162,53 @@
       BackToTop
     },
     data() {
+      const self = this
       return {
         icon_my: icon_my,
         pic_backgroud: pic_backgroud,
         icon_browse: icon_browse,
+        loading: loading,
+
+        swiperOption: {//swiper3
+          notNextTick: true,
+          loop: true,
+          autoplayStopOnLast: false,
+          autoplay: {
+            delay: 1500,
+            stopOnLastSlide: false,
+            disableOnInteraction: false
+          },
+          speed: 300,
+          on: {
+            slideChangeTransitionStart: function () {
+              self.swiperIndex = this.realIndex
+            }
+          }
+        },
+        swiperOption2: {//swiper3
+          notNextTick: false,
+          loop: true,
+          observer: true,
+          observeParents: true,
+          autoplayStopOnLast: false,
+          autoplay: false,
+          autoHeight: true,
+          on: {
+            slideChangeTransitionStart: function () {
+              let i = self.selectList[this.realIndex]
+              self.selectData(i, this.realIndex)
+            }
+          }
+        },
         bannerList: [],
+        brandId: '',
         scrollTop: 0,
         swiperIndex: 0,
         indicatorList: '',
         selectValue: 0,
         selectList: [],
         selectList2: [{
-          id:18,
+          id: 18,
           title: '精选厨房',
           info: '美味来袭 精选厨房',
           photoList: [
@@ -144,7 +216,7 @@
             pic_sort4
           ]
         }, {
-          id:12,
+          id: 12,
           title: '运动健康',
           info: '年轻无极限 运动我精彩',
           photoList: [
@@ -152,7 +224,7 @@
             pic_sort6
           ]
         }, {
-          id:1,
+          id: 1,
           title: '电子数码',
           info: '工作学习两不误',
           photoList: [
@@ -160,7 +232,7 @@
             pic_sort2
           ]
         }, {
-          id:5,
+          id: 5,
           title: '旅行意义',
           info: '一场说走就走的旅行',
           photoList: [
@@ -175,12 +247,13 @@
         active_item: '',
         shopList: [],
         pageNum: 1,
-        pageSize: 10,
+        pageSize: 50,
         third: 0,
         itemType: '',
         info: '',
-        onFetching: false,
+        dividerShow: false,
         noDataShow: false,
+        timer: null,
         waterfallData: {
           col: 2,
           width: 0,
@@ -201,7 +274,6 @@
       item_bottom: function () {
         let top = this.scrollTop - this.select_headTop
         let style = ''
-//        console.log(this.scrollTop,this.select_headTop,top,this.grabbleHeight)
         if (top > 0) {
           let t = top / this.grabbleHeight >= 1 ? 1 : top / this.grabbleHeight
           let o = 1 - t
@@ -234,6 +306,21 @@
         left:` + r + `rem
         `
         return style
+      },
+      swiper() {
+        return this.$refs.mySwiper.swiper
+      },
+      showShop:function () {
+        let item = this.selectList[this.selectValue]
+        if(item.shopList){
+          if(item.shopList.length==0){
+            return true
+          }else {
+            return false
+          }
+        }else {
+          return false
+        }
       }
     },
 
@@ -242,15 +329,29 @@
       this.select_headTop = this.$refs.shopContent.offsetTop - this.$refs.grabble.offsetHeight
       this.grabbleHeight = this.$refs.grabble.offsetHeight
 
-      console.log(this.$refs.Index_2.offsetWidth)
       this.handleScroll()
     },
     created() {
-      this.getData()
+
+      var url = window.location.href;
+      var j = url.substring(url.indexOf('brandId=')+8,url.indexOf('brandId=')+40);
+      this.brandId = this.$route.query.brandId || j
+      this.$store.dispatch('setBrindId',this.brandId)
+      let appName = ''
+      if (this.$store.getters.brandId == '30d05ab37977433da29018ed96612561') {
+        appName =  '信用之家New'
+        this.$store.dispatch('setAppName',appName)
+      }else {
+        appName =  '小米粒'
+        this.$store.dispatch('setAppName',appName)
+      }
+
+      console.log(this.$store.getters.brandId,this.$store.getters.appName)
+
       this.getBannerList()
     },
     activated() {
-       this.$store.dispatch('getUserInfo')
+      this.$store.dispatch('getUserInfo')
     },
     methods: {
       toMy() {
@@ -265,15 +366,20 @@
             this.bannerList = res.data.shopAdvert
             let selectList = res.data.shopType.map((v, index) => {
               v.imgUrl = imgUrl(v.photo)
+              v.shopList = []
+              v.pageNum = 1
               return v
             })
             let active = [{
               id: 0,
               typeName: "精选",
-              info: '为你推荐'
+              info: '为你推荐',
+              shopList: [],
+              pageNum: 1,
             }]
+
             this.selectList = active.concat(selectList)
-            console.log(this.selectList)
+            this.getData()
           } else {
             this.$vux.alert.show({
               title: '提示',
@@ -287,7 +393,6 @@
           this.$nextTick(x => {
             let w = this.$refs.box1.offsetWidth + "px" || "100%"
             this.box1Style = "width:" + w
-            console.log(this.box1Style)
           })
         })
       },
@@ -296,12 +401,12 @@
         let itemType = this.itemType
         let name = ""
         let third = this.third //0
-        let pageNum = this.pageNum
+        let pageNum = this.selectList[this.selectValue].pageNum
         let pageSize = this.pageSize
+
         this.$axiosApi.itemList(itemType, third, pageNum, pageSize, name).then(res => {
           if (res.code == 200) {
             //
-            this.$vux.loading.hide()
             let time = new Date().getTime() / 100000000
             this.info = res.data
             let shopList = res.data.list.map(v => {
@@ -310,11 +415,19 @@
               v.browse = (time + (v.name.length * resume)).toFixed(0)
               return v
             })
-            if(type && type == 1){
-              this.shopList = shopList
-            }else {
-              this.shopList = this.shopList.concat(shopList)
-            }
+
+            this.selectList.map(v => {
+              if (v.id == itemType) {
+                v.shopList = v.shopList.concat(shopList)
+                v.pageNum = res.data.pageNum
+              }
+              return v
+            })
+
+            this.$nextTick(() => {
+              this.dividerShow = true
+            })
+
           } else {
             this.$vux.alert.show({
               title: '提示',
@@ -334,12 +447,14 @@
           path: 'grabble'
         })
       },
-      loadmore() {
-//        this.shopList = this.shopList.concat(this.shopList)
-        console.log(this.shopList)
-        if(this.shopList.length == 0) return
-        this.pageNum += 1
-        this.getData()
+      loadmore(item) {
+        this.dividerShow = false
+        clearInterval(this.timer)
+        this.timer = null;
+        this.timer = setTimeout(() => {
+          this.selectList[this.selectValue].pageNum += 1
+          this.getData(2)
+        }, 150)
       },
       // 获取滚动条高度
       handleScroll() {
@@ -355,19 +470,28 @@
         let y = ((x + 1) * 2) % 8
         return y == 4 || y == 6 ? 'yellowClass' : ''
       },
-      //切换类别
-      selectData(i) {
-        if(this.selectValue == i.id) return
-        this.pageNum = 1
-        this.selectValue = i.id
 
-        let w = this.$refs.box1.offsetWidth/this.selectList.length
-        let x = this.selectList.findIndex(o=>{
-          return o.id == i.id
+      //切换类别
+      selectData2(x, index) {
+
+
+        let i = this.selectList.findIndex(v => {
+          return v.id == x.id
         })
-        let z = x<4?0:w*(x-1)
+        if (i != -1) {
+          this.selectData(this.selectList[i], i)
+        }
+
+      },
+      selectData(i, index) {
+        if (this.selectValue == index) return
+        this.selectValue = index
+
+        let w = this.$refs.box1.offsetWidth / this.selectList.length
+        let x = index
+        let z = x < 4 ? 0 : w * (x - 1)
         let t = document.body.scrollTop | document.documentElement.scrollTop
-        if(t>this.select_headTop){
+        if (t > this.select_headTop) {
           document.body.scrollTop = document.documentElement.scrollTop = this.select_headTop
         }
         if (i.id == 0) {
@@ -378,11 +502,17 @@
           this.third = ''
           this.itemType = i.id
         }
-        console.log(x,z)
 
-        this.$refs.scroller.reset({left:z},600,'ease-in-out')
-
-        this.getData(1)
+        this.$refs.scroller.reset({left: z}, 600, 'ease-in-out')
+        //防止重复获取数据
+        this.swiper.slideTo(this.selectValue + 1, 400, false)
+//        this.swiper.updateSize();
+        if (i.shopList.length != 0) return
+        clearInterval(this.timer);
+        this.timer = null;
+        this.timer = setTimeout(() => {
+          this.getData(1)
+        }, 300)
       },
 
     }
@@ -442,10 +572,11 @@
         height: 17.5rem;
         position: relative;
         .swiper-demo-img {
-          padding: 0 1.875rem;
+          /*padding: 0 1.875rem;*/
+          text-align: center;
           .bannerImg {
             width: calc(100% - 3.75rem);
-            height: 100%;
+            height: 17.5rem;
             border-radius: 0.625rem;
           }
         }
@@ -524,6 +655,7 @@
         padding-top: 6.5625rem;
         min-height: calc(100vh - 6.5625rem);
         .select_head {
+
           background-color: #ffffff;
           border-top: 1px solid #f4f4f4;
           /*height: 6.75rem;*/
@@ -599,15 +731,15 @@
         .commodity_content {
           margin-top: 1.25rem;
           position: relative;
+
+          .swiper2{
+            .swiper-slide{
+              min-height: 80vh;
+            }
+          }
           .list {
             padding: 0rem 1.875rem 0;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            .item:nth-child(2n) {
-              margin-right: 0;
-            }
+
             .item {
               width: calc(100%);
               background-color: #fff;
@@ -635,7 +767,7 @@
                   -webkit-box-orient: vertical; /**设置或检索伸缩盒子对象的子元素的排列方式**/
                   -webkit-line-clamp: 2; /**显示的行数**/
                   overflow: hidden;
-                  height: 3.875rem;
+                  /*height: 3.875rem;*/
                   color: #000;
                 }
                 .foot {
@@ -668,16 +800,26 @@
           .period {
             font-size: 1.75rem;
             padding: 1.75rem 0;
+
+            width: 100%;
+
+            .periodLoading{
+              text-align: center;
+
+              .weui-loadmore{
+                margin: 0 auto;
+                font-size: 1rem;
+              }
+            }
+
           }
           .noItem {
-            .noData {
               width: 100%;
-              padding: 9.5rem 0;
+              padding: 15.5rem 0;
               text-align: center;
               font-size: 2rem;
               color: #868686;
-              background-color: #f4f4f4;
-            }
+              /*background-color: #f4f4f4;*/
           }
 
         }

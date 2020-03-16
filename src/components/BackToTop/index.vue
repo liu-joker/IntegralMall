@@ -57,10 +57,13 @@
         this.visible = window.pageYOffset > this.visibilityHeight
       },
       backToTop() {
+
+        document.body.scrollTop = document.documentElement.scrollTop = 0
+        return
         const start = window.pageYOffset
         let i = 0
         this.interval = setInterval(() => {
-          const next = Math.floor(this.easeInOutQuad(10 * i, start, -start, 500))
+          const next = Math.floor(this.easeInOutQuad(10 * i, start, -start, 250))
           if (next <= this.backPosition) {
             window.scrollTo(0, this.backPosition)
             clearInterval(this.interval)
@@ -89,6 +92,7 @@
     -ms-user-select: none;
     width: 4.875rem;
     height: 4.875rem;
+    z-index: 100;
     border-radius: 2.4375rem;
     border: 1px solid #E0E0E0;
     background-color: #fff;

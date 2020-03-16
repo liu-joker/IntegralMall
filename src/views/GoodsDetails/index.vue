@@ -134,8 +134,10 @@
 
         if (this.$Cookie.getToken() == "") {
           if(this.$route.query.userId){
+
+            let appName =  this.$store.getters.appName
             this.$vux.confirm.show({
-              content: "请前往小米粒APP领取",
+              content: "请前往"+appName+"APP领取",
               confirmText: '前往下载',
               onCancel() {
 

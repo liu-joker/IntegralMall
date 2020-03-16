@@ -16,6 +16,9 @@ import axios from 'axios'
 import '@/permission'
 Vue.prototype.axios = axios;
 
+
+
+
 import  { ToastPlugin } from 'vux'
 Vue.use(ToastPlugin)
 
@@ -31,7 +34,7 @@ Vue.use(AlertPlugin)
 import waterfall from 'vue-waterfall2'
 Vue.use(waterfall)
 
-import loading from '@/assets/loading3.gif'
+
 import failToLoad from '@/assets/failToLoad.png'
 
 import VueLazyload from 'vue-lazyload'
