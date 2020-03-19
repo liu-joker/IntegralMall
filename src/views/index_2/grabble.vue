@@ -40,8 +40,8 @@
             </template>
           </waterfall>
         </div>
-        <div v-if="showShop" class="noItem">暂无商品</div>
-        <divider class="period" v-if="!showShop">没有更多商品了~</divider>
+        <div v-if="showShop" class="noItem">暂无该类商品</div>
+        <divider class="period" v-if="!showShop">没有更多了~</divider>
       </div>
     </div>
 

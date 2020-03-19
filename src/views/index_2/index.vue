@@ -15,13 +15,6 @@
       </div>
 
       <div class="banner_content">
-        <!--<swiper auto dots-position="center" loop style="width: 100%;margin:0 auto;" :aspect-ratio="17.5/46.88"
-                :interval=5000 :show-dots="false" v-model="swiperIndex">
-          <swiper-item class="swiper-demo-img" v-for="(x, index) in bannerList" :key="index">
-            <img :src="x.photo | imgUrl" alt="" class="bannerImg">
-          </swiper-item>
-        </swiper>-->
-
         <swiper :options="swiperOption" v-if="bannerList.length>1">
           <swiper-slide class="swiper-demo-img" v-for="(x, index) in bannerList" :key="index">
             <img :src="x.photo | imgUrl" alt="" class="bannerImg">
@@ -79,11 +72,11 @@
                 <waterfall :col='waterfallData.col' :width="itemWidth" :gutterWidth="gutterWidth"
                            :data="item.shopList"
                            @loadmore="loadmore(item)" :key="index" v-if="index == selectValue">
-                  <template>
-                    <div class="item" v-for="(x,index) in item.shopList" :key="index"
+                  <template>                    <div class="item" v-for="(x,index) in item.shopList" :key="index"
                          @click="GoodsDetails(x)">
                       <div class="img">
-                        <img v-lazy="x.imgUrl" alt="" class="fadeIn animated">
+                        <img :src="x.imgUrl" alt="" class="fadeIn animated" v-if="selectValue == 0">
+                        <img v-lazy="x.imgUrl" alt="" class="fadeIn animated" v-else>
                         <!--<img :lazy-src="x.imgUrl" alt="">-->
                         <!--<img :src="x.imgUrl" alt="">-->
                       </div>
@@ -100,11 +93,11 @@
                     </div>
                   </template>
                 </waterfall>
-                <div v-if="showShop" class="noItem">暂无商品</div>
+                <div v-if="showShop" class="noItem">暂无该类商品</div>
 
                 <div class="period">
                   <divider class="periodDivider  fadeIn animated" v-show="dividerShow && !showShop">
-                    没有更多商品了~
+                    没有更多了~
                   </divider>
                   <div class="periodLoading" v-show="!dividerShow">
                     <load-more></load-more>
@@ -152,9 +145,6 @@
     components: {
       swiper,
       swiperSlide,
-
-      /*  Swiper,
-        SwiperItem,*/
       Scroller,
       LoadMore,
       Divider,
@@ -174,11 +164,11 @@
           loop: true,
           autoplayStopOnLast: false,
           autoplay: {
-            delay: 1500,
+            delay: 5000,
             stopOnLastSlide: false,
             disableOnInteraction: false
           },
-          speed: 300,
+          speed: 500,
           on: {
             slideChangeTransitionStart: function () {
               self.swiperIndex = this.realIndex
@@ -193,10 +183,11 @@
           autoplayStopOnLast: false,
           autoplay: false,
           autoHeight: true,
+          freeModeMomentumRatio:2,
           on: {
             slideChangeTransitionStart: function () {
-              let i = self.selectList[this.realIndex]
-              self.selectData(i, this.realIndex)
+            /*  let i = self.selectList[this.realIndex]
+              self.selectData(i, this.realIndex)*/
             }
           }
         },
