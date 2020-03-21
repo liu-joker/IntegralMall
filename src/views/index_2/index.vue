@@ -1,82 +1,80 @@
 <template>
 
-  <div class="Index_2" id="Index_2" ref="Index_2">
-
-    <div class="header">
-      <div class="grabble" :style="headBgc" ref="grabble">
-        <div class="left">
-          <x-input placeholder="搜索" class="grabble_inp" type="text" :max="20" @on-focus="grabble_fun">
-            <svg-icon slot="label" class="form_icon" icon-class="grabble"></svg-icon>
-          </x-input>
-        </div>
-        <div class="right" @click="toMy">
-          <img :src="icon_my" alt="" class="icon_my">
-        </div>
-      </div>
-
-      <div class="banner_content">
-        <swiper :options="swiperOption" v-if="bannerList.length>1">
-          <swiper-slide class="swiper-demo-img" v-for="(x, index) in bannerList" :key="index">
-            <img :src="x.photo | imgUrl" alt="" class="bannerImg">
-          </swiper-slide>
-        </swiper>
-
-        <div class="indicatorList" :style="indicatorList">
-          <div class="indicator_item" :style="indicator_item"></div>
-        </div>
-      </div>
-
-
-    </div>
-    <div class="container">
-      <div class="classification">
-        <div class="item" v-for="(x,index) in selectList2" :class="yellowClass(index)" @click="selectData2(x,index)">
-          <div class="item_head">
-            <div class="title">{{x.title}}</div>
-            <div class="title_info">{{x.info}}</div>
+    <div class="Index_2" id="Index_2" ref="Index_2">
+      <div class="header">
+        <div class="grabble" :style="headBgc" ref="grabble">
+          <div class="left">
+            <x-input placeholder="搜索" class="grabble_inp" type="text" :max="20" @on-focus="grabble_fun">
+              <svg-icon slot="label" class="form_icon" icon-class="grabble"></svg-icon>
+            </x-input>
           </div>
-          <div class="img_2">
-            <img v-for="(y,index) in x.photoList" :src="y" alt="">
+          <div class="right" @click="toMy">
+            <img :src="icon_my" alt="" class="icon_my">
           </div>
         </div>
-      </div>
 
-      <div class="shopContent" ref="shopContent">
-        <div class="select_head  fadeIn animated" ref="select_head" :style="select_headStyle">
-          <scroller :lock-y="true" :scrollbar-x='false' ref="scroller">
-            <div class="box1" :style="box1Style">
-              <div class="box1-list" ref="box1">
-                <div class="box1-item" :class="index == selectValue?'active':''" v-for="(i,index) in selectList"
-                     :key="index"
-                     @click="selectData(i,index)">
-                  <div class="s_item_top">{{i.typeName}}</div>
-                  <div class="s_item_bottom" :style="item_bottom">
-                    <div class="text">
-                      {{i.info}}
+        <div class="banner_content">
+          <swiper :options="swiperOption" v-if="bannerList.length>1">
+            <swiper-slide class="swiper-demo-img" v-for="(x, index) in bannerList" :key="index">
+              <img :src="x.photo | imgUrl" alt="" class="bannerImg">
+            </swiper-slide>
+          </swiper>
+
+          <div class="indicatorList" :style="indicatorList">
+            <div class="indicator_item" :style="indicator_item"></div>
+          </div>
+        </div>
+
+      </div>
+      <div class="container">
+        <div class="classification">
+          <div class="item" v-for="(x,index) in selectList2" :class="yellowClass(index)" @click="selectData2(x,index)">
+            <div class="item_head">
+              <div class="title">{{x.title}}</div>
+              <div class="title_info">{{x.info}}</div>
+            </div>
+            <div class="img_2">
+              <img v-for="(y,index) in x.photoList" :src="y" alt="">
+            </div>
+          </div>
+        </div>
+
+
+        <div class="shopContent" ref="shopContent">
+          <div :style="'height:'+select_headHeight+'px'">
+            <sticky  ref="sticky" :offset="grabbleHeight" :check-sticky-support="false">
+              <div class="select_head " ref="select_head" >
+                <scroller :lock-y="true" :scrollbar-x='false' ref="scroller">
+                  <div class="box1" :style="box1Style">
+                    <div class="box1-list" ref="box1">
+                      <div class="box1-item" :class="index == selectValue?'active':''" v-for="(i,index) in selectList"
+                           :key="index"
+                           @click="selectData(i,index)">
+                        <div class="s_item_top">{{i.typeName}}</div>
+                        <div class="s_item_bottom" :style="item_bottom">
+                          <div class="text">
+                            {{i.info}}
+                          </div>
+                        </div>
+                        <div class="active_item" :style="active_item"></div>
+                      </div>
                     </div>
                   </div>
-                  <div class="active_item" :style="active_item"></div>
-                </div>
+                </scroller>
               </div>
-            </div>
-          </scroller>
-        </div>
-
-        <div class="commodity_content">
-
-
-          <swiper :options="swiperOption2" v-if="selectList.length>1" ref="mySwiper" class="swiper2">
-            <swiper-slide v-for="(item, index) in selectList" :key="index">
-
-              <div class="list" v-if="item.shopList">
-                <waterfall :col='waterfallData.col' :width="itemWidth" :gutterWidth="gutterWidth"
-                           :data="item.shopList"
-                           @loadmore="loadmore(item)" :key="index" v-if="index == selectValue">
-                  <template>                    <div class="item" v-for="(x,index) in item.shopList" :key="index"
-                         @click="GoodsDetails(x)">
+            </sticky>
+          </div>
+          <div class="commodity_content">
+            <swiper :options="swiperOption2" v-if="selectList.length>1" ref="mySwiper" class="swiper2">
+              <swiper-slide v-for="(item, index) in selectList" :key="index">
+                <div class="list" v-if="item.shopList">
+                  <waterfall :col='waterfallData.col' :width="itemWidth" :gutterWidth="gutterWidth"
+                             :data="item.shopList"
+                             @loadmore="loadmore(item)" :key="index">
+                    <template>                    <div class="item" v-for="(x,index) in item.shopList" :key="index"
+                                                       @click="GoodsDetails(x)">
                       <div class="img">
-                        <img :src="x.imgUrl" alt="" class="fadeIn animated" v-if="selectValue == 0">
-                        <img v-lazy="x.imgUrl" alt="" class="fadeIn animated" v-else>
+                        <img v-lazy="x.imgUrl" alt="">
                         <!--<img :lazy-src="x.imgUrl" alt="">-->
                         <!--<img :src="x.imgUrl" alt="">-->
                       </div>
@@ -91,28 +89,28 @@
                         </div>
                       </div>
                     </div>
-                  </template>
-                </waterfall>
-                <div v-if="showShop" class="noItem">暂无该类商品</div>
+                    </template>
+                  </waterfall>
+                  <div v-if="showShop" class="noItem">暂无该类商品</div>
 
-                <div class="period">
-                  <divider class="periodDivider  fadeIn animated" v-show="dividerShow && !showShop">
-                    没有更多了~
-                  </divider>
-                  <div class="periodLoading" v-show="!dividerShow">
-                    <load-more></load-more>
+                  <div class="period">
+                    <divider class="periodDivider  fadeIn animated" v-show="dividerShow && !showShop">
+                      没有更多了~
+                    </divider>
+                    <div class="periodLoading" v-show="!dividerShow">
+                      <load-more></load-more>
+                    </div>
                   </div>
+
                 </div>
 
-              </div>
-
-            </swiper-slide>
-          </swiper>
+              </swiper-slide>
+            </swiper>
+          </div>
         </div>
       </div>
+      <back-to-top></back-to-top>
     </div>
-    <back-to-top></back-to-top>
-  </div>
 
 </template>
 
@@ -132,8 +130,9 @@
   import pic_commodity2 from "@/assets/images/pic_commodity2.png"
   import icon_browse from "@/assets/images/icon_browse.png"
   import BackToTop from "@/components/BackToTop"
+//  import Wrapper from "@/components/Wrapper"
   //  import {Swiper, SwiperItem, Scroller, LoadMore, Divider, XInput} from 'vux'
-  import {Scroller, LoadMore, Divider, XInput } from 'vux'
+  import {Scroller, LoadMore, Divider, XInput, XImg,Sticky  } from 'vux'
   import {imgUrl} from "@/filters";
 
   import 'swiper/dist/css/swiper.css'////这里注意具体看使用的版本是否需要引入样式，以及具体位置。
@@ -149,7 +148,9 @@
       LoadMore,
       Divider,
       XInput,
-      BackToTop
+      BackToTop,
+      XImg,
+      Sticky,
     },
     data() {
       const self = this
@@ -158,7 +159,6 @@
         pic_backgroud: pic_backgroud,
         icon_browse: icon_browse,
         loading: loading,
-
         swiperOption: {//swiper3
           notNextTick: true,
           loop: true,
@@ -177,7 +177,7 @@
         },
         swiperOption2: {//swiper3
           notNextTick: false,
-          loop: true,
+          loop: false,
           observer: true,
           observeParents: true,
           autoplayStopOnLast: false,
@@ -185,9 +185,10 @@
           autoHeight: true,
           freeModeMomentumRatio:2,
           on: {
-            slideChangeTransitionStart: function () {
-            /*  let i = self.selectList[this.realIndex]
-              self.selectData(i, this.realIndex)*/
+            slideChangeTransitionEnd: function () {
+              console.log(this.activeIndex)
+              let i = self.selectList[this.activeIndex]
+              self.selectData(i, this.activeIndex)
             }
           }
         },
@@ -232,7 +233,7 @@
           ]
         },],
         box1Style: '',
-        select_headStyle: '',
+        select_headHeight: '',
         select_headTop: '',
         grabbleHeight: 0,
         active_item: '',
@@ -312,7 +313,7 @@
         }else {
           return false
         }
-      }
+      },
     },
 
     mounted() {
@@ -342,6 +343,7 @@
       this.getBannerList()
     },
     activated() {
+      console.log('activated')
       this.$store.dispatch('getUserInfo')
     },
     methods: {
@@ -369,7 +371,10 @@
               pageNum: 1,
             }]
 
+//            this.selectList = active.concat(selectList.slice(0,6))
             this.selectList = active.concat(selectList)
+
+
             this.getData()
           } else {
             this.$vux.alert.show({
@@ -384,6 +389,8 @@
           this.$nextTick(x => {
             let w = this.$refs.box1.offsetWidth + "px" || "100%"
             this.box1Style = "width:" + w
+            this.select_headHeight = this.$refs.select_head.offsetHeight
+
           })
         })
       },
@@ -443,18 +450,17 @@
         clearInterval(this.timer)
         this.timer = null;
         this.timer = setTimeout(() => {
-          this.selectList[this.selectValue].pageNum += 1
+          if(this.selectList[this.selectValue].shopList.length == 0){
+            this.selectList[this.selectValue].pageNum = 1
+          }else {
+            this.selectList[this.selectValue].pageNum += 1
+          }
           this.getData(2)
         }, 150)
       },
       // 获取滚动条高度
       handleScroll() {
         this.scrollTop = document.body.scrollTop | document.documentElement.scrollTop
-        if (this.scrollTop >= this.select_headTop) {
-          this.select_headStyle = 'position: fixed;top: 5.5rem;'
-        } else {
-          this.select_headStyle = ''
-        }
       },
       //判断类别
       yellowClass(x) {
@@ -475,9 +481,9 @@
 
       },
       selectData(i, index) {
-        if (this.selectValue == index) return
         this.selectValue = index
-
+        document.body.scrollTop = document.documentElement.scrollTop = this.$refs.shopContent.offsetTop
+        console.log(this.selectValue,index)
         let w = this.$refs.box1.offsetWidth / this.selectList.length
         let x = index
         let z = x < 4 ? 0 : w * (x - 1)
@@ -496,9 +502,10 @@
 
         this.$refs.scroller.reset({left: z}, 600, 'ease-in-out')
         //防止重复获取数据
-        this.swiper.slideTo(this.selectValue + 1, 400, false)
+        this.swiper.slideTo(this.selectValue, 400, false)
 //        this.swiper.updateSize();
         if (i.shopList.length != 0) return
+
         clearInterval(this.timer);
         this.timer = null;
         this.timer = setTimeout(() => {
@@ -511,6 +518,7 @@
 </script>
 
 <style rel="stylesheet/less" lang="less">
+
 
   .Index_2 {
     width: 100%;
@@ -642,19 +650,18 @@
         }
       }
       .shopContent {
-        position: relative;
-        padding-top: 6.5625rem;
         min-height: calc(100vh - 6.5625rem);
         .select_head {
 
           background-color: #ffffff;
           border-top: 1px solid #f4f4f4;
           /*height: 6.75rem;*/
-          position: absolute;
+          /*position: absolute;*/
           width: 100%;
-          top: 0;
-          left: 0;
+          /*top: 0;*/
+          /*left: 0;*/
           z-index: 999;
+          overflow-x: hidden;
           .box1 {
             width: auto;
             white-space: nowrap;

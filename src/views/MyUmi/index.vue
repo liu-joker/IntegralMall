@@ -24,8 +24,14 @@
         icon_umi: icon_umi
       }
     },
-    created() {
+    mounted(){
 
+    },
+    created() {
+      this.$store.dispatch('getUserInfo')
+    },
+    activated(){
+      this.$store.dispatch('getUserInfo')
     },
     methods: {
       toUmiDetail(){

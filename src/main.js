@@ -10,6 +10,7 @@ import store from './store'
 
 //import objectAssign from 'object-assign'
 import  './utils/templateCreated.js'
+import  './utils/inertiaMove.js'
 import  { LoadingPlugin } from 'vux'
 Vue.use(LoadingPlugin)
 import axios from 'axios'
