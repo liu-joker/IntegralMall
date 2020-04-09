@@ -11,7 +11,7 @@ router.beforeEach((to, from, next) => {
   try {
     token = window.app.getToken() || ""
   } catch (e){
-    token = ""
+    token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJITEpDIiwiZXhwIjoxNTg2ODMwMzc1LCJ1c2VyIjoiNjAyYTY5OTQwMWNmNDQ4MWE3NGI3ZDNlZmM2OGQzYWQifQ.HKjPEM8E5IL-f6WGC7cgSBedOZ2LhXxM5yEe4nlUBAw0F5R7IXp4RbLr5s0Wnvx7vLsonWb-ouxQYUymoMtf-Q"
   }
   cookies.setToken(token)
   if(token !="" && !store.getters.userInfo.phone && whiteList.indexOf(to.name)==-1 && false){

@@ -61,6 +61,9 @@
     created() {
       this.getData()
     },
+    destroyed() {
+      this.$vux.loading.hide()
+    },
     methods: {
       getTime(){
         let m = (new Date().getMonth() + 1)

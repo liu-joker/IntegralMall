@@ -98,7 +98,7 @@ export function environment() {
       window.app.getToken()
       payEnv = '2';
     }catch(error) {
-      payEnv = '3';
+      payEnv = '4';
     }
   }
   return payEnv

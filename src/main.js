@@ -70,6 +70,8 @@ Object.keys(filters).forEach(key => {
 
 import VueWechatTitle from 'vue-wechat-title';
 Vue.use(VueWechatTitle)
+
+
 /** i18n **/
 /*let store = new Vuex.Store({
   modules: {

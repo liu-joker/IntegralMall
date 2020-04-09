@@ -42,7 +42,7 @@
 
         <div class="shopContent" ref="shopContent">
           <div :style="'height:'+select_headHeight+'px'">
-            <sticky  ref="sticky" :offset="grabbleHeight" :check-sticky-support="false">
+            <sticky  ref="sticky" :offset="grabbleHeight">
               <div class="select_head " ref="select_head" >
                 <scroller :lock-y="true" :scrollbar-x='false' ref="scroller">
                   <div class="box1" :style="box1Style">
@@ -71,7 +71,8 @@
                   <waterfall :col='waterfallData.col' :width="itemWidth" :gutterWidth="gutterWidth"
                              :data="item.shopList"
                              @loadmore="loadmore(item)" :key="index">
-                    <template>                    <div class="item" v-for="(x,index) in item.shopList" :key="index"
+                    <template>
+                      <div class="item" v-for="(x,index) in item.shopList" :key="index"
                                                        @click="GoodsDetails(x)">
                       <div class="img">
                         <img v-lazy="x.imgUrl" alt="">
@@ -101,7 +102,6 @@
                       <load-more></load-more>
                     </div>
                   </div>
-
                 </div>
 
               </swiper-slide>
@@ -186,7 +186,7 @@
           freeModeMomentumRatio:2,
           on: {
             slideChangeTransitionEnd: function () {
-              console.log(this.activeIndex)
+//              console.log(this.activeIndex)
               let i = self.selectList[this.activeIndex]
               self.selectData(i, this.activeIndex)
             }
@@ -194,13 +194,13 @@
         },
         bannerList: [],
         brandId: '',
-        scrollTop: 0,
+        scrollTop: document.body.scrollTop | document.documentElement.scrollTop,
         swiperIndex: 0,
         indicatorList: '',
         selectValue: 0,
         selectList: [],
         selectList2: [{
-          id: 18,
+          id: 19,
           title: '精选厨房',
           info: '美味来袭 精选厨房',
           photoList: [
@@ -208,7 +208,7 @@
             pic_sort4
           ]
         }, {
-          id: 12,
+          id: 21,
           title: '运动健康',
           info: '年轻无极限 运动我精彩',
           photoList: [
@@ -216,7 +216,7 @@
             pic_sort6
           ]
         }, {
-          id: 1,
+          id: 22,
           title: '电子数码',
           info: '工作学习两不误',
           photoList: [
@@ -224,7 +224,7 @@
             pic_sort2
           ]
         }, {
-          id: 5,
+          id: 23,
           title: '旅行意义',
           info: '一场说走就走的旅行',
           photoList: [
@@ -253,6 +253,8 @@
         },
       }
     },
+    watch:{
+    },
     computed: {
       headBgc: function () {
         let top
@@ -260,6 +262,10 @@
           top = this.scrollTop / 250
         } else {
           top = 1
+        }
+        let u = navigator.userAgent;
+        if(!!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)){
+          return 'background-color: rgba(35, 35, 40, 1)'
         }
         return 'background-color: rgba(35, 35, 40, ' + top + ')'
       },
@@ -320,8 +326,10 @@
       window.addEventListener('scroll', this.handleScroll, true)
       this.select_headTop = this.$refs.shopContent.offsetTop - this.$refs.grabble.offsetHeight
       this.grabbleHeight = this.$refs.grabble.offsetHeight
-
       this.handleScroll()
+
+
+
     },
     created() {
 
@@ -338,13 +346,15 @@
         this.$store.dispatch('setAppName',appName)
       }
 
-      console.log(this.$store.getters.brandId,this.$store.getters.appName)
+//      console.log(this.$store.getters.brandId,this.$store.getters.appName)
 
       this.getBannerList()
     },
     activated() {
-      console.log('activated')
       this.$store.dispatch('getUserInfo')
+      this.$nextTick(()=>{
+        this.$waterfall.forceUpdate()
+      })
     },
     methods: {
       toMy() {
@@ -361,6 +371,7 @@
               v.imgUrl = imgUrl(v.photo)
               v.shopList = []
               v.pageNum = 1
+              v.total = 0
               return v
             })
             let active = [{
@@ -369,6 +380,7 @@
               info: '为你推荐',
               shopList: [],
               pageNum: 1,
+              total: 0,
             }]
 
 //            this.selectList = active.concat(selectList.slice(0,6))
@@ -390,7 +402,6 @@
             let w = this.$refs.box1.offsetWidth + "px" || "100%"
             this.box1Style = "width:" + w
             this.select_headHeight = this.$refs.select_head.offsetHeight
-
           })
         })
       },
@@ -402,6 +413,12 @@
         let pageNum = this.selectList[this.selectValue].pageNum
         let pageSize = this.pageSize
 
+
+        console.log(this.selectList[this.selectValue].id)
+        if(this.selectList[this.selectValue].id == 0){
+           pageNum = 1
+           pageSize = 20
+        }
         this.$axiosApi.itemList(itemType, third, pageNum, pageSize, name).then(res => {
           if (res.code == 200) {
             //
@@ -413,14 +430,16 @@
               v.browse = (time + (v.name.length * resume)).toFixed(0)
               return v
             })
-
             this.selectList.map(v => {
               if (v.id == itemType) {
-                v.shopList = v.shopList.concat(shopList)
+//                v.shopList = v.shopList.concat(shopList)
+                v.shopList = [...new Set(v.shopList.concat(shopList))]
+                v.total = res.data.total
                 v.pageNum = res.data.pageNum
               }
               return v
             })
+            console.log(shopList)
 
             this.$nextTick(() => {
               this.dividerShow = true
@@ -446,6 +465,9 @@
         })
       },
       loadmore(item) {
+        if(this.selectList[this.selectValue].id == 0) return
+        console.log(this.selectList[this.selectValue].total,this.selectList[this.selectValue].shopList.length)
+        if(this.selectList[this.selectValue].total == this.selectList[this.selectValue].shopList.length) return
         this.dividerShow = false
         clearInterval(this.timer)
         this.timer = null;
@@ -483,7 +505,6 @@
       selectData(i, index) {
         this.selectValue = index
         document.body.scrollTop = document.documentElement.scrollTop = this.$refs.shopContent.offsetTop
-        console.log(this.selectValue,index)
         let w = this.$refs.box1.offsetWidth / this.selectList.length
         let x = index
         let z = x < 4 ? 0 : w * (x - 1)
@@ -524,6 +545,7 @@
     width: 100%;
     min-height: 100vh;
     background-color: #F6F3F7;
+    -webkit-overflow-scrolling:auto;
     .header {
       width: 100%;
       height: 17.5rem;
@@ -650,7 +672,7 @@
         }
       }
       .shopContent {
-        min-height: calc(100vh - 6.5625rem);
+        min-height: calc(100vh - 5.5rem);
         .select_head {
 
           background-color: #ffffff;
@@ -729,7 +751,7 @@
         .commodity_content {
           margin-top: 1.25rem;
           position: relative;
-
+          height: auto;
           .swiper2{
             .swiper-slide{
               min-height: 80vh;

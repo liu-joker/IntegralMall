@@ -14,8 +14,8 @@
         <tab :line-width="1" custom-bar-width="3.75rem" bar-active-color="#4385FF" active-color="#323232"
              default-color="#646464" class="stickyTab">
           <tab-item @click.native="returnTop(0)" :selected="tabActive==0">概况</tab-item>
-          <!--<tab-item @click.native="returnTop(1)" :selected="tabActive==1">相册</tab-item>
-          <tab-item @click.native="returnTop(2)" :selected="tabActive==2">评论</tab-item>-->
+          <tab-item @click.native="returnTop(1)" :selected="tabActive==1">相册</tab-item>
+          <tab-item @click.native="returnTop(2)" :selected="tabActive==2">评论</tab-item>
         </tab>
       </div>
       <div class="swiperTab">
@@ -201,7 +201,7 @@
       this.agentId = this.$route.query.agentId
       //  this.brandId = this.$route.query.brandId
       this.getData()
-    //  this.getCommontInfo()
+      this.getCommontInfo()
     },
     methods: {
       ToPayPage() {

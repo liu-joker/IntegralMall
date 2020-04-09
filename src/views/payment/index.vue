@@ -44,7 +44,7 @@
         </div>
       </div>
 
-      <div class="formInfo" v-else-if="environment == 1">
+      <div class="formInfo" v-else-if="environment == 1 || environment == 3">
         <divider class="dividerText">手机号</divider>
 
         <group class="form_item">
@@ -185,9 +185,9 @@
       this.form.phone = this.$Cookie.getwxUserPhone() || ""
 
       this.environment = environment()
-//      this.environment = 1
-      //1微信2手机app3其他
-      if (this.environment == 3) {
+    //  this.environment = 3
+      //1微信2手机app3支付宝4其他
+      if (this.environment == 4) {
         this.$router.push({
           path: '/errorPayPage?userId=' + this.form.userId
         })
@@ -341,6 +341,7 @@
 
         let brandId = this.form.brandId
         let appType = this.environment
+
         if (this.environment == 1 && this.form.phone == "") {
           this.$vux.alert.show({
             title: '提示',
