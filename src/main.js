@@ -6,6 +6,7 @@ import router from './router'
 import Vuex from 'vuex'
 import '@/icons'
 import '@/styles/index.css'
+import '@/styles/theme.less'
 import store from './store'
 
 //import objectAssign from 'object-assign'
@@ -16,7 +17,6 @@ Vue.use(LoadingPlugin)
 import axios from 'axios'
 import '@/permission'
 Vue.prototype.axios = axios;
-
 
 
 

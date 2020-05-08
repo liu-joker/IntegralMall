@@ -166,6 +166,34 @@ const routerList = [
       title: '支付'
     }
   },
+
+
+
+  //商家模块
+  {
+    path: '/merchantIndex',
+    name: 'merchantIndex',
+    component: () => import('@/views/merchant/merchantIndex'),
+    meta: {
+      title: '商家'
+    }
+  },
+  {
+    path: '/merchantGrabble',
+    name: 'merchantGrabble',
+    component: () => import('@/views/merchant/merchantGrabble'),
+    meta: {
+      title: '商家搜索'
+    }
+  },
+  {
+    path: '/merchantMove',
+    name: 'merchantMove',
+    component: () => import('@/views/merchant/merchantMove'),
+    meta: {
+      title: '商家入驻'
+    }
+  },
   {
     path: '/merchantInfo',
     name: 'merchantInfo',
@@ -174,6 +202,40 @@ const routerList = [
       title: '商家详情'
     }
   },
+  {
+    path: '/qrCode',
+    name: 'qrCode',
+    component: () => import('@/views/merchant/qrCode'),
+    meta: {
+      title: '收款码'
+    }
+  },
+  {
+    path: '/qrCodeImg',
+    name: 'qrCodeImg',
+    component: () => import('@/views/merchant/qrCodeImg'),
+    meta: {
+      title: '下载收款码'
+    }
+  },
+  {
+    path: '/setAmount',
+    name: 'setAmount',
+    component: () => import('@/views/merchant/setAmount'),
+    meta: {
+      title: '设置金额'
+    }
+  },
+  {
+    path: '/applicationForm',
+    name: 'applicationForm',
+    component: () => import('@/views/merchant/applicationForm'),
+    meta: {
+      title: '申请入驻信息填写'
+    }
+  },
+
+
 
 
   {path: '/404', component: () => import('@/views/404'), hidden: true},

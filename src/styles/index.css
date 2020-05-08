@@ -145,10 +145,10 @@ img {
   opacity: 0;
 }
 
-.weui-dialog {
-  max-width: 80% !important;
-  width: 80% !important
-}
+/*.weui-dialog {
+   max-width: 80% !important;
+   width: 80% !important
+ }*/
 
 @media screen and (min-width: 1024px) {
   #app .weui-dialog {
@@ -250,3 +250,4 @@ body .weui-cell__ft {
   z-index: 1;
   bottom: 1.75rem;
 }
+

@@ -3,7 +3,7 @@
 
   <div class="payment">
 
-    <div class="pay_content">
+    <div class="pay_content vux-scrollable">
 
       <div class="p_head">
         <img :src="shopLogo" alt="" class="shopLogo">
@@ -70,7 +70,6 @@
           </div>
         </group>
       </div>
-
 
       <popup v-model="popupShow" position="bottom" :show-mask="false" :hide-on-blur="false">
         <div class="popupContent">
@@ -156,7 +155,7 @@
         icon_cancel2: icon_cancel2,
         icon_phone: icon_phone,
         shopName: "",
-        popupShow: true,
+        popupShow: false,
         readonly: true,
         keyboardType: 1,
         brandId: '',
@@ -180,20 +179,22 @@
         this.amountDisabled = true
       }
       //    console.log(this.agentId)
-//      this.getCode()
 
       this.form.phone = this.$Cookie.getwxUserPhone() || ""
 
       this.environment = environment()
-    //  this.environment = 3
+//      this.environment = 3
+      if(this.environment != 2){
+        this.popupShow = false
+      }else {
+        this.popupShow = true
+      }
       //1微信2手机app3支付宝4其他
       if (this.environment == 4) {
         this.$router.push({
           path: '/errorPayPage?userId=' + this.form.userId
         })
-
         console.log('其他浏览器')
-
       }
       this.getData()
 
@@ -370,8 +371,18 @@
         })
         this.$axiosApi.scanOrder(agentId, amount, payType, brandId, appType, phone).then(res => {
           if (res.code == 200) {
+            this.$vux.loading.hide()
             if (res.data.respCode == 10000) {
               window.location = res.data.data
+            }else {
+              this.$vux.alert.show({
+                title: '提示',
+                content: res.data.respMessage,
+                onShow() {
+                },
+                onHide() {
+                }
+              })
             }
           } else {
             this.$vux.alert.show({
@@ -434,6 +445,7 @@
 
     }
     .pay_content {
+      min-height: 100vh;
       .p_head {
         padding: 3rem 2rem;
         display: flex;
@@ -457,7 +469,7 @@
         overflow: auto;
       }
       .payAmount {
-        margin: 2.5rem 0;
+        margin: 2rem 0;
         padding: 0 1.875rem;
 
       }

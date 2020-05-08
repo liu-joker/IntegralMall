@@ -8,6 +8,7 @@ const TokenKey = 'User-Token'
 const UserInfo = 'User-Info'
 const wxUserPhone = 'User-Phone'
 const searchRecord = 'searchRecord'
+const MGHistory = 'MGHistory'
 
 class cookies {
 
@@ -65,7 +66,17 @@ class cookies {
   static removeSearchRecord() {
     return Cookies.remove(searchRecord)
   }
+  static getMGHistory() {
+    return Cookies.get(MGHistory)
+  }
 
+  static setMGHistory(x) {
+    return Cookies.set(MGHistory, x)
+  }
+
+  static removeMGHistory() {
+    return Cookies.remove(MGHistory)
+  }
 }
 
 export default cookies
