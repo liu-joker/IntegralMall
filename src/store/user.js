@@ -1,12 +1,14 @@
 import axiosApi from '@/api/axios'
+
 const user = {
   state: {
     userInfo: {
-      grade:0
+      grade: 0
     },
-    selectItem:'all',
-    brandId:'',
-    appName:''
+    selectItem: 'all',
+    brandId: '',
+    appName: '',
+    agentInfo: {}
   },
   mutations: {
     SET_USERINFO: (state, userInfo) => {
@@ -21,12 +23,15 @@ const user = {
     SET_APPNAME: (state, data) => {
       state.appName = data
     },
+    SET_AGENTINFO: (state, data) => {
+      state.agentInfo = data
+    },
   },
   actions: {
-    setAppName({commit},data){
+    setAppName({commit}, data) {
       commit('SET_APPNAME', data)
     },
-    setBrindId({commit},data){
+    setBrindId({commit}, data) {
       commit('SET_BRANDID', data)
     },
     getUserInfo({commit}) {
@@ -34,6 +39,18 @@ const user = {
         axiosApi.shopUserinfo().then(response => {
           if (response.code == 200) {
             commit('SET_USERINFO', response.data)
+            resolve(response)
+          }
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    getAgentInfo({commit}) {
+      return new Promise((resolve, reject) => {
+        axiosApi.isAgent().then(response => {
+          if (response.code == 200) {
+            commit('SET_AGENTINFO', response.data)
             resolve(response)
           }
         }).catch(error => {

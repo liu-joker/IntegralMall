@@ -14,7 +14,7 @@
         </div>
 
         <div class="banner_content">
-          <swiper :options="swiperOption" v-if="bannerList.length>1">
+          <swiper :options="swiperOption" v-if="bannerList.length>1" ref="swiper1">
             <swiper-slide class="swiper-demo-img" v-for="(x, index) in bannerList" :key="index">
               <img :src="x.photo | imgUrl" alt="" class="bannerImg">
             </swiper-slide>
@@ -65,7 +65,7 @@
             </sticky>
           </div>
           <div class="commodity_content">
-            <swiper :options="swiperOption2" v-if="selectList.length>1" ref="mySwiper" class="swiper2">
+            <swiper :options="swiperOption2"  ref="mySwiper" class="swiper2">
               <swiper-slide v-for="(item, index) in selectList" :key="index">
                 <div class="list" v-if="item.shopList">
                   <waterfall :col='waterfallData.col' :width="itemWidth" :gutterWidth="gutterWidth"
@@ -135,15 +135,11 @@
   import {Scroller, LoadMore, Divider, XInput, XImg,Sticky  } from 'vux'
   import {imgUrl} from "@/filters";
 
-  import 'swiper/dist/css/swiper.css'////这里注意具体看使用的版本是否需要引入样式，以及具体位置。
-  import {swiper, swiperSlide} from 'vue-awesome-swiper'
   import loading from '@/assets/loading3.gif'
 
   export default {
     name: 'index',
     components: {
-      swiper,
-      swiperSlide,
       Scroller,
       LoadMore,
       Divider,
@@ -239,7 +235,7 @@
         active_item: '',
         shopList: [],
         pageNum: 1,
-        pageSize: 50,
+        pageSize: 20,
         third: 0,
         itemType: '',
         info: '',
@@ -306,7 +302,7 @@
         return style
       },
       swiper() {
-        return this.$refs.mySwiper.swiper
+        return this.$refs.mySwiper.$swiper
       },
       showShop:function () {
         let item = this.selectList[this.selectValue]
@@ -327,8 +323,6 @@
       this.select_headTop = this.$refs.shopContent.offsetTop - this.$refs.grabble.offsetHeight
       this.grabbleHeight = this.$refs.grabble.offsetHeight
       this.handleScroll()
-
-
 
     },
     created() {
@@ -477,6 +471,7 @@
           }else {
             this.selectList[this.selectValue].pageNum += 1
           }
+          console.log('loadmore')
           this.getData(2)
         }, 150)
       },

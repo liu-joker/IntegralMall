@@ -7,7 +7,7 @@
       <!--<qrcode :value="value" class="qrcode_img"></qrcode>-->
       <vue-qrcodes :qrcodeData="qrcodeData" v-if="qrcodeData.show"></vue-qrcodes>
       <div class="setOrSave">
-        <div class="setBut">设置金额</div><div>保存图片</div>
+        <div class="setBut">设置金额</div><div @click="toQrCodeImg">保存图片</div>
       </div>
       <div class="collectionRecord">
         <div>
@@ -38,7 +38,7 @@
       return {
         value:'http://192.168.1.34:8088/#/qrCode',
         qrcodeData:{
-          url:'http://192.168.1.34:8088/#/qrCode',
+          url:'http://192.168.1.34:8088/#/payment?agentId=1&brandId=deb99c1be8a748a59f760485fd49df15',
           icon:'http://img.cdn.hljcxiaoxiong.com/pic_sort11-12.png',
           wid: 200,
           hei: 200,
@@ -55,6 +55,11 @@
       this.setQrcode()
     },
     methods: {
+      toQrCodeImg(){
+        this.$router.push({
+          path:'/qrCodeImg'
+        })
+      },
       setQrcode(){
         let w = document.body.clientWidth
         this.qrcodeData.wid = Math.floor((23.125/46.875) * w)

@@ -4,9 +4,9 @@ import request from '@/utils/request'
 class loginApi {
 
   //首页商品列表
-  static itemList(itemType,third,pageNum,pageSize,name) {
+  static itemList(itemType, third, pageNum, pageSize, name) {
     return request({
-      url: '/itemList?itemType='+itemType+'&third='+third+'&pageNum='+pageNum+'&pageSize='+pageSize+'&name='+name,
+      url: '/itemList?itemType=' + itemType + '&third=' + third + '&pageNum=' + pageNum + '&pageSize=' + pageSize + '&name=' + name,
       method: 'get',
       data: {},
       headers: {"Content-Type": "application/x-www-form-urlencoded;charset=utf-8"}
@@ -51,15 +51,15 @@ class loginApi {
   };
 
   //添加收货地址
-  static addAddress(name,phone,areaId,address) {
+  static addAddress(name, phone, areaId, address) {
     return request({
       url: '/addAddress',
       method: 'post',
       data: {
-        areaId:areaId,
-        address:address,
-        phone:phone,
-        name:name,
+        areaId: areaId,
+        address: address,
+        phone: phone,
+        name: name,
       },
     })
   };
@@ -70,7 +70,7 @@ class loginApi {
       url: '/setDefAddress',
       method: 'post',
       data: {
-        id:id
+        id: id
       },
     })
   };
@@ -81,7 +81,7 @@ class loginApi {
       url: '/updateAddress',
       method: 'post',
       data: {
-        id:id
+        id: id
       },
     })
   };
@@ -91,8 +91,7 @@ class loginApi {
     return request({
       url: '/shopUserinfo',
       method: 'get',
-      data: {
-      },
+      data: {},
     })
   };
 
@@ -101,48 +100,47 @@ class loginApi {
     return request({
       url: '/userAddress',
       method: 'post',
-      data: {
-      },
+      data: {},
     })
   };
 
   //下单
-  static orderItem(itemId,payMode) {
+  static orderItem(itemId, payMode) {
     return request({
       url: '/orderItem',
       method: 'post',
       data: {
-        itemId:itemId,
-        payMode:payMode,
+        itemId: itemId,
+        payMode: payMode,
       },
     })
   };
 
   //确认订单（详情）
-  static createOrder(itemId,payMode,payType,addressId) {
+  static createOrder(itemId, payMode, payType, addressId) {
     return request({
       url: '/createOrder',
       method: 'post',
       data: {
-        itemId:itemId,
-        payMode:payMode,
-        payType:payType,
-        addressId:addressId,
+        itemId: itemId,
+        payMode: payMode,
+        payType: payType,
+        addressId: addressId,
       },
     })
   };
 
   //订单列表
-  static findUserShopOrder(pageNum,pageSize,status,payStatus,expressStatus) {
+  static findUserShopOrder(pageNum, pageSize, status, payStatus, expressStatus) {
     return request({
       url: '/findUserShopOrder',
       method: 'post',
       data: {
-        pageNum:pageNum,
-        pageSize:pageSize,
-        status:status,
-        payStatus:payStatus,
-        expressStatus:expressStatus,
+        pageNum: pageNum,
+        pageSize: pageSize,
+        status: status,
+        payStatus: payStatus,
+        expressStatus: expressStatus,
       },
     })
   };
@@ -153,20 +151,20 @@ class loginApi {
       url: '/cancelOrder',
       method: 'post',
       data: {
-        orderNum:orderNum,
+        orderNum: orderNum,
       },
     })
   };
 
 //积分详情
-  static userPoint(startTime,pageNum,pageSize) {
+  static userPoint(startTime, pageNum, pageSize) {
     return request({
       url: '/userPoint',
       method: 'post',
       data: {
-        startTime:startTime,
-        pageNum:pageNum,
-        pageSize:pageSize,
+        startTime: startTime,
+        pageNum: pageNum,
+        pageSize: pageSize,
       },
     })
   };
@@ -177,7 +175,7 @@ class loginApi {
       url: '/findShopOrderDetails',
       method: 'post',
       data: {
-        orderNum:orderNum,
+        orderNum: orderNum,
       },
     })
   };
@@ -188,19 +186,19 @@ class loginApi {
       url: '/finishOrder',
       method: 'post',
       data: {
-        orderNum:orderNum,
+        orderNum: orderNum,
       },
     })
   };
 
   //确认支付密码
-  static pay(orderNum,password) {
+  static pay(orderNum, password) {
     return request({
       url: '/pay',
       method: 'post',
       data: {
-        orderNum:orderNum,
-        password:password,
+        orderNum: orderNum,
+        password: password,
       },
     })
   };
@@ -208,54 +206,92 @@ class loginApi {
   //获取收银台商户信息
   static getAgentH5(agentId) {
     return request({
-      url: '/getAgentH5?agentId='+agentId,
+      url: '/getAgentH5?agentId=' + agentId,
       method: 'get',
-      data: {
-      },
+      data: {},
     })
   };
 
   //扫码下单
-  static scanOrder(agentId,amount,payType,brandId,appType,phone) {
+  static scanOrder(agentId, amount, payType, brandId, appType, phone) {
     return request({
       url: '/scanOrder',
       method: 'post',
       data: {
-        agentId:agentId,
-        amount:amount,
-        payType:payType,
-        brandId:brandId,
-        appType:appType,
-        phone:phone,
+        agentId: agentId,
+        amount: amount,
+        payType: payType,
+        brandId: brandId,
+        appType: appType,
+        phone: phone,
       },
     })
   };
 
 
-
   //商户
 
+
+  ///getNearAgent根据条件筛选商户
+  static getNearAgent(brandId, lng, lat, distance, pageNum, pageSize,shopName,tradeType) {
+    return request({
+      url: '/getNearAgent',
+      method: 'post',
+      data: {
+        brandId: brandId,
+        lng: lng,
+        lat: lat,
+        distance: distance,
+        pageNum: pageNum,
+        pageSize: pageSize,
+        shopName: shopName,
+        tradeType: tradeType,
+      },
+    })
+  };
+
+  //是否为商户
+  static isAgent() {
+    return request({
+      url: '/isAgent',
+      method: 'get',
+      data: {},
+    })
+  };
+
+  //获取商户二维码链接
+  static qrCodeInfo() {
+    return request({
+      url: '/qrCodeInfo',
+      method: 'get',
+      data: {},
+    })
+  };
+
+
+
+
+
+
   //商户详情
-  static agentDetail(agentId,lng,lat) {
+  static agentDetail(agentId, lng, lat) {
     return request({
       url: '/agentDetail',
       method: 'post',
       data: {
-        agentId:agentId,
-        lng:lng,
-        lat:lat,
+        agentId: agentId,
+        lng: lng,
+        lat: lat,
       },
     })
   };
 
   //商户评论列表
-  static getAgentCommont(agentId,orderBy,pageNum,pageSize) {
+  static getAgentCommont(agentId, orderBy, pageNum, pageSize) {
     return request({
-      url: '/getAgentCommont?agentId='+agentId+'&orderBy='+orderBy+'&pageNum='+pageNum+'&pageSize='+pageSize,
+      url: '/getAgentCommont?agentId=' + agentId + '&orderBy=' + orderBy + '&pageNum=' + pageNum + '&pageSize=' + pageSize,
       method: 'get',
-      data: {
-
-      },
+      data: {},
     })
   };
 

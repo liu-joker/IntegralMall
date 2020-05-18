@@ -50,7 +50,7 @@
         LOGOUrl: '',
         dataURL: '',
         qrcodeData:{
-          url:'http://192.168.1.34:8088/#/qrCode',
+          url:'http://192.168.1.34:8088/#/payment?agentId=1&brandId=deb99c1be8a748a59f760485fd49df15',
           icon:'http://img.cdn.hljcxiaoxiong.com/pic_sort11-12.png',
           wid: 200,
           hei: 200,

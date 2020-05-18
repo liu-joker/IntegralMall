@@ -18,7 +18,13 @@ import axios from 'axios'
 import '@/permission'
 Vue.prototype.axios = axios;
 
+import VueAMap from 'vue-amap';
+Vue.use(VueAMap);
 
+import VueAwesomeSwiper from 'vue-awesome-swiper'
+// import style
+import 'swiper/css/swiper.css'
+Vue.use(VueAwesomeSwiper, /* { default options with global component } */)
 
 import  { ToastPlugin } from 'vux'
 Vue.use(ToastPlugin)
@@ -70,6 +76,9 @@ Object.keys(filters).forEach(key => {
 
 import VueWechatTitle from 'vue-wechat-title';
 Vue.use(VueWechatTitle)
+
+
+
 
 
 /** i18n **/

@@ -183,7 +183,7 @@
       this.form.phone = this.$Cookie.getwxUserPhone() || ""
 
       this.environment = environment()
-//      this.environment = 3
+      this.environment = 3
       if(this.environment != 2){
         this.popupShow = false
       }else {
@@ -353,9 +353,20 @@
             }
           })
           return
-        } else {
-
         }
+        if (this.form.phone.length < 11) {
+          this.$vux.alert.show({
+            title: '提示',
+            content: '手机号码格式不正确',
+            onShow() {
+            },
+            onHide() {
+            }
+          })
+          return
+        }
+
+
         let phone = String(this.form.phone)
         if (amount < 10) {
           this.$vux.toast.show({
@@ -586,13 +597,15 @@
           }
           .right {
             width: 11.625rem;
+            display: flex;
+            flex-direction: column;
             > div {
               display: flex;
               align-items: center;
               justify-content: center;
             }
             .delete {
-              height: 25%;
+              height: 6.25rem;
               .icon_cancel {
                 width: 3.375rem;
                 height: 2.5rem;
@@ -601,7 +614,7 @@
               }
             }
             .payEdit {
-              height: 75%;
+             flex: 1;
               background-color: #F89F04;
               font-size: 2.625rem;
               color: #ffffff;

@@ -172,7 +172,8 @@
         showScrollBox: false,
         kmList: [{km: 500, table: '附近'}, {km: 1000, table: '1km'}, {km: 5000, table: '5km'}, {km: 10000, table: '10km'},
           {km: 15000, table: '15km'}, {km: 20000, table: '20km'}],
-        kmActive: 500
+        kmActive: 500,
+        tradeType:''
 
       }
     },
@@ -195,6 +196,7 @@
 
 
 
+      this.tradeType = this.$route.query.tradeType
 
 
       if (this.$Cookie.getMGHistory()) {

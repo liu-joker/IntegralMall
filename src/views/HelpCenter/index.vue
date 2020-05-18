@@ -44,11 +44,11 @@
 
       this.helpList = [{
         title: '1.U米是什么？',
-        html: '<p>U米是'+this.appName+'对用户还款的一种奖励。'+this.appName+'用户可通过制定信用卡还款计划或者购买线下服务来获得U米。用户使用U米，可以在U米商城兑换商品、服务等。最终解释权归'+this.appName+'所有。</p>',
+        html: '<p>U米是'+this.appName+'对用户还款的一种奖励。'+this.appName+'用户可通过购买线下服务来获得U米。用户使用U米，可以在U米商城兑换商品、服务等。最终解释权归'+this.appName+'所有。</p>',
         show: false
       }, {
         title: '2.如何获得U米？',
-        html: '<p>(1) '+this.appName+'用户在APP内完整执行还款计划，可获取对应手续费的U米(2.00元手续费取得1U米)；在计划完成后统一结算。</p><br /><p>(2) 还款计划未完整执行完成的，将无法获取U米！</p><br /><p>(3) '+this.appName+'用户通过APP购买合作商家的线下服务，可获取U米。</p>',
+        html: '<p>(1) '+this.appName+'用户通过APP购买合作商家的线下服务，可获取U米。</p>',
         show: false
       }, {
         title: '3.U米余数怎么计算？',

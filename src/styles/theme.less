@@ -1,6 +1,6 @@
 @themeColor: #F33945;
 @themebackgroundColor: #f7f7f7;
-
+@butActive: #C91919;
 //水波纹
 
 .ripple {
@@ -47,7 +47,7 @@
   .requestSpan {
     color: #F42929;
   }
-  &:last-child {
+  &.last {
     border-bottom: none;
   }
   .weui-cells {
@@ -71,7 +71,7 @@
 
 }
 
-.merChantIndex .xDialog, .merchantGrabble .xDialog {
+.merChantIndex .xDialog, .merchantGrabble .xDialog, .tradeType .xDialog {
 
   .dialogItem {
     width: 100%;
@@ -417,8 +417,11 @@ button.weui-btn.merchantBut {
     }
   }
   .merchantList {
-    padding: 1.25rem 1.875rem;
+    &.minHeight {
+      min-height: calc(100vh - 5.5rem);
+    }
     .list {
+      padding: 1.25rem 1.875rem;
       .item {
         padding: 1.875rem 1.25rem;
         margin-bottom: 0.625rem;
@@ -498,6 +501,309 @@ button.weui-btn.merchantBut {
         }
       }
     }
+  }
+
+
+}
+
+//商家商城
+
+//商家分类
+
+.tradeType {
+  .center{
+    background-color: #F4F4F4;
+  }
+  .header {
+    width:100%;
+    background-color: @themeColor;
+    padding-top: 2rem;
+    .head_center {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.875rem;
+      width: calc(100% - 3.75rem);
+      background-color: #F4F4F4;
+      border-radius: 2rem 2rem 0 0;
+      .grabble_input {
+        flex: 1;
+        padding: 0 2rem 0 1rem;
+        .grabble_inp {
+          background-color: #F4F4F4;
+          width: 100%;
+          padding: 0;
+          height: 3.75rem;
+          border-radius: 1.875rem;
+          font-size: 1.75rem;
+          border: 1px solid #e8e8e8;
+          &:before {
+            border: 0;
+          }
+          .form_icon {
+            margin-left: 2rem;
+            margin-right: 1rem;
+            font-size: 1.25rem;
+            color: #8C8C8C;
+          }
+        }
+      }
+
+    }
+  }
+
+  .banner {
+    width: 100%;
+    .banner_content {
+      height: 17.5rem;
+      position: relative;
+      .swiper-demo-img {
+        /*padding: 0 1.875rem;*/
+        text-align: center;
+        .bannerImg {
+          width: calc(100% - 3.75rem);
+          height: 17.5rem;
+          border-radius: 0.625rem;
+        }
+      }
+      .indicatorList {
+        position: absolute;
+        z-index: 100;
+        bottom: 10px;
+        left: 50%;
+        height: 0.375rem;
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 0.1875rem;
+        min-width: 1.875rem;
+        .indicator_item {
+          transition: 0.3s;
+          min-width: 1.875rem;
+          border-radius: 0.1875rem;
+          background-color: #ffffff;
+          height: 0.375rem;
+          position: absolute;
+          top: 0;
+        }
+      }
+
+    }
+  }
+  .nearby {
+    width: 100%;
+    height: 5.5rem;
+
+
+    .vuxFixed {
+      z-index: 1100;
+    }
+    .xDialog {
+      .distance {
+        text-align: left;
+        padding: 0 1.875rem;
+        .item {
+          font-size: 1.75rem;
+          padding: 1.5rem 0;
+          &.active {
+            color: @themeColor;
+          }
+          &:active {
+            color: @themeColor;
+          }
+        }
+      }
+    }
+    .nearbyDiv {
+      padding: 0 1.875rem;
+      position: relative;
+      background-color: #F4F4F4;
+
+      .list {
+        line-height: 5.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        .item {
+          padding: 0 0.625rem;
+          display: flex;
+          align-items: center;
+          justify-content: flex-start;
+          font-size: 1.75rem;
+          color: #323232;
+        }
+      }
+    }
+  }
+
+  .merchantList {
+    &.minHeight {
+      min-height: calc(100vh - 5.5rem);
+    }
+    .list {
+      padding: 1.25rem 1.875rem;
+      .item {
+        padding: 1.875rem 1.25rem;
+        margin-bottom: 0.625rem;
+        border-radius: 1rem;
+        box-shadow: 0 0 1rem 0 rgba(209, 209, 209, 0.5);
+        display: flex;
+        align-items: stretch;
+        justify-content: space-around;
+        .merchantLogo {
+          width: 8rem;
+          height: 8rem;
+          border-radius: 0.5rem;
+          margin-right: 1.5rem;
+        }
+        .item_content {
+          flex: 1;
+
+          .item_title {
+            color: #323232;
+            font-size: 1.875rem;
+            font-weight: 400;
+            line-height: 1.875rem;
+          }
+          .startInfo {
+            margin-top: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: #646464;
+            font-size: 1.25rem;
+            .left {
+              .start {
+                display: inline-block;
+                width: 8.375rem;
+                height: 1.5rem;
+                background: url('~@/assets/images/start.png') no-repeat;
+                background-size: 8.375rem 22.5rem;
+                background-position: 0px -0.5rem;
+                margin-right: 0.5rem;
+              }
+              .consumptionPerPerson {
+                margin-left: 1.25rem;
+              }
+            }
+          }
+          .addressInfo {
+            margin-top: 1rem;
+            color: #646464;
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            .proportion {
+              margin-left: 1.5rem;
+              background-color: #FFEFE9;
+              color: #FF4B0C;
+              font-size: 1.125rem;
+              padding: 0.25rem;
+            }
+            .salesVolume {
+              color: #FF6B22;
+              font-family: AlibabaPuHuiTiR;
+            }
+          }
+          .merchantInfo {
+            max-width: 30rem;
+            color: #646464;
+            font-size: 1.25rem;
+            border: 1px solid #DBDBDB;
+            border-radius: 1rem 1rem 1rem 0rem;
+            padding-left: 0.625rem;
+            margin-top: 1rem;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+          }
+        }
+      }
+    }
+  }
+  .merchant_content .list2 {
+    padding: 0 1.875rem;
+    .item2 {
+      padding: 1.25rem 1.25rem;
+      margin-top: 0.625rem;
+      border-radius: 1rem;
+      //box-shadow: 0 0 1rem 0 rgba(209, 209, 209, 0.5);
+      display: flex;
+      align-items: stretch;
+      justify-content: space-around;
+      background-color: #fff;
+      .merchantLogo {
+        width: 8rem;
+        height: 8rem;
+        border-radius: 0.5rem;
+        margin-right: 1.5rem;
+      }
+      .item_content {
+        flex: 1;
+
+        .item_title {
+          color: #323232;
+          font-size: 1.875rem;
+          font-weight: 400;
+          line-height: 1.875rem;
+        }
+        .startInfo {
+          margin-top: 1.5rem;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          color: #646464;
+          font-size: 1.25rem;
+          .left {
+            .start {
+              display: inline-block;
+              width: 8.375rem;
+              height: 1.5rem;
+              background: url('~@/assets/images/start.png') no-repeat;
+              background-size: 8.375rem 22.5rem;
+              background-position: 0px -0.5rem;
+              margin-right: 0.5rem;
+            }
+            .consumptionPerPerson {
+              margin-left: 1.25rem;
+            }
+          }
+        }
+        .addressInfo {
+          margin-top: 1rem;
+          color: #646464;
+          font-size: 1.25rem;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          .proportion {
+            margin-left: 1.5rem;
+            background-color: #FFEFE9;
+            color: #FF4B0C;
+            font-size: 1.125rem;
+            padding: 0.25rem;
+          }
+          .salesVolume {
+            color: #FF6B22;
+            font-family: AlibabaPuHuiTiR;
+          }
+        }
+        .merchantInfo {
+          max-width: 30rem;
+          color: #646464;
+          font-size: 1.25rem;
+          border: 1px solid #DBDBDB;
+          border-radius: 1rem 1rem 1rem 0rem;
+          padding-left: 0.625rem;
+          margin-top: 1rem;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
+      }
+    }
+  }
+  .xDialog .dialogItem .weui-dialog{
+    top:5.5rem;
   }
 }
 
@@ -643,20 +949,57 @@ button.weui-btn.merchantBut {
   }
 }
 
-//商家入驻
+//商家入驻  审核状态
 .merchantMove {
-  .but {
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    width: calc(100% - 2.5rem);
-    padding: 0 1.25rem 0.75rem;
-    background-color: #fff;
-    .submit {
-      font-size: 2.375rem;
+  .merchantMoveContent {
+    min-height: 100vh;
+    .merchantMoveInfo {
       width: 100%;
+      height: auto;
+    }
+    .but {
+      position: fixed;
+      left: 0;
+      bottom: 0;
+      width: calc(100% - 2.5rem);
+      padding: 0 1.25rem 0.75rem;
+      background-color: #fff;
+      .submit {
+        font-size: 2.375rem;
+        width: 100%;
+      }
     }
   }
+  .merchantMoveStart {
+    .start_head {
+      font-size: 2rem;
+      text-align: center;
+      padding-top: 4.75rem;
+      .merchantMoveInfo {
+        width: 9.5rem;
+        height: 9.5rem;
+        margin-bottom: 1.875rem;
+      }
+      .text_info {
+        color: #8C8C8C;
+      }
+      .text_err {
+        color: #E22D2D;
+      }
+    }
+    .start2 {
+      margin-top: 5.25rem;
+      .addInfo {
+        width: 16.25rem;
+        height: 4.25rem;
+        line-height: 4.25rem;
+        border-radius: 2.125rem;
+        font-size: 2rem;
+        color: #ffffff;
+      }
+    }
+  }
+
 }
 
 //收款码
@@ -850,7 +1193,7 @@ button.weui-btn.merchantBut {
             height: auto;
           }
         }
-        &.item_tip{
+        &.item_tip {
           background-color: inherit;
           font-size: 1.5rem;
           color: #646464;
@@ -870,7 +1213,7 @@ button.weui-btn.merchantBut {
         color: @themeColor;
       }
     }
-    .form{
+    .form {
       .popupDiv {
         .popup {
           background-color: #fff;
@@ -898,7 +1241,7 @@ button.weui-btn.merchantBut {
               right: 2.625rem;
               top: 50%;
               transform: translate(0, -50%);
-              font-size: 1.75rem;
+              font-size: 2.75rem;
               color: #646464;
               &:active {
                 opacity: 0.8;
@@ -943,14 +1286,346 @@ button.weui-btn.merchantBut {
       }
     }
   }
-  .foot_but{
+  .foot_but {
     margin-top: 5rem;
     width: calc(100% - 2.5rem);
     padding: 0 1.25rem 0.75rem;
     background-color: #fff;
-    .submit{
+    .submit {
       font-size: 2.375rem;
       width: 100%;
     }
   }
 }
+
+//商户详情
+
+.merchantInfoDetails {
+  min-height: 100vh;
+  background-color: #ffffff;
+  .start {
+    display: inline-block;
+    width: 8.375rem;
+    height: 1.5rem;
+    background: url('~@/assets/images/start.png') no-repeat;
+    background-size: 8.375rem 22.5rem;
+    background-position: 0px -0.5rem;
+    margin-right: 0.5rem;
+  }
+  .headTitle {
+    padding: 1.875rem 1.875rem 0;
+    background-color: #fff;
+    .h_title {
+      color: #323232;
+      font-size: 2rem;
+      font-weight: bold;
+      margin-bottom: 1.25rem;
+    }
+    .evaluate {
+      color: #646464;
+      font-size: 1.25rem;
+      display: flex;
+      align-items: baseline;
+      justify-content: flex-start;
+
+    }
+  }
+  .m_content {
+    padding-bottom: 6.75rem;
+    .sticky {
+      padding: 3rem 1.875rem 2.875rem;
+      background-color: #fff;
+
+      .stickyTab {
+        width: 50%;
+        .vux-tab-container {
+          height: auto;
+        }
+        .vux-tab {
+          display: flex;
+          align-items: center;
+          justify-content: flex-start;
+          height: auto;
+          .vux-tab-item {
+            font-size: 1.875rem;
+            color: #646464;
+            position: relative;
+            z-index: 2;
+            line-height: 1.875rem;
+            text-align: left;
+          }
+          .vux-tab-selected {
+            font-size: 2.375rem;
+            color: #323232;
+            font-weight: bold;
+            line-height: 2.375rem;
+          }
+          .vux-tab-ink-bar {
+            z-index: 1;
+            height: auto !important;
+          }
+          .vux-tab-bar-inner {
+            width: 4.5rem !important;
+            background-color: @themeColor !important;
+            height: 0.75rem !important;
+            margin: 0;
+          }
+        }
+
+      }
+      .vux-tab-item {
+        background: transparent;
+      }
+    }
+    .swiperTab {
+      .vux-swiper {
+        height: auto !important;
+        overflow: auto;
+        overflow-y: scroll;
+        overflow-x: hidden;
+        width: 100%;
+        .swiperItem {
+          width: 100%;
+          position: relative;
+          &.swiper_merchantInfo {
+            background-color: #f4f4f4;
+          }
+          .commentItem {
+            max-height: 100vh;
+          }
+          .tab-swiper1 {
+            padding: 0 0 1.75rem;
+          }
+        }
+        .bannerImg {
+          padding: 0 1.875rem;
+          background-color: #fff;
+          height: 16.25rem;
+          overflow: hidden;
+          img {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+          }
+        }
+        .addressInfo {
+          background-color: #fff;
+          padding: 1.625rem 1.875rem 1.75rem;
+          .addressOrName {
+            display: flex;
+            align-items: baseline;
+            justify-content: flex-start;
+            .left {
+              margin-right: 1.5rem;
+              img {
+                width: 2.25rem;
+                height: 2.25rem;
+              }
+            }
+            .right {
+              flex: 1;
+              border-bottom: 1px solid #EAEAEA;
+              padding-bottom: 1rem;
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              .item_l {
+                flex: 1;
+                text-align: left;
+                padding-right: 1.5rem;
+                border-right: 1px solid #EAEAEA;
+                .address_text {
+                  font-size: 1.75rem;
+                  color: #323232;
+                }
+                .distance {
+                  margin-top: 0.25rem;
+                  font-size: 1.25rem;
+                  color: #8C8C8C;
+                }
+              }
+              .item_r {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding-left: 2rem;
+                .icon_item {
+                  display: flex;
+                  flex-direction: column;
+                  align-items: center;
+                  font-size: 1.25rem;
+                  color: #8c8c8c;
+                  &:first-child {
+                    margin-right: 2.875rem;
+                  }
+                  img {
+                    width: 2.75rem;
+                    height: 2.75rem;
+                    margin-bottom: 0.75rem;
+                  }
+                }
+
+              }
+            }
+          }
+          .businessHours {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            margin-top: 1.875rem;
+            .img {
+              img {
+                width: 2.25rem;
+                height: 2.25rem;
+                margin-right: 1.5rem;
+              }
+            }
+            > p {
+              flex: 1;
+              font-size: 1.75rem;
+              color: #323232;
+            }
+          }
+        }
+        .card_title {
+
+          font-size: 2rem;
+          font-weight: bold;
+          color: #323232;
+          padding-bottom: 1rem;
+          border-bottom: 1px solid #eaeaea;
+        }
+        .m_card {
+          padding: 1.75rem 1.875rem 2rem;
+          margin-top: 1.25rem;
+          background-color: #ffffff;
+          .PresentationInfo {
+            padding-top: 1.5rem;
+            font-size: 1.75rem;
+            color: #323232;
+            pre {
+              font-family: PingFang SC;
+              line-height: 1.5em;
+              margin: 0;
+              padding: 0;
+              font-size: 1.75rem;
+              color: #323232;
+            }
+          }
+        }
+        .M_Presentation {
+
+        }
+
+        .imgList {
+          padding: 0 1.875rem 0;
+          background-color: #fff;
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: space-between;
+          align-items: center;
+          .item {
+            margin-bottom: 1.375rem;
+            img {
+              width: 20rem;
+              height: 20rem;
+              border-radius: 10px;
+            }
+          }
+        }
+        .commentList {
+          background-color: #fff;
+          .itemC {
+            padding: 1.5rem 1.875rem 0;
+            &.last-itemC {
+              .c_i_content {
+                .right {
+                  border: none;
+                }
+              }
+            }
+            .c_i_content {
+              display: flex;
+              align-items: flex-start;
+              justify-content: space-between;
+              .left {
+                margin-right: 1.5rem;
+                img {
+                  width: 4.5rem;
+                  height: 4.5rem;
+                  border-radius: 2.25rem;
+                }
+              }
+
+              .right {
+                flex: 1;
+                border-bottom: 1px solid #EAEAEA;
+
+                .r_head {
+                  .r_top {
+                    font-size: 2rem;
+                    color: #323232;
+                    display: flex;
+                    align-items: baseline;
+                    justify-content: space-between;
+                    .time {
+                      font-size: 1.5rem;
+                      color: #646464;
+                    }
+                  }
+                  .r_bottom {
+                    font-size: 1.5rem;
+                    color: #646464;
+                    display: flex;
+                    align-items: center;
+                    justify-content: flex-start;
+                    .start {
+                      margin-right: 1.5rem;
+                    }
+                  }
+                }
+                .i_foot {
+                  padding: 2.5rem 0 1.875rem;
+                  font-size: 1.75rem;
+                  color: #323232;
+                }
+              }
+
+            }
+          }
+        }
+      }
+      /*   .vux-swiper-item {
+           position: relative !important;
+         }*/
+    }
+    .pay {
+      width: 100%;
+      height: 6.75rem;
+      background-color: @themeColor;
+      font-size: 2.375rem;
+      color: #ffffff;
+      position: fixed;
+      left: 0;
+      bottom: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      &:active {
+        background-color: @butActive;
+      }
+    }
+  }
+  .noItem {
+    .noData {
+      width: 100%;
+      padding: 5.5rem 0;
+      text-align: center;
+      font-size: 2rem;
+      color: #868686;
+      //background-color: #f4f4f4;
+    }
+  }
+
+}
+

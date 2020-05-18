@@ -11,7 +11,17 @@ export function imgUrl(x) {
 
 
 }
-
+export function plottingScale(x) {
+  if(x){
+    let s = (x / 1000).toFixed(2)
+    if (s == 'NaN') {
+      return x
+    } else {
+      return s;
+    }
+  }
+  return ''
+}
 export function formatMoney(x) {
   let s = (x / 100).toFixed(2)
   if (s == 'NaN') {

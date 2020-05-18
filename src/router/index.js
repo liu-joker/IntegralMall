@@ -179,11 +179,26 @@ const routerList = [
     }
   },
   {
+    path: '/MerchantCA',
+    name: 'MerchantCA',
+    component: () => import('@/views/merchant/MerchantCA'),
+    meta: {
+      title: '商家中心'
+    }
+  },
+  {
     path: '/merchantGrabble',
     name: 'merchantGrabble',
     component: () => import('@/views/merchant/merchantGrabble'),
     meta: {
       title: '商家搜索'
+    }
+  },{
+    path: '/tradeType',
+    name: 'tradeType',
+    component: () => import('@/views/merchant/tradeType'),
+    meta: {
+      title: '商家分类'
     }
   },
   {

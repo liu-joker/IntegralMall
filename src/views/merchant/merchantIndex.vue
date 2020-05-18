@@ -24,11 +24,14 @@
                   <img src="@/assets/merchant/icon_add_sys.png" alt="">
                   <span>扫一扫</span>
                 </div>
-                <div class="item">
+                <div class="item" @click="toQRCode">
                   <img src="@/assets/merchant/icon_add_skm.png" alt="">
                   <span>收款码</span>
                 </div>
-                <div class="item">商家入驻</div>
+                <div class="item" @click="toAgentCenter">
+                  <img src="@/assets/merchant/icon_shangjiaruzhu.png" alt="">
+                  <span>{{$store.getters.agentInfo.isAgent == 1?'商家中心':'商家入驻'}}</span>
+                </div>
               </div>
             </div>
           </transition>
@@ -44,23 +47,23 @@
         </div>
       </div>
       <div class="list">
-        <div class="item">
+        <div class="item" @click="shopSelectList(0)">
           <img src="@/assets/merchant/icon_jingxuan.png" alt="精选">
           <span>精选</span>
         </div>
-        <div class="item">
+        <div class="item" @click="shopSelectList(26)">
           <img src="@/assets/merchant/icon_meishi2.png" alt="美食">
           <span>美食</span>
         </div>
-        <div class="item">
+        <div class="item" @click="shopSelectList(19)">
           <img src="@/assets/merchant/icon_canyin.png" alt="餐饮">
           <span>餐饮</span>
         </div>
-        <div class="item">
+        <div class="item" @click="shopSelectList(20)">
           <img src="@/assets/merchant/icon_jiaoyu.png" alt="教育">
           <span>教育</span>
         </div>
-        <div class="item">
+        <div class="item" @click="shopSelectList(0)">
           <img src="@/assets/merchant/icon_quanbu.png" alt="全部">
           <span>全部</span>
         </div>
@@ -69,7 +72,7 @@
 
     <div class="banner">
       <div class="banner_content">
-        <swiper :options="swiperOption" v-if="bannerList.length>1">
+        <swiper :options="swiperOption" v-if="bannerList.length>1" ref="merchantSwiper">
           <swiper-slide class="swiper-demo-img" v-for="(x, index) in bannerList" :key="index">
             <img :src="x.photo | imgUrl" alt="" class="bannerImg">
           </swiper-slide>
@@ -89,7 +92,7 @@
         </div>
       </div>
       <div class="list">
-        <div class="item" v-for="(x,index) in selectList" :key="index">
+        <div class="item" v-for="(x,index) in selectList" :key="index" @click="toAgentGrabble(x)">
           <img :src="x.img" alt="">
           <span>{{x.name}}</span>
         </div>
@@ -110,7 +113,7 @@
       <div class="xDialog">
         <x-dialog v-model="showScrollBox" hide-on-blur class="dialogItem">
           <div class="dialogContent distance">
-            <div class="item" v-for="(x,index) in kmList" :key="index" :class="kmActive == x.km?'active':''" @click="selectData(x)">
+            <div class="item" v-for="(x,index) in kmList" :key="index" :class="kmActive == x.m?'active':''" @click="selectData(x)">
               {{x.table}}
             </div>
           </div>
@@ -119,63 +122,47 @@
 
     </div>
 
-    <div class="merchantList">
+
+
+    <div class="merchantList" :class="showScrollBox?'minHeight':''">
+      <waterfall :col='waterfallData.col' :data="shopList"
+                 @loadmore="loadMore">
+        <template>
       <div class="list">
-        <div class="item">
-          <img src="@/assets/images/pic_sjxc.png" class="merchantLogo" alt="">
+
+        <div class="item" v-for="(x,index) in shopList" @click="toAgentDetail(x)">
+          <img :src="x.shopFrontPhoto | imgUrl" class="merchantLogo" alt="">
           <div class="item_content">
-            <div class="item_title">小米粒总部招商中心</div>
+            <div class="item_title">{{x.shopName}}</div>
             <div class="startInfo">
               <div class="left">
                 <span class="start" :style="startStyle"></span>
                 <span>4.5分</span>
-                <span class="consumptionPerPerson">¥330/人</span>
+                <!--<span class="consumptionPerPerson">¥330/人</span>-->
               </div>
               <div class="right">
-                1.1km
+                {{x.distance | plottingScale}}km
               </div>
             </div>
             <div class="addressInfo">
               <div class="left">
-                <span>深圳  福田区</span>
-                <span class="proportion">U米返还60%</span>
+                <span>{{x.city}}  {{x.district}}</span>
+                <span class="proportion">U米返还{{x.discount}}%</span>
               </div>
               <div class="right">
-                <span class="salesVolume">月销量 359</span>
+                <!--<span class="salesVolume">月销量 359</span>-->
               </div>
             </div>
-            <div class="merchantInfo">致力为实体服务类商家提供爆店式营销解决方案</div>
-          </div>
-        </div>
-        <div class="item" v-for="x in 10">
-          <img src="@/assets/images/pic_sjxc.png" class="merchantLogo" alt="">
-          <div class="item_content">
-            <div class="item_title">小米粒总部招商中心</div>
-            <div class="startInfo">
-              <div class="left">
-                <span class="start" :style="startStyle"></span>
-                <span>4.5分</span>
-                <span class="consumptionPerPerson">¥330/人</span>
-              </div>
-              <div class="right">
-                1.1km
-              </div>
-            </div>
-            <div class="addressInfo">
-              <div class="left">
-                <span>深圳  福田区</span>
-                <span class="proportion">U米返还60%</span>
-              </div>
-              <div class="right">
-                <span class="salesVolume">月销量 359</span>
-              </div>
-            </div>
-            <div class="merchantInfo">致力为实体服务类商家提供爆店式致力为实体服务类商家提供爆店式营销解决方案营销解决方案</div>
+            <div class="merchantInfo" v-if="x.selfIntroduce && x.selfIntroduce.trim() != ''">{{x.selfIntroduce}}</div>
           </div>
         </div>
       </div>
+        </template>
+      </waterfall>
+      <divider class="period" v-if="!showShop">没有更多了~</divider>
     </div>
 
+    <back-to-top></back-to-top>
 
   </div>
 
@@ -183,8 +170,7 @@
 
 <script>
   import {Scroller, LoadMore, Divider, XInput, XImg, Sticky, Popover, Cell, XDialog} from 'vux'
-  import 'swiper/dist/css/swiper.css'
-  import {swiper, swiperSlide} from 'vue-awesome-swiper'
+//  import 'swiper/dist/css/swiper.css'
   import {imgUrl} from "@/filters";
   import {TransferDomDirective as TransferDom} from 'vux'
   import icon_meishi from "@/assets/merchant/icon_meishi.png"
@@ -197,12 +183,11 @@
   import icon_jianshen from "@/assets/merchant/icon_jianshen.png"
   import icon_shenghuo from "@/assets/merchant/icon_shenghuo.png"
   import icon_gengduo from "@/assets/merchant/icon_gengduo.png"
+  import BackToTop from "@/components/BackToTop"
 
   export default {
     name: 'merchantIndex',
     components: {
-      swiper,
-      swiperSlide,
       Scroller,
       LoadMore,
       Divider,
@@ -212,7 +197,8 @@
       Popover,
       Cell,
       XDialog,
-      TransferDom
+      TransferDom,
+      BackToTop
     },
     data() {
       const self = this
@@ -261,10 +247,20 @@
           {type: 10, name: '更多', img: icon_gengduo},
         ],
         showScrollBox: false,
-        kmList:[{km:500,table:'附近'},{km:1000,table:'1km'},{km:5000,table:'5km'},{km:10000,table:'10km'},
-          {km:15000,table:'15km'},{km:20000,table:'20km'},],
+        kmList:[{m:500,table:'附近'},{m:1000,table:'1km'},{m:5000,table:'5km'},{m:10000,table:'10km'},
+          {m:15000,table:'15km'},{m:20000,table:'20km'},],
         pageContent:'',
-        kmActive:500
+        kmActive:500,
+        waterfallData: {
+          col: 1,
+          width: 0,
+          gutterWidth: 0
+        },
+        shopList:[],
+        pageNum: 1,
+        pageSize: 20,
+        info: {},
+        brandId:'deb99c1be8a748a59f760485fd49df15'
       }
     },
     computed: {
@@ -277,6 +273,13 @@
         `
         return style
       },
+      showShop: function () {
+        if (this.shopList.length != 0) {
+          return false
+        } else {
+          return true
+        }
+      }
     },
     created() {
       document.addEventListener('click', (e) => {
@@ -287,6 +290,9 @@
         }catch (err){
         }
       })
+      this.getBannerList()
+      this.isAgent()
+      this.getData()
     },
     mounted() {
       this.grabbleHeight = this.$refs.grabble.offsetHeight
@@ -294,6 +300,61 @@
       console.log(this.pageContent)
     },
     methods: {
+      toAgentGrabble(x){
+        this.$router.push({
+          path:`/tradeType?tradeType=${x.type}&title=${x.name}`
+        })
+      },
+      toAgentDetail(x){
+        //https://www.hlxiaoxiong.com/IntegralMall/#/merchantInfo?agentId=1&brandId=deb99c1be8a748a59f760485fd49df15
+        this.$router.push({
+          path:`/merchantInfo?agentId=${x.agentId}&brandId=${this.brandId}&terminalType=1`
+        })
+      },
+      loadMore() {
+        if(this.pageSize > this.info.total) return
+        this.pageSize += 10
+        clearInterval(this.timer);
+        this.timer = null;
+        this.timer = setTimeout(() => {
+          console.log('loadmore')
+          this.getData()
+        }, 300)
+      },
+      getData(){
+        let brandId = this.brandId;
+        let lng = 114.03167;
+        let lat = 22.532151;
+        let distance ;  //=this.kmActive//距离
+        let pageNum = this.pageNum;
+        let pageSize = this.pageSize;
+        let shopName;
+        let tradeType;  //商户类型
+
+        this.$axiosApi.getNearAgent(brandId, lng, lat, distance, pageNum, pageSize,shopName,tradeType).then(res=>{
+          this.info = res.data
+          this.shopList = res.data.list
+        })
+      },
+      toAgentCenter(){
+        if(this.$store.getters.agentInfo.isAgent != 1){
+
+        }else {
+          this.$router.push({
+            path:'/merchantMove'
+          })
+        }
+      },
+      isAgent(){
+        this.$store.dispatch('getAgentInfo').then(res=>{
+          console.log(this.$store.getters.agentInfo)
+        })
+      },
+      toQRCode(){
+        this.$router.push({
+          path:'/qrCode'
+        })
+      },
       grabble_fun() {
         this.$router.push({
           path: 'merchantGrabble'
@@ -301,14 +362,43 @@
       },
       selectData(x){
         //附近
-        this.kmActive = x.km
+        this.kmActive = x.m
         this.showScrollBox = false
+        //this.getData()
       },
       showSelectList(){
         this.showScrollBox = !this.showScrollBox
-        if(this.showScrollBox){
-          document.body.scrollTop = document.documentElement.scrollTop = this.pageContent
-        }
+        this.$nextTick(()=>{
+          if(this.showScrollBox){
+            document.body.scrollTop = document.documentElement.scrollTop = this.pageContent
+          }
+        })
+
+      },
+
+      getBannerList() {
+        this.$axiosApi.itemAdvert().then(res => {
+          if (res.code == 200) {
+            this.bannerList = res.data.shopAdvert
+
+          } else {
+            this.$vux.alert.show({
+              title: '提示',
+              content: res.message,
+              onShow() {
+              },
+              onHide() {
+              }
+            })
+          }
+        })
+      },
+
+      shopSelectList(id){
+        console.log(id)
+        this.$router.push({
+          path:'/commodityTypeList?id='+id
+        })
       }
     }
   }
