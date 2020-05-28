@@ -2,7 +2,7 @@
 
   <div class="qrCode">
     <div class="qr_content">
-      <div class="title">小米粒扫一扫，向我付钱</div>
+      <div class="title">立之付扫一扫，向我付钱</div>
 
       <!--<qrcode :value="value" class="qrcode_img"></qrcode>-->
       <vue-qrcodes :qrcodeData="qrcodeData" v-if="qrcodeData.show"></vue-qrcodes>
@@ -19,7 +19,7 @@
       </div>
     </div>
     <div class="changeVip ripple">
-      <span>立即开通小米粒VIP商家</span>
+      <span>立即开通立之付VIP商家</span>
       <svg-icon class="form_icon" icon-class="right"></svg-icon>
     </div>
   </div>

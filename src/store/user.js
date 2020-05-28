@@ -1,4 +1,6 @@
 import axiosApi from '@/api/axios'
+import {environmentAI,environment} from '@/filters'
+import { AlertModule } from 'vux'
 
 const user = {
   state: {
@@ -6,9 +8,8 @@ const user = {
       grade: 0
     },
     selectItem: 'all',
-    brandId: '',
-    appName: '',
-    agentInfo: {}
+    agentInfo: {},
+    token:""
   },
   mutations: {
     SET_USERINFO: (state, userInfo) => {
@@ -26,6 +27,9 @@ const user = {
     SET_AGENTINFO: (state, data) => {
       state.agentInfo = data
     },
+    SET_TOKEN: (state, data) => {
+      state.token = data
+    },
   },
   actions: {
     setAppName({commit}, data) {
@@ -37,6 +41,7 @@ const user = {
     getUserInfo({commit}) {
       return new Promise((resolve, reject) => {
         axiosApi.shopUserinfo().then(response => {
+
           if (response.code == 200) {
             commit('SET_USERINFO', response.data)
             resolve(response)
@@ -60,6 +65,45 @@ const user = {
     },
     SetSelectItem({commit}, data) {
       commit('SET_SELECTITEM', data)
+    },
+    getToken({commit}) {
+      return new Promise((resolve, reject) => {
+        let token;
+
+        token = ''
+        token = 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJITEpDIiwiZXhwIjoxNTkxMTUyNDAyLCJ1c2VyIjoiOGI4M2JmM2JmNDI5NGYwMmJmZmQ5NjEzZjAxZmI5ZjAifQ._GG3AFcxQvKpe1UmS3ziOiMHfBCieMYSJn8QSiyLeIADfe3g4qSS7ua5c2Sc7uUI0oGi56OJvLe-ph0yFxwEhQ'
+        resolve(token)
+
+        if(environmentAI() == 1 && environment() == 2){
+          try{
+            token = window.app.getToken()
+            commit('SET_TOKEN',token )
+            resolve(token)
+          }catch (err){
+            token = ''
+            resolve(token)
+          }
+        }else if(environmentAI() == 2 && environment() == 2){
+          try {
+            token = window.app.getToken()
+            commit('SET_TOKEN',token )
+            resolve(token)
+          }catch(err){
+            window.setToken = (params)=>{
+              if(params){
+                commit('SET_TOKEN',params)
+                resolve(params)
+              }else {
+                resolve('')
+              }
+            }
+            window.webkit.messageHandlers.getToken.postMessage({})
+          }
+        }else {
+          token = ''
+          resolve(token)
+        }
+      })
     },
   }
 }

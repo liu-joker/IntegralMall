@@ -1,0 +1,95 @@
+{
+  "data": [
+    {
+      "title":"登录注册",
+      "img":"http://img.cdn.hljcxiaoxiong.com/icon_login.svg",
+      "problemList":[
+        {
+          "id":1,
+          "questionTitle":"验证码",
+          "questionInfo":"<p><span style='font-size: 16px; color: #646464;'>1.请确认手机是否欠费停机，导致无法收到短信;</span></p><p><span style='font-size: 16px; color: #646464;'>2.请不要频繁请求短信，避免被短信运营商拉入黑名单;</span></p><p><span style='font-size: 16px; color: #646464;'>3.短信被第三方软件拦截，请尝试卸载软件或从垃圾箱里查看;</span></p><p><span style='font-size: 16px; color: #646464;'>4.请将手机重新启动，在收件箱进行查看;</span></p><p><span style='font-size: 16px; color: #646464;'>5.以上方法在排查中均未发现问题，请联系客服</span></p>"
+        },
+        {
+          "id":2,
+          "questionTitle":"忘记密码",
+          "questionInfo":"<p><span style='font-size: 16px; color: #646464;'>点击忘记密码，通过短信验证码来设置新的登陆密码</span></p>"
+        },
+        {
+          "id":3,
+          "questionTitle":"如何实名",
+          "questionInfo":"<p><span style='font-size: 16px; color: #646464;'>进入到APP首页，实名认证，进行身份证正反面拍照，人脸识别，提交相关资料，等待审核</span></p>"
+        },
+        {
+          "id":4,
+          "questionTitle":"证件已被注册",
+          "questionInfo":"<p><span style='font-size: 16px; color: #646464;'>手机号已注册并且通过实名认证，现需更换手机号码，若导致无法实名，请联系客服</span></p>"
+        }
+      ]
+    },
+    {
+      "title":"邮箱账单",
+      "img":"http://img.cdn.hljcxiaoxiong.com/icon_mail.svg",
+      "problemList":[
+        {
+          "id":5,
+          "questionTitle":"账单无法导入",
+          "questionInfo":"<p><span style='font-size: 16px; color: #646464;'>出现信用卡账单无法自动导入，可通过手动添加信用卡</span></p>"
+        },
+        {
+          "id":6,
+          "questionTitle":"支持邮箱",
+          "questionInfo":"<p><span style='color: #646464;'><span style='font-size: 16px;'>qq邮箱、 163邮箱、126邮箱</span></span></p>"
+        },
+        {
+          "id":7,
+          "questionTitle":"支持银行",
+          "questionInfo":"<p><span style='color: #646464;'><span style='font-size: 16px;'>工商银行、交通银行、华夏银行、包商银行、光大银行、中国农业银行、中信银行、兴业银行、民生银行、平安银行、广发银行、中国银行、建设银行、招商银行<br /></span></span></p>"
+        }
+      ]
+    },
+    {
+      "title":"银行卡",
+      "img":"http://img.cdn.hljcxiaoxiong.com/icon_card.svg",
+      "problemList":[
+        {
+          "id":8,
+          "questionTitle":"银行卡无法绑定",
+          "questionInfo":"<p><span style='font-size: 16px; color: #646464;'>1.核对是否支持的银行卡种，确保不是储蓄、借贷一体的卡，一体卡无法绑定</span></p><p><span style='font-size: 16px; color: #646464;'>2.确保身份证号、姓名、银行卡号、预留手机号、验证码、CVV2码等信息一致</span></p><p><span style='font-size: 16px; color: #646464;'>3.确保身份证、银行卡是否在有效期内</span></p><p><span style='font-size: 16px; color: #646464;'>4.银行鉴权过程中，会出现系统繁忙造成的失败，请耐心等待多尝试几次</span></p><p><span style='font-size: 16px; color: #646464;'>5.提示不支持此卡的情况，说明银行不支持此银行卡，建议您更换其他银行卡</span></p><p><span style='font-size: 16px; color: #646464;'>说明：请您逐一排查，若以上方法均已尝试仍然绑卡失败，说明该卡属于银行特殊卡种，通道暂不支持，建议您更换其他银行卡</span></p>"
+        }
+      ]
+    },
+    {
+      "title":"代还",
+      "img":"http://img.cdn.hljcxiaoxiong.com/icon_daihuan.svg",
+      "problemList":[
+        {
+          "id":9,
+          "questionTitle":"计划无法正常生成",
+          "questionInfo":"<p><span style='font-size: 16px; color: #646464;'>1.请先确认近期是否有更换卡片、更改密码或更改其他信息<br /></span></p><p><span style='font-size: 16px; color: #646464;'>2.由于系统繁忙，造成计划无法生成，请耐心等待，稍后再试<br /></span></p><p><span style='font-size: 16px; color: #646464;'>3.可拨打卡片归属银行客服，查询卡片是否受限<br /></span></p><p><span style='font-size: 16px; color: #646464;'>4.以上情况均无问题，请咨询客服<br /></span></p>"
+        },
+        {
+          "id":10,
+          "questionTitle":"支付后，计划状态异常",
+          "questionInfo":"<p><span style='color: #646464;'><span style='font-size: 16px;'>制定计划成功付款完成后，会显示进行中，代表计划执行成功。若未显示进行中，请耐心等待，无需再次进行操作<br /></span></span></p>"
+        },
+        {
+          "id":11,
+          "questionTitle":"计划执行过程中，暂停原因",
+          "questionInfo":"<p><span style='font-size: 16px; color: #646464;'>1.余额不足:计划执行过程中,避免使用该卡进行消费，保证此卡余额充足，以免造成计划暂停<br /></span></p><p><span style='font-size: 16px; color: #646464;'>2.余额充足:计划执行过程中,若显示暂停，请联系客服<br /></span></p>"
+        },
+        {
+          "id":12,
+          "questionTitle":"受限银行",
+          "questionInfo":"<p><span style='color: #646464;'><span style='font-size: 16px;'>通道不支持的银行卡；境外卡、准贷记卡和借贷一体的卡</span></span></p>"
+        },
+        {
+          "id":13,
+          "questionTitle":"消费显示(特约)",
+          "questionInfo":"<p><span style='font-size: 16px;'>这是一个商户池,里面有各行各业的商户给客户消费的。举个例子:比如天猫里面超十万家商家加盟,持卡人买单，之后账单会显示支付宝支付,实际上银行跟天猫之间会以内部数据形式拆帐到具体商户,持卡人在银行识别到的是对应商家,比如:服裝、电器、美容护肤品、健身器材、日用百货等等,但显示的时候只显示支付宝支付,账单都是同一显示的。</span></p>"
+        }
+      ]
+    }
+  ]
+}
+
+

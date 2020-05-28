@@ -75,6 +75,12 @@
           value: '',
           funType: 'url'
         }, {
+          title: '修改交易密码',
+          type: 'url',
+          url: "/updatePayPwd",
+          value: '',
+          funType: 'url'
+        }, {
           title: '联系客服',
           type: 'url',
           url: "/ShippingAddress",
@@ -87,19 +93,17 @@
           value: '',
           funType: 'url'
         },],
-        userPhoto:function () {
-          if(this.$store.getters.userInfo.photo  && this.$store.getters.userInfo.photo !=""){
+        userPhoto: function () {
+          if (this.$store.getters.userInfo.photo && this.$store.getters.userInfo.photo != "") {
             return imgUrl(this.$store.getters.userInfo.photo)
-          }else {
+          } else {
             return this.pic_head
           }
         }
       }
     },
-    created() {
-
-    },
     methods: {
+
       allOrders() {
         this.$router.push({
           path: '/allOrders'
@@ -127,7 +131,18 @@
             path: x.url
           })
         } else if (x.funType == 'AppUrl') {
-          window.app.contactService()
+
+          if (this.$EnvironmentAI() == 1) {
+            window.app.contactService()
+          } else if (this.$EnvironmentAI() == 2) {
+            try {
+              window.app.contactService()
+            }catch (err){
+              window.webkit.messageHandlers.contactService.postMessage({})
+            }
+          }
+
+
         }
       }
     }

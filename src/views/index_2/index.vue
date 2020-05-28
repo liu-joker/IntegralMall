@@ -324,6 +324,7 @@
       this.grabbleHeight = this.$refs.grabble.offsetHeight
       this.handleScroll()
 
+
     },
     created() {
 
@@ -345,14 +346,37 @@
       this.getBannerList()
     },
     activated() {
-      this.$store.dispatch('getUserInfo')
+
+      if(this.$Cookie.getToken() != null && this.$Cookie.getToken() != "null" && this.$Cookie.getToken() != ""){
+        this.$store.dispatch('getUserInfo')
+      }
+
       this.$nextTick(()=>{
         this.$waterfall.forceUpdate()
       })
     },
     methods: {
       toMy() {
-        this.$router.push({path: '/my'})
+        if(this.$Cookie.getToken() != null && this.$Cookie.getToken() != "null" && this.$Cookie.getToken() != ""){
+          this.$router.push({path: '/my'})
+        }else {
+          if(this.$EnvironmentAI() == 2){
+            this.$vux.confirm.show({
+              content: "请先登录",
+              onCancel() {
+
+              },
+              onConfirm: () => {
+                try {
+                  window.app.onLoginErro()
+                } catch (err) {
+                  window.webkit.messageHandlers.onLoginErro.postMessage({})
+                }
+              }
+            })
+          }
+
+        }
       },
       GoodsDetails(x) {
         this.$router.push({path: '/GoodsDetails/' + x.id})

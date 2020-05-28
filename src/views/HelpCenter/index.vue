@@ -36,7 +36,7 @@
     data() {
       return {
         showContent004: false,
-        appName: this.$store.getters.appName,
+        appName: this.$store.getters.userInfo.brandName,
         helpList: []
       }
     },
@@ -44,26 +44,21 @@
 
       this.helpList = [{
         title: '1.U米是什么？',
-        html: '<p>U米是'+this.appName+'对用户还款的一种奖励。'+this.appName+'用户可通过购买线下服务来获得U米。用户使用U米，可以在U米商城兑换商品、服务等。最终解释权归'+this.appName+'所有。</p>',
+        html: '<p>'+this.appName+'用户可通过购买线下服务来获得U米。用户使用U米，可以在U米商城兑换商品、服务等。最终解释权归'+this.appName+'所有。</p>',
         show: false
       }, {
         title: '2.如何获得U米？',
         html: '<p>(1) '+this.appName+'用户通过APP购买合作商家的线下服务，可获取U米。</p>',
         show: false
-      }, {
-        title: '3.U米余数怎么计算？',
-        html: '<p>U米的最小单位为1，还款手续费不足1元时不计入U米(如手续费为25.70元，则只取得12U米)。</p>',
-        show: false
-      }, {
-        title: '4.如何查询U米？',
+      },{
+        title: '3.如何查询U米？',
         html: '<p>登录'+this.appName+'APP，进入“商城-我的-我的U米”，可以查询到当前可用U米、U米使用记录等信息。</p>',
         show: false
       }, {
-        title: '5.如何使用U米？',
+        title: '4.如何使用U米？',
         html: '<p>可以在商城使用U米兑换商品，服务等。</p>',
         show: false
       }]
-      console.log(this.$store.getters.brandId)
     },
     methods: {}
   }

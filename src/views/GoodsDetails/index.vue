@@ -131,13 +131,29 @@
         if (this.itemInfo.status == 2) {
           return
         }
+        if (this.$Cookie.getToken() == '' && this.$EnvironmentAI() == 2) {
+          this.$vux.confirm.show({
+            content: "请先登录",
+            onCancel() {
+
+            },
+            onConfirm: () => {
+              try {
+                window.app.onLoginErro()
+              } catch (err) {
+                window.webkit.messageHandlers.onLoginErro.postMessage({})
+              }
+            }
+          })
+          return
+        }
 
         if (this.$Cookie.getToken() == "") {
-          if(this.$route.query.userId){
+          if (this.$route.query.userId) {
 
-            let appName =  this.$store.getters.appName
+            // let appName =  this.$store.getters.appName
             this.$vux.confirm.show({
-              content: "请前往"+appName+"APP领取",
+              content: "请前往APP领取",
               confirmText: '前往下载',
               onCancel() {
 
@@ -146,7 +162,7 @@
                 location.href = 'https://www.hlxiaoxiong.com/h5/#/?userID=' + this.$route.query.userId
               }
             })
-          }else {
+          } else {
             this.$vux.alert.show({
               title: '提示',
               content: "缺少重要参数",
@@ -159,6 +175,24 @@
 
           return
         }
+
+
+        if (this.$store.getters.userInfo.password != 1) {
+          this.$vux.confirm.show({
+            content: "暂未设置交易密码",
+            confirmText: '前往设置',
+            onCancel() {
+
+            },
+            onConfirm: () => {
+              this.$router.push({
+                path: '/updatePayPwd'
+              })
+            }
+          })
+          return
+        }
+
 
         let itemId = this.itemInfo.id;
         let payMode = this.active;
@@ -220,7 +254,7 @@
     min-height: 100vh;
 
     .G_banner {
-      .swiper-demo-img{
+      .swiper-demo-img {
         text-align: center;
         background-color: #fff;
         .bannerImg {
@@ -244,7 +278,7 @@
           display: flex;
           flex-wrap: wrap;
         }
-        .tagList{
+        .tagList {
           display: flex;
           align-items: center;
           justify-content: flex-start;

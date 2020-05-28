@@ -41,6 +41,18 @@ class loginApi {
     })
   };
 
+  //获取用户协议信息
+  static getprotocol(brandId) {
+    return request({
+      url: 'https://www.hlxiaoxiong.com/v2.0/user/protocol',
+      method: 'post',
+      data:{
+        brandId:brandId
+      },
+      headers: {"Content-Type": "application/x-www-form-urlencoded;charset=utf-8"},
+    })
+  };
+
   //用户地址列表
   static addressList() {
     return request({
@@ -83,6 +95,32 @@ class loginApi {
       data: {
         id: id
       },
+    })
+  };
+
+  //发送验证码
+  static sendSms(phone, brandId) {
+    return request({
+      url: 'https://www.hlxiaoxiong.com/v2.0/notice/sendSms',
+      method: 'post',
+      data: {
+        'phone': phone,
+        'brandId': brandId,
+      },
+      headers: {"Content-Type": "application/x-www-form-urlencoded;charset=utf-8"},
+    })
+  };
+
+//设置或修改交易密码
+  static updatePayPwd(code, password) {
+    return request({
+      url: 'https://www.hlxiaoxiong.com/v2.0/user/updatePayPwd',
+      method: 'post',
+      data: {
+        'code': code,
+        'password': password,
+      },
+      headers: {"Content-Type": "application/x-www-form-urlencoded;charset=utf-8"},
     })
   };
 
@@ -231,9 +269,18 @@ class loginApi {
 
   //商户
 
+  //上传凭证
+  static getAuth() {
+    return request({
+      url: 'http://129.211.65.120:8099/v2.0/notice/getAuth',
+      method: 'post',
+      data: {},
+      headers: {"Content-Type": "application/x-www-form-urlencoded;charset=utf-8"},
+    })
+  };
 
   ///getNearAgent根据条件筛选商户
-  static getNearAgent(brandId, lng, lat, distance, pageNum, pageSize,shopName,tradeType) {
+  static getNearAgent(brandId, lng, lat, distance, pageNum, pageSize, shopName, tradeType) {
     return request({
       url: '/getNearAgent',
       method: 'post',
@@ -259,6 +306,33 @@ class loginApi {
     })
   };
 
+  //新增商户1
+  static part1(data) {
+    return request({
+      url: '/addAgent/part1',
+      method: 'post',
+      data: data,
+    })
+  };
+
+  //新增商户2
+  static part2(data) {
+    return request({
+      url: '/addAgent/part2',
+      method: 'post',
+      data: data,
+    })
+  };
+
+  //新增商户3
+  static part3(data) {
+    return request({
+      url: '/addAgent/part3',
+      method: 'post',
+      data: data,
+    })
+  };
+
   //获取商户二维码链接
   static qrCodeInfo() {
     return request({
@@ -267,10 +341,6 @@ class loginApi {
       data: {},
     })
   };
-
-
-
-
 
 
   //商户详情
@@ -294,6 +364,17 @@ class loginApi {
       data: {},
     })
   };
+
+
+//获取商户信息
+  static getAddAgent(part) {
+    return request({
+      url: '/getAddAgent?part=' + part,
+      method: 'get',
+      data: {},
+    })
+  };
+
 
 
 }

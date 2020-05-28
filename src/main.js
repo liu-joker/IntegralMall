@@ -62,7 +62,6 @@ fastclick.attach(document.body)
 import Cookie from '@/utils/auth'
 Vue.prototype.$Cookie = Cookie;
 
-
 import VueClipboard from 'vue-clipboard2'
 Vue.use(VueClipboard)
 
@@ -72,7 +71,8 @@ import * as filters from './filters'
 Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key])
 })
-
+import {environmentAI} from './filters'
+Vue.prototype.$EnvironmentAI = environmentAI;
 
 import VueWechatTitle from 'vue-wechat-title';
 Vue.use(VueWechatTitle)

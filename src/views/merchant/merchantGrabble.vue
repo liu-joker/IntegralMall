@@ -46,56 +46,30 @@
                      @loadmore="loadmore">
             <template>
 
-              <div class="item2">
-                <img src="@/assets/images/pic_sjxc.png" class="merchantLogo" alt="">
+              <div class="item2" v-for="(x,index) in shopList" @click="toAgentDetail(x)">
+                <img :src="x.shopFrontPhoto | imgUrl" class="merchantLogo" alt="">
                 <div class="item_content">
-                  <div class="item_title">小米粒总部招商中心</div>
+                  <div class="item_title">{{x.shopName}}</div>
                   <div class="startInfo">
                     <div class="left">
                       <span class="start" :style="startStyle"></span>
                       <span>4.5分</span>
-                      <span class="consumptionPerPerson">¥330/人</span>
+                      <!--<span class="consumptionPerPerson">¥330/人</span>-->
                     </div>
                     <div class="right">
-                      1.1km
+                      {{x.distance | plottingScale}}km
                     </div>
                   </div>
                   <div class="addressInfo">
                     <div class="left">
-                      <span>深圳  福田区</span>
-                      <span class="proportion">U米返还60%</span>
+                      <span>{{x.city}}  {{x.district}}</span>
+                      <span class="proportion">U米返还{{x.discount}}%</span>
                     </div>
                     <div class="right">
-                      <span class="salesVolume">月销量 359</span>
+                      <!--<span class="salesVolume">月销量 359</span>-->
                     </div>
                   </div>
-                  <div class="merchantInfo">致力为实体服务类商家提供爆店式营销解决方案</div>
-                </div>
-              </div>
-              <div class="item2" v-for="x in 10">
-                <img src="@/assets/images/pic_sjxc.png" class="merchantLogo" alt="">
-                <div class="item_content">
-                  <div class="item_title">小米粒总部招商中心</div>
-                  <div class="startInfo">
-                    <div class="left">
-                      <span class="start" :style="startStyle"></span>
-                      <span>4.5分</span>
-                      <span class="consumptionPerPerson">¥330/人</span>
-                    </div>
-                    <div class="right">
-                      1.1km
-                    </div>
-                  </div>
-                  <div class="addressInfo">
-                    <div class="left">
-                      <span>深圳  福田区</span>
-                      <span class="proportion">U米返还60%</span>
-                    </div>
-                    <div class="right">
-                      <span class="salesVolume">月销量 359</span>
-                    </div>
-                  </div>
-                  <div class="merchantInfo">致力为实体服务类商家提供爆店式营销解决方案</div>
+                  <div class="merchantInfo" v-if="x.selfIntroduce && x.selfIntroduce.trim() != ''">{{x.selfIntroduce}}</div>
                 </div>
               </div>
 
@@ -117,7 +91,7 @@
       </div>
 
       <div class="searchContent">
-        <div class="item" v-for="x in search" @click="searchContent(x)">{{x}}</div>
+        <div class="item" v-for="x in search" @click="searchContent(x)" v-if="x">{{x}}</div>
       </div>
 
     </div>
@@ -173,7 +147,8 @@
         kmList: [{km: 500, table: '附近'}, {km: 1000, table: '1km'}, {km: 5000, table: '5km'}, {km: 10000, table: '10km'},
           {km: 15000, table: '15km'}, {km: 20000, table: '20km'}],
         kmActive: 500,
-        tradeType:''
+        tradeType:'',
+        info: {},
 
       }
     },
@@ -211,10 +186,17 @@
 
     },
     methods: {
+      toAgentDetail(x){
+        //https://www.hlxiaoxiong.com/IntegralMall/#/merchantInfo?agentId=1&brandId=deb99c1be8a748a59f760485fd49df15
+        this.$router.push({
+          path:`/merchantInfo?agentId=${x.agentId}&brandId=${this.brandId}&terminalType=1`
+        })
+      },
       selectData(x) {
         //附近
         this.kmActive = x.km
         this.showScrollBox = false
+        this.getData()
       },
       showSelectList() {
         this.showScrollBox = !this.showScrollBox
@@ -248,41 +230,24 @@
         }, 300)
       },
       getData() {
-        //
-        let itemType = this.itemType
-        let name = this.name.trim()
-        let third = this.third //0
-        let pageNum = this.pageNum
-        let pageSize = this.pageSize
-        if (name == '') return
+        console.log('getData')
+        let shopName = this.name.trim()
+        if (shopName == '') return
+        let brandId = this.$store.getters.userInfo.brandId;
+        let lng = 114.03167;
+        let lat = 22.532151;
+        let distance ;  //=this.kmActive//距离
+        let pageNum = this.pageNum;
+        let pageSize = this.pageSize;
+        let tradeType;  //商户类型
 
+        this.$axiosApi.getNearAgent(brandId, lng, lat, distance, pageNum, pageSize,shopName,tradeType).then(res=>{
+          this.info = res.data
+          this.shopList = res.data.list
+          this.GrabbleShow = false
 
-        this.$axiosApi.itemList(itemType, third, pageNum, pageSize, name).then(res => {
-          if (res.code == 200) {
-            //
-
-            let time = new Date().getTime() / 100000000
-            let shopList = res.data.list.map(v => {
-              v.imgUrl = imgUrl(v.photo.split(',')[0])
-              let resume = 550
-              v.browse = (time + (v.name.length * resume)).toFixed(0)
-              return v
-            })
-            this.shopList = shopList
-            this.GrabbleShow = false
-            console.log(this.search)
-            this.search = [...new Set([name].concat(this.search))]
-            this.$Cookie.setMGHistory(this.search)
-          } else {
-            this.$vux.alert.show({
-              title: '提示',
-              content: res.message,
-              onShow() {
-              },
-              onHide() {
-              }
-            })
-          }
+          this.search = [...new Set([shopName].concat(this.search))]
+          this.$Cookie.setMGHistory(this.search)
         })
       },
       loadmore() {

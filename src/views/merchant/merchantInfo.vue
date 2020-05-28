@@ -200,7 +200,7 @@
         CommontInfo: false,
         onFetching: false,
         noDataShow: false,
-        terminalType: ''
+        terminalType: '0'
       }
     },
 

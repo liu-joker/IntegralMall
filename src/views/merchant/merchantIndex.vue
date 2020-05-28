@@ -20,14 +20,16 @@
           <transition name="fade">
             <div class="popoverContent" v-show="popoverShow" transiton="fade" ref="isPopover">
               <div class="list">
-                <div class="item">
+              <!--  <div class="item">
                   <img src="@/assets/merchant/icon_add_sys.png" alt="">
                   <span>扫一扫</span>
                 </div>
+               -->
                 <div class="item" @click="toQRCode">
                   <img src="@/assets/merchant/icon_add_skm.png" alt="">
                   <span>收款码</span>
                 </div>
+
                 <div class="item" @click="toAgentCenter">
                   <img src="@/assets/merchant/icon_shangjiaruzhu.png" alt="">
                   <span>{{$store.getters.agentInfo.isAgent == 1?'商家中心':'商家入驻'}}</span>
@@ -41,7 +43,7 @@
 
     <div class="mallSelect">
       <div class="tab_title">
-        <div class="titleItem">
+        <div class="titleItem" @click="toIndex">
           <svg-icon class="form_icon" icon-class="shoppingCart"></svg-icon>
           <span>免费商城</span>
         </div>
@@ -86,7 +88,7 @@
 
     <div class="merchantRecommend">
       <div class="tab_title">
-        <div class="titleItem">
+        <div class="titleItem" @click="getAuthCode">
           <svg-icon class="form_icon" icon-class="merchant"></svg-icon>
           <span>商家推荐</span>
         </div>
@@ -298,8 +300,39 @@
       this.grabbleHeight = this.$refs.grabble.offsetHeight
       this.pageContent = this.$refs.pageContent.offsetTop - this.$refs.grabble.offsetHeight + 10
       console.log(this.pageContent)
+    //  this.getAuthCode()
     },
     methods: {
+      getAuthCode(){
+        ly.getAuthCode({
+          "merchantId":"2020042900101187",
+          "scopes":["lzfApiUserInfo","lzfApiChooseBankCard"],
+          "callback":((result)=>{
+            //处理授权码
+          //  console.log(result,'result')
+
+            if(result.status == 1){
+              this.$vux.alert.show({
+                title: '提示',
+                content: result.code,
+                onShow() {
+                },
+                onHide() {
+                }
+              })
+            }else {
+              this.$vux.alert.show({
+                title: '提示',
+                content: result.failureDetails,
+                onShow() {
+                },
+                onHide() {
+                }
+              })
+            }
+          })
+        });
+      },
       toAgentGrabble(x){
         this.$router.push({
           path:`/tradeType?tradeType=${x.type}&title=${x.name}`
@@ -336,7 +369,13 @@
           this.shopList = res.data.list
         })
       },
+      toIndex(){
+        console.log(111)
+        location.href = 'http://192.168.1.34:8088/#/merChantIndex'
+      },
       toAgentCenter(){
+
+
         if(this.$store.getters.agentInfo.isAgent != 1){
 
         }else {

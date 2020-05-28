@@ -6,12 +6,13 @@ Vue.use(Router)
 
 const routerList = [
 
+  //商城模块
   {
     path: '/',
     name: 'index',
     component: () => import('@/views/index_2'),
     meta: {
-      title: '商城',
+      title: 'U米商城',
     }
   },
   {
@@ -47,6 +48,14 @@ const routerList = [
     }
   },
   {
+    path: '/updatePayPwd',
+    name: 'updatePayPwd',
+    component: () => import('@/views/my/updatePayPwd'),
+    meta: {
+      title: '修改交易密码'
+    }
+  },
+  {
     path: '/ShippingAddress',
     name: 'ShippingAddress',
     component: () => import('@/views/ShippingAddress'),
@@ -66,6 +75,14 @@ const routerList = [
     path: '/HelpCenter',
     name: 'HelpCenter',
     component: () => import('@/views/HelpCenter'),
+    meta: {
+      title: '帮助中心'
+    }
+  },
+  {
+    path: '/HelpCenterApp',
+    name: 'HelpCenterApp',
+    component: () => import('@/views/HelpCenter/HelpCenterApp'),
     meta: {
       title: '帮助中心'
     }
@@ -166,10 +183,27 @@ const routerList = [
       title: '支付'
     }
   },
-
+  {
+    path: '/agreementOfUsage',
+    name: 'agreementOfUsage',
+    component: () => import('@/views/agreement/agreementOfUsage'),
+    meta: {
+      title: '用户协议'
+    }
+  },
 
 
   //商家模块
+
+  {
+    path: '/merchantInfo',
+    name: 'merchantInfo',
+    component: () => import('@/views/merchant/merchantInfo'),
+    meta: {
+      title: '商家详情'
+    }
+  },
+
   {
     path: '/merchantIndex',
     name: 'merchantIndex',
@@ -193,7 +227,8 @@ const routerList = [
     meta: {
       title: '商家搜索'
     }
-  },{
+  },
+  {
     path: '/tradeType',
     name: 'tradeType',
     component: () => import('@/views/merchant/tradeType'),
@@ -207,14 +242,6 @@ const routerList = [
     component: () => import('@/views/merchant/merchantMove'),
     meta: {
       title: '商家入驻'
-    }
-  },
-  {
-    path: '/merchantInfo',
-    name: 'merchantInfo',
-    component: () => import('@/views/merchant/merchantInfo'),
-    meta: {
-      title: '商家详情'
     }
   },
   {

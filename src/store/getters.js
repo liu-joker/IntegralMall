@@ -4,5 +4,6 @@ const getters = {
   brandId: state => state.user.brandId,
   appName: state => state.user.appName,
   agentInfo: state => state.user.agentInfo,
+  token: state => state.user.token,
 }
 export default getters

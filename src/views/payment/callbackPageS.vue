@@ -12,6 +12,7 @@
       <div class="item">
         <p>实付：￥{{ amount | formatMoney}}</p>
         <p>获得U米：<span class="yellow">{{point}}</span></p>
+        <p v-if="phone">U米获取手机号：<span class="yellow">{{phone}}</span></p>
         <div class="noPhone">
           <p class="download">U米可前往小米粒免费兑换商品，<span @click="download">前往下载>></span></p>
         </div>
@@ -43,6 +44,7 @@
         point:'0',
         isUser:0,
         preUser:"",
+        phone:"",
       }
     },
     created() {
@@ -50,6 +52,7 @@
       this.point = this.$route.query.point
       this.isUser = this.$route.query.isUser || 0
       this.preUser = this.$route.query.preUser
+      this.phone = this.$route.query.phone
     },
     methods: {
       download(){

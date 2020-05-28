@@ -12,7 +12,7 @@
     data() {
       return {
         bodyHeight: '',
-        cachedViews: ['index','commodityTypeList']
+        cachedViews: []
       }
     }
   }

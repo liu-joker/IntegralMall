@@ -183,7 +183,11 @@
       this.form.phone = this.$Cookie.getwxUserPhone() || ""
 
       this.environment = environment()
-      this.environment = 3
+
+
+     // this.environment = 1
+
+
       if(this.environment != 2){
         this.popupShow = false
       }else {
@@ -343,7 +347,7 @@
         let brandId = this.form.brandId
         let appType = this.environment
 
-        if (this.environment == 1 && this.form.phone == "") {
+        if (this.environment != 2 && this.form.phone == "") {
           this.$vux.alert.show({
             title: '提示',
             content: '请输入手机号',
@@ -354,7 +358,7 @@
           })
           return
         }
-        if (this.form.phone.length < 11) {
+        if (this.environment != 2 && this.form.phone.length < 11) {
           this.$vux.alert.show({
             title: '提示',
             content: '手机号码格式不正确',
@@ -368,9 +372,9 @@
 
 
         let phone = String(this.form.phone)
-        if (amount < 10) {
+        if (amount < 1000) {
           this.$vux.toast.show({
-            text: '最低付款不得小于0.1元',
+            text: '最低付款不得小于10元',
             width: '20em',
             type: 'text'
           })
@@ -388,6 +392,7 @@
             }else {
               this.$vux.alert.show({
                 title: '提示',
+
                 content: res.data.respMessage,
                 onShow() {
                 },

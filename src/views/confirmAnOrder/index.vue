@@ -267,7 +267,19 @@
               if (res.data.passType == 0) {
                 //第三方支付
                 let thirdData = JSON.stringify(res.data.thirdData.data)
-                window.app.onWeChatPay(thirdData)
+
+             //   window.app.onWeChatPay(thirdData)
+                if (this.$EnvironmentAI() == 1) {
+                  window.app.onWeChatPay(thirdData)
+                } else if (this.$EnvironmentAI() == 2) {
+                  try {
+                    window.app.onWeChatPay(thirdData)
+                  }catch (err){
+                    window.webkit.messageHandlers.onWeChatPay.postMessage(thirdData)
+                  }
+                }
+
+
               } else if (res.data.passType == 1) {
                 //支付密码
                 this.password = ''

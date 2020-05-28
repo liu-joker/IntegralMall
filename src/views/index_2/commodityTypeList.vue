@@ -293,14 +293,7 @@
       var j = url.substring(url.indexOf('brandId=') + 8, url.indexOf('brandId=') + 40);
       this.brandId = this.$route.query.brandId || j
       this.$store.dispatch('setBrindId', this.brandId)
-      let appName = ''
-      if (this.$store.getters.brandId == '30d05ab37977433da29018ed96612561') {
-        appName = '信用之家New'
-        this.$store.dispatch('setAppName', appName)
-      } else {
-        appName = '小米粒'
-        this.$store.dispatch('setAppName', appName)
-      }
+
 
       this.getBannerList()
     },

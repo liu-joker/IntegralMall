@@ -160,7 +160,7 @@
           text: '加载中...'
         })
         let status
-        let payStatus
+        let payStatus = 1
         let expressStatus = 0
         this.$axiosApi.findUserShopOrder(this.pageNum, this.pageSize, status, payStatus, expressStatus).then(res => {
           this.$vux.loading.hide()

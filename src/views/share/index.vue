@@ -5,8 +5,8 @@
     <div class="head">
       <div class="title">
         <div class="left">
-          <img :src="shareLogo | imgUrl" alt="">
-          {{appName}}商城
+          <img :src="$store.getters.userInfo.brandLog | imgUrl" alt="">
+          {{$store.getters.userInfo.brandName}}商城
         </div>
         <div class="right">
           <div class="but" @click="showProp(2)">
@@ -74,7 +74,6 @@
 </template>
 
 <script>
-  import shareLogo from "@/assets/images/shareLogo.png"
   import icon_share3 from "@/assets/images/icon_share3.png"
   import icon_selecting from "@/assets/images/icon_selecting.png"
   import icon_weixin from "@/assets/images/icon_weixin.png"
@@ -91,7 +90,6 @@
     },
     data() {
       return {
-        shareLogo: '51guanka.png',
         icon_share3: icon_share3,
         icon_selecting: icon_selecting,
         icon_weixin: icon_weixin,
@@ -100,7 +98,7 @@
         popupShow: false,
         showType: 1,
         id: '',
-        appName: this.$store.getters.appName,
+        appName: this.$store.getters.userInfo.brandName,
         activePay: '',
         itemInfo: '',
         priceInfo: '',
@@ -110,9 +108,7 @@
       this.id = this.$route.params.id
       this.activePay = this.$route.params.active
       this.getData()
-      if (this.$store.getters.brandId == '30d05ab37977433da29018ed96612561') {
-        this.shareLogo = 'xinyongzhijia.png'
-      }
+
     },
     methods: {
       share(x) {
@@ -144,7 +140,19 @@
         }
 
         console.log(JSON.stringify(data))
-        window.app.shareOfApp(JSON.stringify(data))
+
+     //   window.app.shareOfApp(JSON.stringify(data))
+
+        if (this.$EnvironmentAI() == 1) {
+          window.app.shareOfApp(JSON.stringify(data))
+        } else if (this.$EnvironmentAI() == 2) {
+          try {
+            window.app.shareOfApp(JSON.stringify(data))
+          }catch (err){
+            window.webkit.messageHandlers.shareOfApp.postMessage(JSON.stringify(data))
+          }
+        }
+
         this.popupShow = false
       },
       getData() {
