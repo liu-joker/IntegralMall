@@ -46,8 +46,8 @@ class loginApi {
     return request({
       url: 'https://www.hlxiaoxiong.com/v2.0/user/protocol',
       method: 'post',
-      data:{
-        brandId:brandId
+      data: {
+        brandId: brandId
       },
       headers: {"Content-Type": "application/x-www-form-urlencoded;charset=utf-8"},
     })
@@ -133,14 +133,6 @@ class loginApi {
     })
   };
 
-  //用户默认地址
-  static userAddress() {
-    return request({
-      url: '/userAddress',
-      method: 'post',
-      data: {},
-    })
-  };
 
   //下单
   static orderItem(itemId, payMode) {
@@ -357,13 +349,13 @@ class loginApi {
   };
 
   //商户评论列表
-  static getAgentCommont(agentId, orderBy, pageNum, pageSize) {
+/*  static getAgentCommont(agentId, orderBy, pageNum, pageSize) {
     return request({
       url: '/getAgentCommont?agentId=' + agentId + '&orderBy=' + orderBy + '&pageNum=' + pageNum + '&pageSize=' + pageSize,
       method: 'get',
       data: {},
     })
-  };
+  };*/
 
 
 //获取商户信息
@@ -375,8 +367,192 @@ class loginApi {
     })
   };
 
+///agentIntroduceUpd商户自我介绍、积分返还修改
+  static agentIntroduceUpd(data) {
+    return request({
+      url: '/agentIntroduceUpd',
+      method: 'post',
+      data: data,
+    })
+  };
+
+  ///agentCenter商户中心-主页
+  static agentCenter(data) {
+    return request({
+      url: '/agentCenter',
+      method: 'post',
+      data: data,
+    })
+  };
+
+  //POST /findAgentChart 收益试图
+  static findAgentChart(data) {
+    return request({
+      url: '/findAgentChart',
+      method: 'post',
+      data: data,
+    })
+  };
+
+  ///registerLoginH5 免登陆
+
+  static registerLoginH5(phone, brandId) {
+    return request({
+      url: 'https://www.hlxiaoxiong.com/v2.0/user/registerLoginH5',
+      method: 'post',
+      data: {
+        phone: phone,
+        brandId: brandId,
+      },
+      headers: {"Content-Type": "application/x-www-form-urlencoded;charset=utf-8"},
+    })
+  };
 
 
+//获取快付通网页授权token和openid
+  static getKWebToken(jsCode) {
+    return request({
+      url: '/getKWebToken?jsCode=' + jsCode,
+      method: 'get',
+      data: {},
+      headers: {"Content-Type": "application/x-www-form-urlencoded;charset=utf-8"},
+    })
+  };
+
+//获取快付通网页授权token和openid
+  static getKUser(accessToken, openId) {
+    return request({
+      url: '/getKUser?accessToken=' + accessToken + "&openId=" + openId,
+      method: 'get',
+      data: {},
+      headers: {"Content-Type": "application/x-www-form-urlencoded;charset=utf-8"},
+    })
+  };
+
+  //立支付下单
+  static lzfPay(agentId, brandId, amount) {
+    return request({
+      url: '/lzfPay',
+      method: 'post',
+      data: {
+        agentId: agentId,
+        brandId: brandId,
+        amount: amount,
+      },
+      headers: {"Content-Type": "application/x-www-form-urlencoded;charset=utf-8"},
+    })
+  };
+
+// /qrCodeInfo 商户获取连接生成二维码
+  static qrCodeInfo() {
+    return request({
+      url: '/qrCodeInfo',
+      method: 'get',
+      data: {},
+      headers: {"Content-Type": "application/x-www-form-urlencoded;charset=utf-8"},
+    })
+  };
+
+  ///agentProfitRecord 收益、提现记录
+  static agentProfitRecord(data) {
+    return request({
+      url: '/agentProfitRecord',
+      method: 'post',
+      data: data,
+      headers: {"Content-Type": "application/x-www-form-urlencoded;charset=utf-8"},
+    })
+  };
+
+  // /findAgentSettle 银行卡信息 显示后4位数字
+  static findAgentSettle(data) {
+    return request({
+      url: '/findAgentSettle',
+      method: 'post',
+      data: data,
+      headers: {"Content-Type": "application/x-www-form-urlencoded;charset=utf-8"},
+    })
+  };
+
+  // /repayAgent 商户提现
+  static repayAgent(data) {
+    return request({
+      url: '/repayAgent',
+      method: 'post',
+      data: data,
+      headers: {"Content-Type": "application/x-www-form-urlencoded;charset=utf-8"},
+    })
+  };
+
+  // /agentIntroduce 商户自我介绍信息
+  static agentIntroduce(agentId) {
+    return request({
+      url: '/agentIntroduce?agentId=' + agentId,
+      method: 'get',
+      data: {},
+      headers: {"Content-Type": "application/x-www-form-urlencoded;charset=utf-8"},
+    })
+  };
+
+  // /getUserScanOrder 获取用户扫码订单列表
+  static getUserScanOrder(time, pageNum, pageSize) {
+    return request({
+      url: '/getUserScanOrder?time=' + time + '&pageNum=' + pageNum + '&pageSize=' + pageSize,
+      method: 'get',
+      data: {},
+      headers: {"Content-Type": "application/x-www-form-urlencoded;charset=utf-8"},
+    })
+  };
+
+  // /addCommont 添加评论
+  static addCommont(data) {
+    return request({
+      url: '/addCommont',
+      method: 'post',
+      data: data,
+      headers: {"Content-Type": "application/x-www-form-urlencoded;charset=utf-8"},
+    })
+  };
+
+  //   /getAgentScore 获取商户平均分
+  static getAgentScore(agentId) {
+    return request({
+      url: '/getAgentScore?agentId=' + agentId,
+      method: 'get',
+      data: {},
+      headers: {"Content-Type": "application/x-www-form-urlencoded;charset=utf-8"},
+    })
+  };
+
+  // /getAgentCommont 获取商户评论列表
+
+  static getAgentCommont(agentId,time,orderBy,pageNum,pageSize) {
+    return request({
+      url: '/getAgentCommont?agentId=' + agentId + '&time=' + time + '&orderBy=' + orderBy +'&pageNum=' + pageNum +'&pageSize=' + pageSize,
+      method: 'get',
+      data: {},
+      headers: {"Content-Type": "application/x-www-form-urlencoded;charset=utf-8"},
+    })
+  };
+
+  // /getAgentPhoto 获取商户相册
+  static getAgentPhoto(agentId) {
+    return request({
+      url: '/getAgentPhoto?agentId=' + agentId,
+      method: 'get',
+      data: {},
+      headers: {"Content-Type": "application/x-www-form-urlencoded;charset=utf-8"},
+    })
+  };
+
+ // POST /addPhoto 添加或修改商户相册
+  static addPhoto(data) {
+    return request({
+      url: '/addPhoto',
+      method: 'post',
+      data: data,
+      headers: {"Content-Type": "application/x-www-form-urlencoded;charset=utf-8"},
+    })
+  };
 }
 
 

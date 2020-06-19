@@ -7,6 +7,7 @@ import Vuex from 'vuex'
 import '@/icons'
 import '@/styles/index.css'
 import '@/styles/theme.less'
+import '@/styles/themeIndex.less'
 import store from './store'
 
 //import objectAssign from 'object-assign'
@@ -23,11 +24,14 @@ Vue.use(VueAMap);
 
 import VueAwesomeSwiper from 'vue-awesome-swiper'
 // import style
-import 'swiper/css/swiper.css'
 Vue.use(VueAwesomeSwiper, /* { default options with global component } */)
+import 'swiper/css/swiper.css'
 
-import  { ToastPlugin } from 'vux'
-Vue.use(ToastPlugin)
+import { ToastPlugin } from 'vux'
+Vue.use(ToastPlugin,{
+  type:'text',
+  position: 'bottom'
+})
 
 import VueScroller from "vue-scroller"
 Vue.use(VueScroller);

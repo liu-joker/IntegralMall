@@ -20,7 +20,7 @@
         </div>
       </div>
 
-      <div v-if="environment == 2">
+      <div v-if="environment == 2 && !EnvironmentalType">
         <divider class="dividerText">支付方式</divider>
         <div class="payType">
           <div class="item" @click="form.radioValue = 7">
@@ -167,12 +167,14 @@
           agentId: '',
           radioValue: 7,//7微信6支付宝
         },
-        amountDisabled: false
+        amountDisabled: false,
+        EnvironmentalType: "",
       }
     },
     created() {
       this.form.userId = this.$route.query.userId
       this.form.agentId = this.$route.query.agentId
+      this.EnvironmentalType = this.$route.query.EnvironmentalType
       this.form.brandId = this.$route.query.brandId
       if (this.$route.query.amount && this.$route.query.amount != 'null') {
         this.form.amount = this.$route.query.amount
@@ -184,8 +186,8 @@
 
       this.environment = environment()
 
-
-     // this.environment = 1
+      console.log(environment())
+      this.environment = 5
 
 
       if(this.environment != 2){
@@ -193,7 +195,7 @@
       }else {
         this.popupShow = true
       }
-      //1微信2手机app3支付宝4其他
+      //1微信2手机app3支付宝4其他5立支付
       if (this.environment == 4) {
         this.$router.push({
           path: '/errorPayPage?userId=' + this.form.userId
@@ -320,6 +322,11 @@
       },
       submit() {
 
+
+        if(this.EnvironmentalType == 1){
+          this.submit2()
+          return
+        }
         // this.$Cookie.setwxUserPhone(this.from.phone,100000000)
 
         let agentId = this.form.agentId
@@ -411,6 +418,82 @@
             })
           }
         })
+      },
+      submit2(){
+        let agentId = this.form.agentId
+        let amount = Number(this.form.amount) * 100
+        let brandId = this.form.brandId
+        if (amount < 1000) {
+          this.$vux.toast.show({
+            text: '最低付款不得小于10元',
+            width: '20em',
+            type: 'text'
+          })
+          return
+        }
+        this.$axiosApi.lzfPay(agentId,brandId,amount).then(res=>{
+          if(res.code == 200){
+
+            if(res.data.respCode == 10000){
+              let payOrderNo = res.data.data.payOrderNo
+              let merchantId = res.data.data.merchantId
+              let signatureAlgorithm = res.data.data.signatureAlgorithm
+              let signatureInfo = res.data.data.signatureInfo
+              ly.pay({
+                "merchantId":merchantId,
+                "payOrderNo":payOrderNo,
+                "signatureAlgorithm":signatureAlgorithm,
+                "signatureInfo":signatureInfo,
+                "callback":function(result){
+                  //处理支付结果
+                  console.log(result)
+                  if (result.status == 1) {
+                    this.$vux.alert.show({
+                      title: '提示',
+                      content: '成功',
+                      onShow() {
+                      },
+                      onHide() {
+                      }
+                    })
+                  }else {
+                    this.$vux.alert.show({
+                      title: '提示',
+                      content: result.failureDetails,
+                      onShow() {
+                      },
+                      onHide() {
+                      }
+                    })
+                  }
+                }
+              });
+            }else {
+              this.$vux.alert.show({
+                title: '提示',
+                content: res.data.respMessage,
+                onShow() {
+                },
+                onHide() {
+                }
+              })
+            }
+
+
+
+
+          }else {
+            this.$vux.alert.show({
+              title: '提示',
+              content: res.message,
+              onShow() {
+              },
+              onHide() {
+              }
+            })
+          }
+        })
+
       }
     }
   }
@@ -418,219 +501,6 @@
 
 <style rel="stylesheet/less" lang="less">
 
-  .payment {
-    min-height: 100vh;
-    user-select: none;
-    .weui-cells {
-      margin-top: 0;
-    }
-    .diy_input {
-      background-color: #F4F4F4;
-      height: 5rem;
-      font-size: 2.625rem;
-      color: #323232;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      .input_num {
-        display: flex;
-        align-items: baseline;
-        justify-content: center;
-      }
-      .amountIcon {
-        font-size: 1.875rem;
-        margin-right: 0.875rem;
-      }
-    }
-    .diy_input_phone {
-      position: relative;
-      .icon {
-        position: absolute;
-        left: 2.7rem;
-        width: 3.375rem;
-        height: 3.375rem;
-      }
-      .placeholder {
-        color: #BDBDBD;
-        font-size: 1.875rem;
-      }
-    }
-    .diy_input_b {
-      border-radius: 2.75rem;
-      border: 4px solid #F0F0F0;
 
-    }
-    .pay_content {
-      min-height: 100vh;
-      .p_head {
-        padding: 3rem 2rem;
-        display: flex;
-        align-items: flex-start;
-        justify-content: flex-start;
-        .shopLogo {
-          width: 5.5rem;
-          height: 5.5rem;
-          border-radius: 1rem;
-          margin-right: 1.875rem;
-        }
-        .shopName {
-          font-size: 1.875rem;
-          color: #323232;
-        }
-      }
-      .dividerText {
-        font-size: 1.75rem;
-        color: #646464;
-        padding: 0 1.75rem;
-        overflow: auto;
-      }
-      .payAmount {
-        margin: 2rem 0;
-        padding: 0 1.875rem;
-
-      }
-      .payType {
-        padding: 0 6.25rem;
-        margin-top: 2.25rem;
-        .item {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          margin-bottom: 1.75rem;
-          &:last-child {
-            margin-bottom: 0;
-          }
-          .label {
-            display: flex;
-            align-items: center;
-            justify-content: flex-start;
-            font-size: 1.75rem;
-            color: #323232;
-            .pay_logo {
-              width: 3.375rem;
-              height: 3.375rem;
-              margin-right: 1.25rem;
-            }
-          }
-          .typeRadio {
-            .icon_choose {
-              width: 2.25rem;
-              height: 2.25rem;
-            }
-          }
-        }
-      }
-      .formInfo {
-        .form_item {
-          padding: 1.875rem 1.875rem 0;
-          .item {
-            background-color: #f4f4f4;
-            padding: 2rem 0;
-            font-size: 1.875rem;
-            color: #323232;
-            border-radius: 2px;
-          }
-        }
-        .info_p {
-          display: flex;
-          align-items: baseline;
-          justify-content: flex-start;
-          font-size: 1.375rem;
-          color: #646464;
-          margin-top: 1rem;
-          .pInfo {
-            margin-top: 0.5rem;
-          }
-        }
-
-      }
-      .popupContent {
-        /*background-color: #ffffff;*/
-        .popup_head {
-          background-color: #F4F4F4;
-          .diy_input {
-            background-color: #F4F4F4;
-            height: 7.35rem;
-            font-size: 4.25rem;
-            color: #323232;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 2px;
-            font-family: 'PingFang SC';
-            font-weight: bold;
-            .input_num {
-              display: flex;
-              align-items: baseline;
-              justify-content: center;
-            }
-            .amountIcon {
-              font-size: 2.625rem;
-              margin-right: 0.875rem;
-            }
-          }
-        }
-        .keyboard {
-          background-color: #ffffff;
-          display: flex;
-          align-items: stretch;
-          justify-content: space-between;
-          border-top: 1px solid #EAEAEA;
-          .hoverActive:active {
-            background-color: #f4f4f4;
-          }
-          .left {
-            flex: 1;
-            display: flex;
-            flex-wrap: wrap;
-            .item {
-              width: calc(33.33% - 1px);
-              height: 6.25rem;
-              font-size: 3.25rem;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              border-right: 1px solid #EAEAEA;
-              border-bottom: 1px solid #EAEAEA;
-              .down {
-                width: 3rem;
-                height: 2.5rem;
-                background: url('~@/assets/images/icon_pack_up.png') center center no-repeat;
-                background-size: cover;
-              }
-            }
-          }
-          .right {
-            width: 11.625rem;
-            display: flex;
-            flex-direction: column;
-            > div {
-              display: flex;
-              align-items: center;
-              justify-content: center;
-            }
-            .delete {
-              height: 6.25rem;
-              .icon_cancel {
-                width: 3.375rem;
-                height: 2.5rem;
-                background: url('~@/assets/images/icon_cancel2.png') center center no-repeat;
-                background-size: cover;
-              }
-            }
-            .payEdit {
-             flex: 1;
-              background-color: #F89F04;
-              font-size: 2.625rem;
-              color: #ffffff;
-              &:active {
-                opacity: 0.9;
-              }
-            }
-          }
-        }
-      }
-    }
-  }
 
 </style>

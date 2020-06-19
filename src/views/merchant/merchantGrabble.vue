@@ -20,7 +20,8 @@
         <div class="vuxFixed">
           <div class="nearbyDiv">
             <div class="list">
-              <div class="item" @click="showSelectList">
+              <!--<div class="item" @click="showSelectList">-->
+              <div class="item">
                 <span>附近</span>
                 <span class="select_span"><svg-icon class="form_icon" icon-class="bottom"></svg-icon></span>
               </div>
@@ -149,6 +150,7 @@
         kmActive: 500,
         tradeType:'',
         info: {},
+        brandId:'deb99c1be8a748a59f760485fd49df15'
 
       }
     },
@@ -233,7 +235,7 @@
         console.log('getData')
         let shopName = this.name.trim()
         if (shopName == '') return
-        let brandId = this.$store.getters.userInfo.brandId;
+        let brandId = this.brandId;
         let lng = 114.03167;
         let lat = 22.532151;
         let distance ;  //=this.kmActive//距离
@@ -265,228 +267,6 @@
 
 <style rel="stylesheet/scss" lang="scss">
 
-  .GrabbleIndex {
-    width: 100%;
-    min-height: 100vh;
-    background-color: #F5F5F5;
-    .header {
-      width: 100%;
-      padding-top: 5.5rem;
-      .grabble {
-        width: calc(100% - 3.75rem);
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 0.875rem 1.875rem;
-        position: fixed;
-        left: 0;
-        top: 0;
-        z-index: 2000;
-        background-color: #ffffff;
-        .left {
-          flex: 1;
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          .callbackIcon {
-            margin-right: 1.875rem;
-            img {
-              width: 1.375rem;
-            }
-          }
-          .grabble_inp {
-            background-color: #fff;
-            width: 100%;
-            padding: 0;
-            height: 3.75rem;
-            border-radius: 1.875rem;
-            font-size: 1.75rem;
-            border: 1px solid #DCDCDC;
-            &:before {
-              border: 0;
-            }
-            .form_icon {
-              margin-left: 2rem;
-              margin-right: 1rem;
-              font-size: 1.875rem;
-              color: #8C8C8C;
-            }
-          }
-        }
-        .right {
-          margin-left: 1.875rem;
-          .grabble_but {
-            color: #323232;
-            font-size: 2rem;
-          }
-          img {
-            width: 3rem;
-            height: 3rem;
-          }
-        }
-      }
-      .banner_content {
-        height: 17.5rem;
-        position: relative;
-        .swiper-demo-img {
-          padding: 0 1.875rem;
-          .bannerImg {
-            width: calc(100% - 3.75rem);
-            height: 100%;
-          }
-        }
-        .indicatorList {
-          position: absolute;
-          z-index: 100;
-          bottom: 10px;
-          left: 50%;
 
-          height: 0.375rem;
-          background: rgba(255, 255, 255, 0.3);
-          border-radius: 0.1875rem;
-          min-width: 1.875rem;
-          .indicator_item {
-            transition: 0.3s;
-            min-width: 1.875rem;
-            border-radius: 0.1875rem;
-            background-color: #ffffff;
-            height: 0.375rem;
-            position: absolute;
-            top: 0;
-          }
-        }
-      }
-    }
-    .shopContent {
-      position: relative;
-      .commodity_content {
-        margin-top: 1.25rem;
-        position: relative;
-        .list {
-          padding: 0rem 1.875rem 0;
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          flex-wrap: wrap;
-          .item:nth-child(2n) {
-            margin-right: 0;
-          }
-          .item {
-            width: calc(100%);
-            background-color: #fff;
-            margin-bottom: 1rem;
-            margin-right: 1rem;
-            border-radius: 0.5rem;
-            overflow: hidden;
-            .img {
-              width: 100%;
-              position: relative;
-              overflow: hidden;
-              background-size: cover;
-              background-position: center;
-              > img {
-                width: 100%;
-                height: auto;
-              }
-            }
-            .text {
-              padding: 1.5rem 1.25rem;
-              .name {
-                font-size: 1.5rem;
-                word-break: break-all;
-                display: -webkit-box; /**对象作为伸缩盒子模型展示**/
-                -webkit-box-orient: vertical; /**设置或检索伸缩盒子对象的子元素的排列方式**/
-                -webkit-line-clamp: 2; /**显示的行数**/
-                overflow: hidden;
-                height: 3.875rem;
-                color: #000;
-              }
-              .foot {
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                font-size: 1.75rem;
-                margin-top: 1.625rem;
-                .left {
-                  color: #E84646;
-                  font-weight: 500;
-                }
-                .right {
-                  display: flex;
-                  align-items: center;
-                  justify-content: flex-start;
-                  color: #8C8C8C;
-                  font-size: 1.25rem;
-                  .eye {
-                    width: 1.75rem;
-                    height: 1.5rem;
-                    margin-right: 0.5rem;
-                  }
-                }
-              }
-            }
-          }
-        }
-        .period {
-          font-size: 1.75rem;
-          padding: 1.75rem 0;
-        }
-        .noItem {
-          width: 100%;
-          padding: 15.5rem 0;
-          text-align: center;
-          font-size: 2rem;
-          color: #868686;
-          /*background-color: #f4f4f4;*/
-        }
-
-      }
-    }
-    .searchRecord {
-      position: fixed;
-      width: 100%;
-      height: calc(100vh - 6.75rem);
-      bottom: 0;
-      left: 0;
-      background-color: #ffffff;
-      .searchTop {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 1.875rem;
-        .left {
-          font-size: 1.75rem;
-          color: #323232;
-        }
-        .right {
-          width: 1.875rem;
-        }
-      }
-      .searchContent {
-        padding: 0 1.875rem;
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: flex-start;
-        align-items: center;
-        .item {
-          padding: 0 1.875rem;
-          height: 2.875rem;
-          border-radius: 1.4375rem;
-          background-color: #F4F4F4;
-          font-size: 1.75rem;
-          color: #323232;
-          line-height: 2.875rem;
-          margin-right: 1.25rem;
-          margin-bottom: 1.25rem;
-          max-width: 20rem;
-          word-break: break-all;
-          display: -webkit-box; /**对象作为伸缩盒子模型展示**/
-          -webkit-box-orient: vertical; /**设置或检索伸缩盒子对象的子元素的排列方式**/
-          -webkit-line-clamp: 1; /**显示的行数**/
-          overflow: hidden;
-        }
-      }
-    }
-  }
 
 </style>

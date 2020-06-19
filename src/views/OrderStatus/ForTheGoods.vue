@@ -1,3 +1,4 @@
+<!--待收货-->
 <template>
 
   <div class="ForTheGoods">
@@ -33,7 +34,7 @@
             </div>
             <div class="footBut">
               <div class="but" v-if="x.payStatus == 3 && x.status == 3" @click.stop="cancelOrder(x)">取消订单</div>
-              <div class="but" v-if="x.expressStatus == 2 || x.expressStatus == 1"  @click="finishOrder(x)">
+              <div class="but" v-if="x.expressStatus == 2 || x.expressStatus == 1"  @click.stop="finishOrder(x)">
                 {{x.expressStatus == 2 ? '确认收货' : '已签收'}}
               </div>
               <!--<div class="but" v-if="butShowList.but3">立即付款</div>-->
@@ -238,150 +239,7 @@
 
 <style rel="stylesheet/less" lang="less">
 
-  .ForTheGoods {
-    min-height: calc(100vh - 0.625rem);
-    padding-top: 0.625rem;
-    background-color: #f4f4f4;
-    .list {
-      padding-left: 1.875rem;
-      background-color: #fff;
-      .headTitle {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        font-size: 1.75rem;
-        color: #323232;
-        padding-right: 1.875rem;
-        .left {
-          display: flex;
-          align-items: center;
-          justify-content: flex-start;
-          .time {
-            margin-left: 0.75rem;
-          }
-        }
-        .right {
-          font-size: 1.5rem;
-          &.red{
-            color: #E84646;
-          }
-        }
-        .b_tag {
-          width: 0.375rem;
-          height: 1.75rem;
-          display: block;
-          background-color: #2D2922;
-          border-radius: 0.175rem;
-          margin-right: 1.375rem;
-        }
-      }
 
-      .item {
-        padding-top: 1.875rem;
-        .O_content {
-          padding-left: 1.75rem;
-          .goods {
-            margin-top: 1.25rem;
-            padding-bottom: 1.875rem;
-            border-bottom: 1px solid #F4F4F4;
-            .goodsItem {
-              display: flex;
-              align-items: flex-start;
-              justify-content: flex-start;
-            }
-            .img {
-              margin-right: 2rem;
-              width: 7.125rem;
-              height: 7.125rem;
-              position: relative;
-              border-radius: 0.5rem;
-              overflow: hidden;
-              .img_p{
-                position: absolute;
-                left: 50%;
-                top:0;
-                transform: translate(-50%,0);
-                width: 8.25rem;
-                img {
-                  display: inline-block;
-                  height: 7.125rem;
-                  width: auto;
-                }
-              }
-
-            }
-
-            .textInfo {
-              padding-right: 3.5rem;
-              font-size: 1.5rem;
-              flex: 1;
-              color: #323232;
-              .numInfo {
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                margin-top: 0.75rem;
-                color: #8C8C8C;
-                .num {
-                  font-size: 1.75rem;
-                  color: #323232;
-                }
-              }
-            }
-            .footBut {
-              display: flex;
-              justify-content: flex-end;
-              align-items: center;
-              margin-top: 3.5rem;
-              padding-right: 3.5rem;
-              .but {
-                width: 8.25rem;
-                height: 3rem;
-                background-color: #2D2922;
-                color: #FFFFFF;
-                font-size: 1.5rem;
-                text-align: center;
-                line-height: 3rem;
-                border-radius: 2px;
-              }
-            }
-          }
-          .CommodityPrices {
-            padding: 1.5rem 4.375rem 1.5rem 0;
-            border-bottom: 1px solid #F4F4F4;
-
-            .PricesItemInfo {
-              display: flex;
-              align-items: center;
-              justify-content: space-between;
-              font-size: 1.5rem;
-              color: #8C8C8C;
-              margin-bottom: 1rem;
-              &.defaultPrices {
-                color: #323232;
-                .Prices {
-                  font-size: 1.75rem;
-                  font-weight: bold;
-                }
-              }
-              &:last-child {
-                margin-bottom: 0;
-              }
-            }
-          }
-
-        }
-      }
-    }
-    .noData{
-      padding: 4.5rem 0;
-      text-align: center;
-      font-size: 2rem;
-      color: #868686;
-      background-color: #f4f4f4;
-
-    }
-  }
 
 
 </style>

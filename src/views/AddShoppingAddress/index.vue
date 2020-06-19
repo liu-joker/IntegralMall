@@ -1,6 +1,6 @@
 <template>
 
-  <div class="AddShippingAddress">
+  <div class="AddShoppingAddress">
     <div class="form">
       <group class="form_item">
         <x-input placeholder="收货人" class="item" type="text" v-model="form.name" :max="11"
@@ -33,7 +33,7 @@
   import data from "@/json"
 
   export default {
-    name: 'AddShippingAddress',
+    name: 'AddShoppingAddress',
     components: {
       Group,
       XInput,
@@ -90,25 +90,11 @@
                 this.$router.go(-1)
               },1500)
             }else {
-              this.$vux.alert.show({
-                title: '提示',
-                content: res.message,
-                onShow () {
-                },
-                onHide () {
-                }
-              })
+              this.$vux.toast.show({text:res.message})
             }
           })
         }else {
-          this.$vux.alert.show({
-            title: '提示',
-            content: "请完善地址信息",
-            onShow () {
-            },
-            onHide () {
-            }
-          })
+          this.$vux.toast.show({text:"请完善地址信息"})
         }
       },
       onClick() {
@@ -127,54 +113,6 @@
 
 <style rel="stylesheet/less" lang="less">
 
-  .AddShippingAddress {
-    min-height: 100vh;
-    background-color: #f4f4f4;
-    .vux-popup-picker-value {
-      padding-right: 2.5rem;
-    }
-    .weui-cell {
-      padding: 0;
-    }
-    .weui-cell_access .weui-cell__ft:after {
-      width: 1.5rem;
-      height: 1.5rem;
-      margin-top: -0.75rem;
-    }
-    .weui-cell:before {
-      left: 2rem;
-    }
-    .weui-cells {
-      margin-top: 0;
-    }
 
-    .form {
-      padding-top: 0.625rem;
-      .form_item {
-        background-color: #ffffff;
-
-        .item {
-          padding: 2.25rem 1.875rem 2.25rem 2rem;
-          font-size: 1.75rem;
-          color: #8C8C8C;
-        }
-      }
-    }
-    .but {
-      padding: 0 1.875rem;
-      margin-top: 3.75rem;
-      user-select: none;
-      .submit {
-        background-color: #2D2922;
-        font-size: 2.125rem;
-        color: #FEFEFE;
-      }
-      .weui-btn_default:not(.weui-btn_disabled):active {
-        color: #FEFEFE;
-        background-color: #2D2922;
-        opacity: 0.85;
-      }
-    }
-  }
 
 </style>

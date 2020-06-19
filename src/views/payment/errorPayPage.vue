@@ -49,51 +49,7 @@
 
 <style rel="stylesheet/less" lang="less">
 
-  .errorPayPage {
-    .errContent {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      height: 100vh;
-      .img1{
-        height: 100vh;
-        width: 100%;
-        position: relative;
-        background: url('~@/assets/images/pic_background@2x.jpg') center center no-repeat;
-        background-size: cover;
-        .butList{
-          width: 33.5rem;
-          height: 5.5rem;
-          position: absolute;
-          bottom: 2rem;
-          left: 50%;
-          transform: translate(-50%,0);
-          &:active .but2{
-            display: block;
-          }
-          .but{
-            position: absolute;
-            left:0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-          }
-          .but1{
-            background: url('~@/assets/images/pic_button.png') center center no-repeat;
-            background-size: cover;
-            z-index: 1;
-          }
-          .but2{
-            background: url('~@/assets/images/pic_button_down.png') center center no-repeat;
-            background-size: cover;
-            display: none;
-            z-index: 2;
-          }
 
-        }
-      }
-    }
-  }
 
 
 </style>

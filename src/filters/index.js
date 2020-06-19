@@ -1,3 +1,5 @@
+import cookies from '@/utils/auth'
+
 export function imgUrl(x) {
   if (x) {
     if (x.indexOf('http') > -1) {
@@ -95,15 +97,16 @@ export function formatDate(time) {
 }
 
 export function environment() {
-  let payEnv;
 
-  //1微信2自家app3其他
+
+  //1微信2自家app3支付宝4其他5立支付环境
 // 判断微信还是支付宝
+  let payEnv;
   let start = 3
   let ua = navigator.userAgent.toLowerCase();
   if (ua.indexOf('android') > -1 || ua.indexOf('linux') > -1) {
     start = 1
-  } else if (ua.indexOf('iphone') > -1) { //苹果手机
+  } else if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) { //苹果手机
     start = 2
   }
   if (/MicroMessenger/.test(window.navigator.userAgent)) {
@@ -128,7 +131,11 @@ export function environment() {
       }
       payEnv = '2';
     } catch (error) {
-      payEnv = '4';
+      if(cookies.getBrandId() == 'deb99c1be8a748a59f760485fd49df15'){
+        payEnv = '5';
+      }else{
+        payEnv = '4';
+      }
     }
   }
   return payEnv
@@ -138,19 +145,6 @@ export function environmentAI() {
 
   //判断android和ios环境  1 android 2 ios 3 其他
   let start = 3
-
-  /*let ua = navigator.userAgent.toLowerCase();
-    if (ua.indexOf('android') > -1 || ua.indexOf('linux') > -1) { //安卓手机
-      console.log("安卓手机",ua)
-      start = 1
-    } else if (ua.indexOf('iphone') > -1) { //苹果手机
-      start = 2
-      console.log("苹果手机")
-    } else {
-      start = 3
-      // alert('请在手机浏览器中浏览此网页！')
-    }*/
-
 
   if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
     start = 2

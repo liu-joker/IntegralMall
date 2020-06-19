@@ -15,7 +15,7 @@
       </div>
       <div class="right">
         <div class="popover">
-          <img src="@/assets/merchant/icon_add@2x.png" alt="更多" @click="popoverShow = !popoverShow" id="moreFun"
+          <img src="@/assets/merchant/icon_add@2x.png" alt="更多" @click="popoverShowFun()" id="moreFun"
                ref="moreFun">
           <transition name="fade">
             <div class="popoverContent" v-show="popoverShow" transiton="fade" ref="isPopover">
@@ -29,10 +29,13 @@
                   <img src="@/assets/merchant/icon_add_skm.png" alt="">
                   <span>收款码</span>
                 </div>
-
+                <div class="item" @click="toMyOrder">
+                  <img src="@/assets/merchant/icon_add_skm.png" alt="">
+                  <span>我的订单</span>
+                </div>
                 <div class="item" @click="toAgentCenter">
                   <img src="@/assets/merchant/icon_shangjiaruzhu.png" alt="">
-                  <span>{{$store.getters.agentInfo.isAgent == 1?'商家中心':'商家入驻'}}</span>
+                  <span>{{$store.getters.agentInfo.isAgent == 1 && $store.getters.agentInfo.status == 1?'商家中心':'商家入驻'}}</span>
                 </div>
               </div>
             </div>
@@ -105,7 +108,8 @@
       <sticky transfer-dom ref="sticky" :offset="grabbleHeight" class="vuxFixed">
         <div class="nearbyDiv">
           <div class="list">
-            <div class="item" @click="showSelectList">
+            <!--<div class="item" @click="showSelectList">-->
+            <div class="item">
               <span>附近</span>
               <span class="select_span"><svg-icon class="form_icon" icon-class="bottom"></svg-icon></span>
             </div>
@@ -149,7 +153,7 @@
             <div class="addressInfo">
               <div class="left">
                 <span>{{x.city}}  {{x.district}}</span>
-                <span class="proportion">U米返还{{x.discount}}%</span>
+                <span class="proportion">U米返还{{x.discount || '0'}}%</span>
               </div>
               <div class="right">
                 <!--<span class="salesVolume">月销量 359</span>-->
@@ -173,7 +177,7 @@
 <script>
   import {Scroller, LoadMore, Divider, XInput, XImg, Sticky, Popover, Cell, XDialog} from 'vux'
 //  import 'swiper/dist/css/swiper.css'
-  import {imgUrl} from "@/filters";
+  import {imgUrl,environment} from "@/filters";
   import {TransferDomDirective as TransferDom} from 'vux'
   import icon_meishi from "@/assets/merchant/icon_meishi.png"
   import icon_jiudian from "@/assets/merchant/icon_jiudian.png"
@@ -249,20 +253,20 @@
           {type: 10, name: '更多', img: icon_gengduo},
         ],
         showScrollBox: false,
-        kmList:[{m:500,table:'附近'},{m:1000,table:'1km'},{m:5000,table:'5km'},{m:10000,table:'10km'},
-          {m:15000,table:'15km'},{m:20000,table:'20km'},],
-        pageContent:'',
-        kmActive:500,
+        kmList: [{m: 500, table: '附近'}, {m: 1000, table: '1km'}, {m: 5000, table: '5km'}, {m: 10000, table: '10km'},
+          {m: 15000, table: '15km'}, {m: 20000, table: '20km'},],
+        pageContent: '',
+        kmActive: 500,
         waterfallData: {
           col: 1,
           width: 0,
           gutterWidth: 0
         },
-        shopList:[],
+        shopList: [],
         pageNum: 1,
         pageSize: 20,
         info: {},
-        brandId:'deb99c1be8a748a59f760485fd49df15'
+        brandId: 'deb99c1be8a748a59f760485fd49df15'
       }
     },
     computed: {
@@ -284,34 +288,59 @@
       }
     },
     created() {
+
+      console.log(environment(), '环境')
+
+      /* this.$vux.alert.show({
+         title: '提示',
+         content: environment(),
+         onShow() {
+         },
+         onHide() {
+         }
+       })*/
+
+
       document.addEventListener('click', (e) => {
-        try{
+        //
+        try {
           if (!this.$refs.isPopover.contains(e.target) && e.target.id != 'moreFun') {
             this.popoverShow = false;
           }
-        }catch (err){
+        } catch (err) {
         }
       })
       this.getBannerList()
-      this.isAgent()
+      // this.isAgent()
       this.getData()
     },
     mounted() {
       this.grabbleHeight = this.$refs.grabble.offsetHeight
       this.pageContent = this.$refs.pageContent.offsetTop - this.$refs.grabble.offsetHeight + 10
       console.log(this.pageContent)
-    //  this.getAuthCode()
+      //  this.getAuthCode()
     },
     methods: {
-      getAuthCode(){
-        ly.getAuthCode({
-          "merchantId":"2020042900101187",
-          "scopes":["lzfApiUserInfo","lzfApiChooseBankCard"],
-          "callback":((result)=>{
-            //处理授权码
-          //  console.log(result,'result')
+      popoverShowFun() {
+        if (this.popoverShow == false) {
+          this.$store.dispatch('getAgentInfo').then(res => {
+            console.log(this.$store.getters.agentInfo)
+            this.popoverShow = true
+          })
+        } else {
+          this.popoverShow = false
+        }
 
-            if(result.status == 1){
+      },
+      getAuthCode() {
+        ly.getAuthCode({
+          "merchantId": "2020042900101187",
+          "scopes": ["lzfApiUserInfo", "lzfApiChooseBankCard"],
+          "callback": ((result) => {
+            //处理授权码
+            //  console.log(result,'result')
+
+            if (result.status == 1) {
               this.$vux.alert.show({
                 title: '提示',
                 content: result.code,
@@ -320,7 +349,7 @@
                 onHide() {
                 }
               })
-            }else {
+            } else {
               this.$vux.alert.show({
                 title: '提示',
                 content: result.failureDetails,
@@ -333,19 +362,19 @@
           })
         });
       },
-      toAgentGrabble(x){
+      toAgentGrabble(x) {
         this.$router.push({
-          path:`/tradeType?tradeType=${x.type}&title=${x.name}`
+          path: `/tradeType?tradeType=${x.type}&title=${x.name}&brandId=100`
         })
       },
-      toAgentDetail(x){
+      toAgentDetail(x) {
         //https://www.hlxiaoxiong.com/IntegralMall/#/merchantInfo?agentId=1&brandId=deb99c1be8a748a59f760485fd49df15
         this.$router.push({
-          path:`/merchantInfo?agentId=${x.agentId}&brandId=${this.brandId}&terminalType=1`
+          path: `/merchantInfo?agentId=${x.agentId}&brandId=${this.brandId}&terminalType=1`
         })
       },
       loadMore() {
-        if(this.pageSize > this.info.total) return
+        if (this.pageSize > this.info.total) return
         this.pageSize += 10
         clearInterval(this.timer);
         this.timer = null;
@@ -354,44 +383,52 @@
           this.getData()
         }, 300)
       },
-      getData(){
+      getData() {
         let brandId = this.brandId;
         let lng = 114.03167;
         let lat = 22.532151;
-        let distance ;  //=this.kmActive//距离
+        let distance;  //=this.kmActive//距离
         let pageNum = this.pageNum;
         let pageSize = this.pageSize;
         let shopName;
         let tradeType;  //商户类型
 
-        this.$axiosApi.getNearAgent(brandId, lng, lat, distance, pageNum, pageSize,shopName,tradeType).then(res=>{
+        this.$axiosApi.getNearAgent(brandId, lng, lat, distance, pageNum, pageSize, shopName, tradeType).then(res => {
           this.info = res.data
           this.shopList = res.data.list
         })
       },
-      toIndex(){
+      toIndex() {
         console.log(111)
-        location.href = 'http://192.168.1.34:8088/#/merChantIndex'
+        location.href = 'http://192.168.1.8:8088/#/merChantIndex'
       },
-      toAgentCenter(){
+      toAgentCenter() {
 
 
-        if(this.$store.getters.agentInfo.isAgent != 1){
-
-        }else {
+        if (this.$store.getters.agentInfo.isAgent == 1 && this.$store.getters.agentInfo.status == 1) {
+          //商家中心
           this.$router.push({
-            path:'/merchantMove'
+            path: '/MerchantCA'
+          })
+        } else {
+          this.$router.push({
+            path: '/merchantMove'
           })
         }
       },
-      isAgent(){
-        this.$store.dispatch('getAgentInfo').then(res=>{
+      isAgent() {
+        this.$store.dispatch('getAgentInfo').then(res => {
           console.log(this.$store.getters.agentInfo)
         })
       },
-      toQRCode(){
+      toMyOrder(){
         this.$router.push({
-          path:'/qrCode'
+          path: '/myOrder'
+        })
+      },
+      toQRCode() {
+        this.$router.push({
+          path: '/qrCode'
         })
       },
       grabble_fun() {
@@ -399,16 +436,16 @@
           path: 'merchantGrabble'
         })
       },
-      selectData(x){
+      selectData(x) {
         //附近
         this.kmActive = x.m
         this.showScrollBox = false
         //this.getData()
       },
-      showSelectList(){
+      showSelectList() {
         this.showScrollBox = !this.showScrollBox
-        this.$nextTick(()=>{
-          if(this.showScrollBox){
+        this.$nextTick(() => {
+          if (this.showScrollBox) {
             document.body.scrollTop = document.documentElement.scrollTop = this.pageContent
           }
         })
@@ -433,14 +470,14 @@
         })
       },
 
-      shopSelectList(id){
+      shopSelectList(id) {
         console.log(id)
         this.$router.push({
-          path:'/commodityTypeList?id='+id
+          path: '/commodityTypeList?id=' + id
         })
       }
     }
-  }
+  };
 </script>
 
 <style rel="stylesheet/less" lang="less">

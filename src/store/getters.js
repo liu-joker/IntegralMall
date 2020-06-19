@@ -5,5 +5,6 @@ const getters = {
   appName: state => state.user.appName,
   agentInfo: state => state.user.agentInfo,
   token: state => state.user.token,
+  LzfUserName: state => state.user.LzfUserName,
 }
 export default getters

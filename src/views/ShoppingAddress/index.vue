@@ -1,6 +1,6 @@
 <template>
 
-  <div class="ShippingAddress">
+  <div class="ShoppingAddress">
     <div class="S_head">
       <div class="addAddress" @click="addAddress">
         <svg-icon slot="label" class="form_icon" icon-class="add2"></svg-icon>
@@ -39,7 +39,7 @@
   import icon_position from "@/assets/images/icon_position.png"
 
   export default {
-    name: 'ShippingAddress',
+    name: 'ShoppingAddress',
     data() {
       return {
         icon_position: icon_position,
@@ -137,7 +137,7 @@
         })
       },
       addAddress() {
-        this.$router.push({path: '/AddShippingAddress'})
+        this.$router.push({path: '/AddShoppingAddress'})
       }
     }
   }
@@ -145,73 +145,5 @@
 
 <style rel="stylesheet/less" lang="less">
 
-  .ShippingAddress {
-    min-height: 100vh;
-    background-color: #f4f4f4;
-    .S_head {
-      padding-top: 0.625rem;
-      .addAddress {
-        background-color: #ffffff;
-        padding: 2rem;
-        color: #323232;
-        font-size: 2rem;
-        user-select: none;
-        &:active {
-          background-color: #ECECEC;
-        }
-      }
-    }
-    .addressList {
-      margin-top: 1px;
-      background-color: #ffffff;
-      .list {
-        .item {
-          padding: 1.5rem 0;
-          border-bottom: 1px solid #f4f4f4;
-          display: flex;
-          align-items: center;
-          justify-content: flex-start;
-          .left_icon {
-            padding: 0 1.7rem;
-            img {
-              width: 3.375rem;
-              height: 3.375rem;
-            }
-          }
-          .ItemCenter {
-            flex: 1;
-            font-size: 1.75rem;
-            color: #323232;
-            padding-right: 3.5rem;
-            .item_head {
-              margin-bottom: 0.75rem;
-              .phone {
-                color: #8C8C8C;
-              }
-            }
-            .address_info {
-              font-size: 1.5rem;
-            }
-          }
-          .right {
-            width: 8.5rem;
-            display: flex;
-            flex-direction: column;
-            color: #323232;
-            font-size: 1.5rem;
-            text-align: center;
-            border-left: 1px solid #f4f4f4;
 
-            .setDefault {
-              color: #E84646;
-            }
-            .delete {
-              margin-top: 2.75rem;
-              color: #8c8c8c;
-            }
-          }
-        }
-      }
-    }
-  }
 </style>

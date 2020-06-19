@@ -1,4 +1,4 @@
-<!--添加结算卡-->
+<!--修改交易密码-->
 <template>
   <div class="updatePayPwd">
     <div class="subject">
@@ -94,11 +94,12 @@
             }
           })
         } else {
-          this.$vux.confirm.show({
-            title: '提示',
-            content: '两次输入的密码不一致！',
-            showCancelButton: false
+          this.$vux.toast.show({
+            type: 'text',
+            text: '两次输入的密码不一致！',
+            width: 'auto'
           })
+
         }
       },
       getCode() {
@@ -130,6 +131,7 @@
             console.log(error)
           })
         } else {
+
           this.$vux.toast.show({
             type: 'text',
             text: '手机号格式不正确！',
@@ -144,76 +146,5 @@
 </script>
 
 <style rel="stylesheet/less" lang="less">
-  .updatePayPwd {
-    background-color: #f4f4f4;
-    min-height: 100vh;
-    .weui-cells{
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-top: 0;
-      font-size: 1.875rem;
-    }
-    .getcode {
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
-      font-size: 1.5rem;
-      margin-right: 1.25rem !important;
-    }
-    > .subject {
-      padding: 1.25rem 1.25rem 2.5rem;
-      .content2 {
-        background-color: #ffffff;
-        border-radius: 8px;
-        overflow: hidden;
-        border: 1px solid #dadada;
-        height: auto;
-        .inputItem {
-          border-bottom: 1px solid #dadada;
-          &:last-child {
-            border-bottom: 0;
-          }
-          .input {
-            height: calc(6.625rem - 20px);
-            padding: 10px 1.25rem;
-            text-decoration: none;
-            display: flex;
-            flex: 1;
-            .weui-label {
-              font-size: 2rem;
-              text-align: left;
-            }
 
-          }
-          .getCode {
-            color: #dadada;
-            width: 11rem;
-            font-size: 1.875rem;
-            text-align: right;
-            padding-right: 1rem;
-            white-space: nowrap;
-          }
-        }
-      }
-      .submit {
-        margin-top: 2.5rem;
-        .button {
-          height: 5rem;
-          //border-radius: 1.6rem;
-          //padding-left: 1.25rem;
-          //padding-right: 1.25rem;
-          background-color: #2D2922;
-          color: #ffffff;
-          font-size: 2.215rem;
-          line-height: 1;
-          border-color: #2D2922;
-          box-shadow: 0px 0.5rem 1.25rem -0.25rem #2D2922;
-          &:active {
-            opacity: 0.8;
-          }
-        }
-      }
-    }
-  }
 </style>

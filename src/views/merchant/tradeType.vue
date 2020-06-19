@@ -33,7 +33,8 @@
         <sticky transfer-dom ref="sticky" :offset="grabbleHeight" class="vuxFixed">
           <div class="nearbyDiv">
             <div class="list">
-              <div class="item" @click="showSelectList">
+              <!--<div class="item" @click="showSelectList">-->
+              <div class="item">
                 <span>附近</span>
                 <span class="select_span"><svg-icon class="form_icon" icon-class="bottom"></svg-icon></span>
               </div>

@@ -137,7 +137,8 @@
           </cell>
         </group>
         <group class="inputItem">
-          <x-address class="item" title="" v-model="form2.areaId" :list="addressData" ref="areaId" :placeholder="'请选择经营地区范围'">
+          <x-address class="item" title="" v-model="form2.areaId" :list="addressData" ref="areaId"
+                     :placeholder="'请选择经营地区范围'">
             <div class="cellTitle" slot="title" slot-scope="props">
               <span class="requestSpan"> * </span>经营地区范围:
             </div>
@@ -318,7 +319,7 @@
         </group>
         <group class="inputItem">
           <x-input label-width="auto" class="input" placeholder-align="left" text-align="left"
-                   placeholder="请输入开户人姓名" ref="name3" required  v-model="form3.name">
+                   placeholder="请输入开户人姓名" ref="name3" required v-model="form3.name">
             <div class="inputTitle" slot="label"><span class="requestSpan"> * </span>开户名称: </div>
           </x-input>
         </group>
@@ -329,15 +330,16 @@
           </x-input>
         </group>
 
-        <actionsheet v-model="show2" :menus="menus1" :close-on-clicking-mask="false" show-cancel @on-click-menu="menuClick"></actionsheet>
+        <actionsheet v-model="show2" :menus="menus1" :close-on-clicking-mask="false" show-cancel
+                     @on-click-menu="menuClick"></actionsheet>
         <div v-show="menuActive.menuType == 1">
           <!--对私-->
-         <!-- <group class="inputItem">
-            <x-input label-width="auto" class="input" placeholder-align="left" text-align="left"
-                     placeholder="请输入预留手机号" ref="name" required>
-              <div class="inputTitle" slot="label"><span class="requestSpan"> * </span>预留手机号: </div>
-            </x-input>
-          </group>-->
+          <!-- <group class="inputItem">
+             <x-input label-width="auto" class="input" placeholder-align="left" text-align="left"
+                      placeholder="请输入预留手机号" ref="name" required>
+               <div class="inputTitle" slot="label"><span class="requestSpan"> * </span>预留手机号: </div>
+             </x-input>
+           </group>-->
           <group class="inputItem last groupCard">
             <div slot="title" class="inputTitle">
               <span class="requestSpan"> * </span>结算卡正反面照片:
@@ -391,10 +393,8 @@
         <div class="up_tip">
           <div class="left">提示：</div>
           <div class="right">
-            <p>1、账户类型为对私时，默认提现账户为已绑定
-              结算账号</p>
-            <p>2、请保证照片清晰</p>
-            <p>3、<span class="requestSpan">*</span>为必填项</p>
+            <p>1、请保证照片清晰</p>
+            <p>2、<span class="requestSpan">*</span>为必填项</p>
           </div>
         </div>
 
@@ -408,11 +408,13 @@
 </template>
 
 <script>
-  import {Group, XButton, XInput, Datetime, Cell, Popup, XAddress, Actionsheet } from 'vux';
+  import {Group, XButton, XInput, Datetime, Cell, Popup, XAddress, Actionsheet} from 'vux';
   import icon_addphoto from "@/assets/merchant/icon_addphoto.png"
   //  import loadMap from '@/utils/loadMap.js'
 
   import vueamap from "@/components/VueAmap"
+  import trade_type from "@/json/trade_type"
+  import agent_type from "@/json/agent_type"
   import * as qiniu from 'qiniu-js';
   import jsondata from "@/json"
 
@@ -475,78 +477,8 @@
         userImgList3: [],
         userImgList4: [],
         NuserImgList: [],
-        channelList1: [
-          {
-            "id": "1",
-            "name": "个体工商户"
-          },
-          {
-            "id": "2",
-            "name": "机关事业单位"
-          },
-          {
-            "id": "3",
-            "name": "国有企业、外/合资企业 "
-          },
-          {
-            "id": "4",
-            "name": "股份制企业、私营企业 "
-          },
-          {
-            "id": "5",
-            "name": "其它"
-          }],
-        channelList2: [
-          {
-            "id": "1",
-            "name": "餐饮美食",
-            "parentId": "0"
-          },
-          {
-            "id": "2",
-            "name": "酒店住宿",
-            "parentId": "0"
-          },
-          {
-            "id": "3",
-            "name": "休闲娱乐",
-            "parentId": "0"
-          },
-          {
-            "id": "4",
-            "name": "周边旅游",
-            "parentId": "0"
-          },
-          {
-            "id": "5",
-            "name": "美容美发",
-            "parentId": "1"
-          },
-          {
-            "id": "6",
-            "name": "家居装修",
-            "parentId": "1"
-          },
-          {
-            "id": "7",
-            "name": "医疗健康",
-            "parentId": "1"
-          },
-          {
-            "id": "8",
-            "name": "运动健康",
-            "parentId": "1"
-          },
-          {
-            "id": "9",
-            "name": "生活服务",
-            "parentId": "1"
-          },
-          {
-            "id": "10",
-            "name": "更多",
-            "parentId": "2"
-          }],
+        channelList1: agent_type,
+        channelList2: trade_type,
         show2: false,
         show3: false,
         show4: false,
@@ -555,7 +487,7 @@
         imgIndex2: 0,
         imgIndex3: 0,
         imgIndex4: 0,
-        formActive: 3,
+        formActive: 2,
         form: {
           name: '',
           idCard: '',
@@ -570,7 +502,7 @@
         // 更多参考：https://lbs.amap.com/api/javascript-api/guide/abc/plugins#plugins
         MapShow: false,
         agentPhone: this.$store.getters.userInfo.phone,
-        agentId: null,
+        agentId:this.$store.getters.agentInfo.agentId,
         form1: {
           legalName: '',//法人姓名
           contactPhone: '',//联系人手机号
@@ -589,23 +521,23 @@
           lng: '',//经度
           lat: '',//纬度
         },
-        form3:{
-          isCompany:2,//账户类型:1对私2对公
-          bankName:"",//银行名称
-          name:"",//开户人姓名
-          bankCard:"",//银行卡号
-          bankId:''//银行卡id(有值时修改，null时新增)
+        form3: {
+          isCompany: 2,//账户类型:1对私2对公
+          bankName: "",//银行名称
+          name: "",//开户人姓名
+          bankCard: "",//银行卡号
+          bankId: ''//银行卡id(有值时修改，null时新增)
         },
-        menus1:[{
-          label:'对公',
-          menuType:'2',
-        },{
-          label:'对私',
-          menuType:'1',
+        menus1: [{
+          label: '对公',
+          menuType: 2,
+        }, {
+          label: '对私',
+          menuType: 1,
         }],
-        menuActive:{
-          label:"对公",
-          menuType:"2"
+        menuActive: {
+          label: "对公",
+          menuType: 2
         },
         addressData: jsondata.area,
       }
@@ -616,9 +548,12 @@
     mounted() {
 
     },
+    activated() {
+      this.getAddAgent(this.formActive)
+    },
     methods: {
-      menuClick(key,item){
-        if(key != 'cancel'){
+      menuClick(key, item) {
+        if (key != 'cancel') {
           this.menuActive = item
         }
       },
@@ -639,7 +574,6 @@
       changeFormActive(index) {
         if (this.formActive > index + 1) {
           this.formActive = index + 1
-          return
           this.getAddAgent(this.formActive)
 
 
@@ -648,10 +582,20 @@
       getAddAgent(x) {
         this.$axiosApi.getAddAgent(x).then(res => {
           if (res.code == 200) {
+            this.agentId = res.data.agentId
 
             if (x == 1) {
-
+              this.form1.legalName = res.data.legalName
+              this.form1.contactPhone = res.data.contactPhone
+              this.form1.legalIdcard = res.data.legalIdcard
             } else if (x == 2) {
+
+              this.form2.shopName = res.data.shopName
+              this.form2.shopNameEng = res.data.shopNameEng
+              this.form2.shopNameShort = res.data.shopNameShort
+              this.form2.regTel = res.data.regTel
+              this.form2.businessAddress = res.data.businessAddress
+
 
             } else if (x == 3) {
 
@@ -676,9 +620,13 @@
           let legalName = this.form1.legalName;//法人姓名
           let contactPhone = this.form1.contactPhone;//联系人手机号
           let legalIdcard = this.form1.legalIdcard;//法人身份证
+          let agentId = this.agentId
 
           if (this.$refs.legalName.valid && this.$refs.contactPhone.valid && this.$refs.legalIdcard.valid && legalName.trim() != ""
             && contactPhone.trim() != "" && legalIdcard.trim() != '' && this.userImgList1.length == this.imgList1.length) {
+            this.$vux.loading.show({
+              text: '请稍候...'
+            })
             this.uploadImgToQiniu(this.userImgList1).then(res => {
               if (res) {
                 let frontPhoto = res[0];//正
@@ -686,6 +634,7 @@
                 let handPhoto = res[2];//手
 
                 let data = {
+                  "agentId": agentId,//
                   "legalName": legalName,//法人姓名
                   "contactPhone": contactPhone,//联系人手机号
                   "legalIdcard": legalIdcard,//法人身份证
@@ -694,8 +643,9 @@
                   "handPhoto": handPhoto,//手
                 }
                 console.log(data)
-                return
+
                 this.$axiosApi.part1(data).then(response => {
+                  this.$vux.loading.hide()
                   if (response.code == 200) {
                     this.agentId = response.data;
                     this.formActive += 1
@@ -715,17 +665,10 @@
             })
 
           } else {
-            this.$vux.alert.show({
-              title: '提示',
-              content: '请完善信息',
-              onShow() {
-              },
-              onHide() {
-              }
-            })
+            this.$vux.toast.show({text:'请完善信息'})
+
           }
-        }
-        else if (this.formActive == 2 && this.agentId!="") {
+        } else if (this.formActive == 2 && this.agentId != "") {
 
           let agentId = this.agentId;//商户id
           let shopName = this.form2.shopName.trim();//商家名称中文
@@ -739,10 +682,13 @@
           let lng = this.mapData.lng;//经度
           let lat = this.mapData.lat;//纬度
 
-          if (agentId && agentId!="" && this.$refs.shopName.valid && this.$refs.shopNameShort.valid && this.$refs.regTel.valid && this.$refs.businessAddress.valid &&
-            shopName !="" && shopNameShort !="" && regTel!="" && tradeType && agentType && businessAddress !="" && lng && lat && areaId!=""){
+          if (agentId && agentId != "" && this.$refs.shopName.valid && this.$refs.shopNameShort.valid && this.$refs.regTel.valid && this.$refs.businessAddress.valid &&
+            shopName != "" && shopNameShort != "" && regTel != "" && tradeType && agentType && businessAddress != "" && lng && lat && areaId != "") {
 
             if (this.userImgList2[0] && this.userImgList2[1] && this.userImgList2[2] && this.userImgList2[3]) {
+              this.$vux.loading.show({
+                text: '请稍候...'
+              })
               this.uploadImgToQiniu(this.userImgList2).then(res => {
                 if (res) {
                   console.log(res)
@@ -753,27 +699,27 @@
                   let rentPhoto = res[4] || '';//租赁合同照片
 
                   let data = {
-                    agentId:agentId,//商户id
-                    shopName:shopName,//商家名称中文
-                    shopNameShort:shopNameShort,//商家名称简称
-                    shopNameEng:shopNameEng,//商家英文(拼音)
-                    regTel:regTel,//注册(联系人)电话
-                    tradeType:tradeType,//行业类型
-                    agentType:agentType,//商家性质
-                    businessAddress:businessAddress,//营业地址
-                    areaId:areaId,//地域id
-                    lng:lng,//经度
-                    lat:lat,//纬度
-                    shopLogo:shopLogo,//商户logo
-                    licensePhoto:licensePhoto,//营业执照(照片)
-                    shopFrontPhoto:shopFrontPhoto,//门头照片
-                    shopBackPhoto:shopBackPhoto,//店内照片
-                    rentPhoto:rentPhoto,//租赁合同照片
+                    agentId: agentId,//商户id
+                    shopName: shopName,//商家名称中文
+                    shopNameShort: shopNameShort,//商家名称简称
+                    shopNameEng: shopNameEng,//商家英文(拼音)
+                    regTel: regTel,//注册(联系人)电话
+                    tradeType: tradeType,//行业类型
+                    agentType: agentType,//商家性质
+                    businessAddress: businessAddress,//营业地址
+                    areaId: areaId,//地域id
+                    lng: lng,//经度
+                    lat: lat,//纬度
+                    shopLogo: shopLogo,//商户logo
+                    licensePhoto: licensePhoto,//营业执照(照片)
+                    shopFrontPhoto: shopFrontPhoto,//门头照片
+                    shopBackPhoto: shopBackPhoto,//店内照片
+                    rentPhoto: rentPhoto,//租赁合同照片
                   };
 
                   console.log(data)
-                  return
                   this.$axiosApi.part2(data).then(response => {
+                    this.$vux.loading.hide()
                     if (response.code == 200) {
                       this.formActive += 1
                     } else {
@@ -789,36 +735,97 @@
                   })
                 }
               })
-            }else {
-              this.$vux.alert.show({
-                title: '提示',
-                content: 'logo、营业执照、门店照片不能为空',
-                onShow() {
-                },
-                onHide() {
-                }
-              })
+            } else {
+              this.$vux.toast.show({text:'logo、营业执照、门店照片不能为空'})
+
             }
-          }else {
-            this.$vux.alert.show({
-              title: '提示',
-              content: '请完善信息',
-              onShow() {
-              },
-              onHide() {
-              }
-            })
+          } else {
+            this.$vux.toast.show({text:'请完善信息'})
           }
-        }
-        else if (this.formActive == 3) {
+        } else if (this.formActive == 3) {
 
           let agentId = this.agentId;//商户id
-          let isCompany = this.menuActive.id;//账户类型:1对私2对公
-          let bankName = this.form3.bankName;//银行名称
-          let name = this.form3.name;//开户人姓名
+          let isCompany = this.menuActive.menuType;//账户类型:1对私2对公
+          let bankName = this.form3.bankName.trim();//银行名称
+          let name = this.form3.name.trim();//开户人姓名
           let bankCard = this.form3.bankCard;//银行卡号
           let bankId = null;//银行卡号
 
+          if (agentId && agentId != "" && this.$refs.bankName.valid && this.$refs.name3.valid && this.$refs.bankCard.valid
+            && bankName != "" && name != "" && bankCard != "") {
+
+            if (isCompany == 1) {
+              if (!this.userImgList4[0] || !this.userImgList4[1]) {
+
+                this.$vux.toast.show({text:'结算卡正面、结算卡反面照片不能为空'})
+
+                return
+              }
+            } else {
+              if (!this.userImgList3[0]) {
+                this.$vux.toast.show({text:'开户许可证正面照不能为空'})
+                return
+              }
+            }
+
+            let fileList = []
+            if (isCompany == 1) {
+              fileList = this.userImgList4
+            } else {
+              fileList = this.userImgList3
+            }
+            this.$vux.loading.show({
+              text: '请稍候...'
+            })
+            this.uploadImgToQiniu(fileList).then(res => {
+              if (res) {
+                console.log(res)
+                let frontPhoto;
+                let backPhoto;
+                let openingPhoto;
+
+                if (isCompany == 1) {
+                  frontPhoto = res[0];//银行卡正面照(个体/个体工商户必填)
+                  backPhoto = res[1];//银行卡反面照(个体/个体工商户必填)
+                } else {
+                  openingPhoto = res[0];//开户许可证照片(账户类型为对公时必填)
+                }
+
+                let data = {
+                  agentId: agentId,//商户id
+                  isCompany: isCompany,//账户类型:1对私2对公
+                  bankName: bankName,//银行名称
+                  name: name,//开户人姓名
+                  bankCard: bankCard,//银行卡号
+                  frontPhoto: frontPhoto,//银行卡正面照(个体/个体工商户必填)
+                  backPhoto: backPhoto,//银行卡反面照(个体/个体工商户必填)
+                  openingPhoto: openingPhoto,//开户许可证照片(账户类型为对公时必填)
+                };
+
+                console.log(data)
+                this.$axiosApi.part3(data).then(response => {
+                  if (response.code == 200) {
+                    this.$store.dispatch('getAgentInfo').then(res => {
+                      this.$vux.loading.hide()
+                      this.$router.go(-1)
+                    })
+
+                  } else {
+                    this.$vux.alert.show({
+                      title: '提示',
+                      content: response.message,
+                      onShow() {
+                      },
+                      onHide() {
+                      }
+                    })
+                  }
+                })
+              }
+            })
+
+
+          }
         }
 
 
@@ -851,15 +858,19 @@
             this.$set(this.userImgList2, this.imgIndex2, x.target.result)
             this.imgList2[this.imgIndex2] = x.currentTarget.result
           } else if (this.formActive == 3) {
-            this.$set(this.userImgList3, this.imgIndex3, x.target.result)
-            this.imgList3[this.imgIndex3] = x.currentTarget.result
+            if (this.menuActive.menuType == 2) {
+              this.$set(this.userImgList3, this.imgIndex3, x.target.result)
+              this.imgList3[this.imgIndex3] = x.currentTarget.result
+            } else {
+              this.$set(this.userImgList4, this.imgIndex4, x.target.result)
+              this.imgList4[this.imgIndex4] = x.currentTarget.result
+            }
           }
 
 
-       //   console.log(this.userImgList1)
+          //   console.log(this.userImgList1)
         })
-      }
-      ,
+      },
       uploadImg(x) {
         this.imgIndex1 = x
         if (x == 0) {
@@ -880,7 +891,7 @@
 //                  img.src = this.userImgList1[i];
                 img.src = upList[i];
                 let Nfile = this_.imgCompress(img, {quality: 0.4})
-                let key = new Date().getTime() + i + this_.$Cookie.getToken().substring(this_.$Cookie.getToken().length - 12, this_.$Cookie.getToken().length) + Nfile.imgType
+                let key = new Date().getTime() + i + this_.$Cookie.getToken().substring(this_.$Cookie.getToken().length - 10, this_.$Cookie.getToken().length) + Nfile.imgType
                 var Extra = {
                   fname: key,
                   params: {},
@@ -963,19 +974,17 @@
       }
       ,
       convertBase64UrlToBlob(urlData) {
-        var arr = urlData.split(','), mime = arr[0].match(/:(.*?);/)[1],
-          bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+        var arr = urlData.split(','), mime = arr[0].match(/:(.*?);/)[1],bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
         while (n--) {
           u8arr[n] = bstr.charCodeAt(n);
         }
         return new Blob([u8arr], {type: mime});
       }
-      ,
     }
   }
 </script>
 
-<style rel="stylesheet/scss" lang="scss">
+<style rel="stylesheet/less" lang="less">
   #GDMap {
     width: 100%;
     height: 100vh;

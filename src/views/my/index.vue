@@ -65,7 +65,7 @@
         cellList: [{
           title: '收货地址',
           type: 'url',
-          url: "/ShippingAddress",
+          url: "/ShoppingAddress",
           value: '',
           funType: 'url'
         }, {
@@ -83,7 +83,7 @@
         }, {
           title: '联系客服',
           type: 'url',
-          url: "/ShippingAddress",
+          url: "/ShoppingAddress",
           value: '',
           funType: 'AppUrl'
         }, {
@@ -151,74 +151,6 @@
 
 <style rel="stylesheet/less" lang="less">
 
-  .My {
-    background-color: #f4f4f4;
-    min-height: 100vh;
 
-    .weui-cell_access .weui-cell__ft:after {
-      width: 1.5rem;
-      height: 1.5rem;
-      margin-top: -0.75rem;
-    }
-    .weui-cell:before {
-      left: 2rem;
-    }
-
-    .M_head {
-      padding: 4rem 1.875rem 1.75rem;
-      margin-bottom: 1px;
-      background-color: #ffffff;
-      .userInfo {
-        display: flex;
-        align-items: center;
-        justify-content: flex-start;
-        font-size: 2rem;
-        color: #323232;
-        margin-bottom: 1.875rem;
-        .userImg {
-          width: 5.5rem;
-          height: 5.5rem;
-          border-radius: 50%;
-          margin-right: 1.25rem;
-        }
-      }
-      .allOrders {
-        font-size: 1.5rem;
-        color: #323232;
-        text-align: right;
-      }
-    }
-    .FeatureList {
-      margin-top: 1px;
-      background-color: #ffffff;
-      padding: 1.75rem 0;
-      display: flex;
-      align-items: center;
-      justify-content: space-around;
-      .item {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
-        font-size: 1.5rem;
-        > img {
-          margin-bottom: 0.75rem;
-          width: 3.5rem;
-          height: 3.5rem;
-        }
-      }
-    }
-    .cellList {
-      background-color: #fff;
-      margin-top: 0.625rem;
-      .weui-cells {
-        margin-top: 0;
-      }
-      .cellItem {
-        font-size: 2rem;
-        padding: 2rem 1.5rem 2rem 2rem;
-      }
-    }
-  }
 
 </style>

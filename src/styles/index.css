@@ -210,8 +210,9 @@ body .weui-cell__ft {
 }
 
 .weui-toast {
-  padding: 0 2rem;
+  padding: 0 1.5rem;
   width: auto !important;
+  min-width: 50%;
 }
 .vux-divider{
   font-size: 1.5rem;

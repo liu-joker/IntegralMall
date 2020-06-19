@@ -8,18 +8,35 @@ import {environmentAI} from './filters'
 import {AlertModule} from 'vux'
 
 
-const whiteList = ['payment', 'callbackPageS', 'errorPayPage', 'merchantInfo', 'GoodsDetails', 'commodityTypeList','agreementOfUsage'] // 白名单
+const whiteList = ['payment', 'callbackPageS', 'errorPayPage', 'merchantInfo', 'GoodsDetails', 'commodityTypeList', 'agreementOfUsage'] // 白名单
+const whiteList2 = ['merChantIndex', 'tradeType']
 router.beforeEach((to, from, next) => {
+  let brandId
+  if(/Lycheepay/.test(window.navigator.userAgent)){
+       brandId = 'deb99c1be8a748a59f760485fd49df15'
+      cookies.setBrandId(brandId)
+  }
+
+
+ /* let themeClass = 'theme1'
+  if(cookies.getBrandId() != ""){
+    themeClass = 'theme2'
+  }
+  console.log(123)
+  document.querySelector("#app").setAttribute('class', themeClass)*/
+
+
   let token = ""
   try {
-    store.dispatch('getToken').then(res => {
+    store.dispatch('getToken', brandId).then(res => {
       token = res
 
- /*          AlertModule.show({
-             title: '提示',
-             content: token,
-           })
-       token = ''*/
+      console.log(token)
+      /*          AlertModule.show({
+                  title: '提示',
+                  content: token,
+                })
+            token = ''*/
 
       cookies.setToken(token)
       if (token != "null" && token != null && token != "" && !store.getters.userInfo.phone && whiteList.indexOf(to.name) == -1) {

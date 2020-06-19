@@ -66,51 +66,5 @@
 
 <style rel="stylesheet/less" lang="less">
 
-  .HelpCenter {
-    background-color: #f4f4f4;
-    min-height: 100vh;
-    padding-top: 0.625rem;
-    .groupList {
-      background-color: #ffffff;
-      .weui-cell_access .weui-cell__ft:after {
-        width: 1.5rem;
-        height: 1.5rem;
-        margin-top: -0.75rem;
-      }
-      .weui-cell:before {
-        left: 2rem;
-      }
-      .slide {
-        overflow: hidden;
-        max-height: 0;
-        transition: max-height .5s cubic-bezier(0, 1, 0, 1) -.1s;
-        background-color: #f4f4f4;
-
-        .slideContent {
-          font-size: 1.5rem;
-          color: #323232;
-          padding: 1.75rem 3rem;
-        }
-      }
-      .animate {
-        max-height: 9999px;
-        transition-timing-function: cubic-bezier(0.5, 0, 1, 0);
-        transition-delay: 0s;
-      }
-      .weui-cells {
-        margin-top: 0;
-      }
-
-      .groupItem {
-        border-bottom: 1px solid #f4f4f4;
-        .cellItem {
-          font-size: 1.875rem;
-          color: #323232;
-          padding: 2rem 1.5rem 2rem 2rem;
-        }
-      }
-    }
-
-  }
 
 </style>

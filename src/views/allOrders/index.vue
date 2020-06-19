@@ -32,7 +32,7 @@
               </div>
               <div class="footBut">
                 <div class="but" v-if="x.payStatus == 3 && x.status == 3" @click.stop="cancelOrder(x)">取消订单</div>
-                <div class="but" v-if="x.expressStatus == 2 || x.expressStatus == 1" @click="finishOrder(x)">
+                <div class="but" :class="x.expressStatus == 2 ? '' : 'disabled'" v-if="x.expressStatus == 2 || x.expressStatus == 1" @click.stop="finishOrder(x)">
                   {{x.expressStatus == 2 ? '确认收货' : '已签收'}}
                 </div>
                 <!--<div class="but" v-if="butShowList.but3">立即付款</div>-->

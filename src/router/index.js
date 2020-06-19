@@ -56,17 +56,17 @@ const routerList = [
     }
   },
   {
-    path: '/ShippingAddress',
-    name: 'ShippingAddress',
-    component: () => import('@/views/ShippingAddress'),
+    path: '/ShoppingAddress',
+    name: 'ShoppingAddress',
+    component: () => import('@/views/ShoppingAddress'),
     meta: {
       title: '收货地址'
     }
   },
   {
-    path: '/AddShippingAddress',
-    name: 'AddShippingAddress',
-    component: () => import('@/views/AddShippingAddress'),
+    path: '/AddShoppingAddress',
+    name: 'AddShoppingAddress',
+    component: () => import('@/views/AddShoppingAddress'),
     meta: {
       title: '添加收货地址'
     }
@@ -191,7 +191,14 @@ const routerList = [
       title: '用户协议'
     }
   },
-
+  {
+    path: '/agreementOfAgent',
+    name: 'agreementOfAgent',
+    component: () => import('@/views/agreement/agreementOfAgent'),
+    meta: {
+      title: '入驻合同书'
+    }
+  },
 
   //商家模块
 
@@ -205,8 +212,8 @@ const routerList = [
   },
 
   {
-    path: '/merchantIndex',
-    name: 'merchantIndex',
+    path: '/merChantIndex',
+    name: 'merChantIndex',
     component: () => import('@/views/merchant/merchantIndex'),
     meta: {
       title: '商家'
@@ -218,6 +225,46 @@ const routerList = [
     component: () => import('@/views/merchant/MerchantCA'),
     meta: {
       title: '商家中心'
+    }
+  },
+  {
+    path: '/earnings',
+    name: 'earnings',
+    component: () => import('@/views/merchant/earnings'),
+    meta: {
+      title: '收益提现'
+    }
+  },
+  {
+    path: '/WithdrawalRecord',
+    name: 'WithdrawalRecord',
+    component: () => import('@/views/merchant/WithdrawalRecord'),
+    meta: {
+      title: '提现记录'
+    }
+  },
+  {
+    path: '/OperatingIncome',
+    name: 'OperatingIncome',
+    component: () => import('@/views/merchant/OperatingIncome'),
+    meta: {
+      title: '营业收入'
+    }
+  },
+  {
+    path: '/MerchantEdit',
+    name: 'MerchantEdit',
+    component: () => import('@/views/merchant/MerchantEdit'),
+    meta: {
+      title: '商家详情'
+    }
+  },
+  {
+    path: '/marketingManagement',
+    name: 'marketingManagement',
+    component: () => import('@/views/merchant/marketingManagement'),
+    meta: {
+      title: '营销管理'
     }
   },
   {
@@ -276,8 +323,46 @@ const routerList = [
       title: '申请入驻信息填写'
     }
   },
-
-
+  {
+    path: '/myOrder',
+    name: 'myOrder',
+    component: () => import('@/views/merchant/myOrder'),
+    meta: {
+      title: '我的订单'
+    }
+  },
+  {
+    path: '/userEvaluate',
+    name: 'userEvaluate',
+    component: () => import('@/views/merchant/userEvaluate'),
+    meta: {
+      title: '评价'
+    }
+  },
+  {
+    path: '/evaluateSuccess',
+    name: 'evaluateSuccess',
+    component: () => import('@/views/merchant/evaluateSuccess'),
+    meta: {
+      title: '评价'
+    }
+  },
+  {
+    path: '/evaluateInfo',
+    name: 'evaluateInfo',
+    component: () => import('@/views/merchant/evaluateInfo'),
+    meta: {
+      title: '评价信息'
+    }
+  },
+  {
+    path: '/merchantPhoto',
+    name: 'merchantPhoto',
+    component: () => import('@/views/merchant/merchantPhoto'),
+    meta: {
+      title: '相册管理'
+    }
+  },
 
 
   {path: '/404', component: () => import('@/views/404'), hidden: true},

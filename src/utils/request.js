@@ -2,8 +2,11 @@ import Vue from 'vue'
 import axios from 'axios'
 import qs from 'qs'
 import cookies from '@/utils/auth'
-import { AlertModule } from 'vux'
-
+import { AlertModule,ToastPlugin } from 'vux'
+Vue.use(ToastPlugin,{
+  type:'text',
+  position: 'bottom'
+})
 import {environmentAI} from '@/filters'
 
 
@@ -77,12 +80,14 @@ service.interceptors.response.use(
         return Promise.reject(res)
       } else {
         message = res.message
-        AlertModule.show({
-          title: '提示',
-          content: message,
-          onHide() {
-          }
-        })
+         Vue.$vux.toast.show({text:message})
+
+        /* AlertModule.show({
+           title: '提示',
+           content: message,
+           onHide() {
+           }
+         })*/
         return
       }
 
@@ -122,11 +127,12 @@ service.interceptors.response.use(
 
     }
 
+    Vue.$vux.toast.show({text:error.message})
 
-    AlertModule.show({
+   /* AlertModule.show({
       title: '提示',
       content: error.message,
-    })
+    })*/
 
     return Promise.reject(error)
   }

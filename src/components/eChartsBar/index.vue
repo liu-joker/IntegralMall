@@ -13,14 +13,15 @@
   // 引入提示框和title组件
   require('echarts/lib/component/tooltip')
   require('echarts/lib/component/title')
+  require('echarts/lib/component/dataZoom')
   export default {
     name: 'eChartsBar',
 
     data() {
       return {
-        Xdata: [ '1', '2', '3', '4', '5', '6', '7'],
+        Xdata: [],
         xName: '金额/元',
-        yName:'近七天',
+        yName:'近七天/日',
 
         setiesList: [
           {
@@ -47,14 +48,17 @@
                 position: 'top'
               }
             },
-            data: [220, 182, 191, 234, 290, 330, 310],
-            animationDuration: 600,
+            data: [],
+            animationDuration: 400,
             animationEasing: 'cubicInOut'
-          }]
+          }
+          ]
       }
     },
+    props:['AgentChart'],
     created() {
-
+      this.Xdata = this.AgentChart.xList
+      this.setiesList[0].data = this.AgentChart.data
     },
     mounted() {
       this.drawLine()
@@ -71,14 +75,21 @@
           tooltip: {
             trigger: 'axis',
             axisPointer: {
-              type: 'shadow',
+              type: 'none',
               label: {
                 backgroundColor: '#6a7985'
               },
-
             }
           },
-
+          dataZoom: [{
+            type: 'inside', // inside  slider
+            show: true, //flase直接隐藏图形
+            xAxisIndex: [0],
+            left: '9%', //滚动条靠左侧的百分比
+            bottom: 0,
+            start: 0,//滚动条的起始位置
+            end: 20 //滚动条的截止位置（按比例分割你的柱状图x轴长度）
+          }],
           toolbox: {
             feature: {
               saveAsImage: {}

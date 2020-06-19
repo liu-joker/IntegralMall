@@ -6,11 +6,29 @@ import Cookies from 'js-cookie'
 const StatisticsPromotion = 'statisticsPromotion'
 const TokenKey = 'User-Token'
 const UserInfo = 'User-Info'
-const wxUserPhone = 'User-Phone'
-const searchRecord = 'searchRecord'
-const MGHistory = 'MGHistory'
+const wxUserPhone = 'User-Phone' //微信扫码支付存储用户手机号码
+const searchRecord = 'searchRecord'//搜索历史
+const MGHistory = 'MGHistory'//搜索历史
+const brandId = 'brandId'
+const agentIntroduce = 'agentIntroduce'
 
 class cookies {
+
+  static setAgentIntroduce(agent) {
+    return Cookies.set(agentIntroduce, agent)
+  }
+
+  static getAgentIntroduce() {
+    return Cookies.get(agentIntroduce)
+  }
+
+  static setBrandId(data) {
+    return Cookies.set(brandId, data)
+  }
+
+  static getBrandId() {
+    return Cookies.get(brandId)
+  }
 
   static setUserInfo(Info) {
     return Cookies.set(UserInfo, Info)

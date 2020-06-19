@@ -213,7 +213,7 @@
     },
     methods: {
       ToPayPage() {
-        this.$router.push({path: '/payment?agentId=' + this.agentId + '&brandId=' + this.brandId})
+        this.$router.push({path: '/payment?agentId=' + this.agentId + '&brandId=' + this.brandId + '&EnvironmentalType=' + '1'})
       },
       getData() {
         let agentId = this.agentId
@@ -244,9 +244,9 @@
       },
       getCommontInfo() {
         //获取商户评论列表
-
         let orderBy = 1
-        this.$axiosApi.getAgentCommont(this.agentId, orderBy, this.pageNum, this.pageSize).then(res => {
+        let time
+        this.$axiosApi.getAgentCommont(this.agentId,time, orderBy, this.pageNum, this.pageSize).then(res => {
           if (res.code == 200) {
 
             if (res.data.length == this.CommontList.length) {

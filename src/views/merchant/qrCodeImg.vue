@@ -11,14 +11,14 @@
 
     <div class="img-box" ref="imageWrapper">
       <div class="qrImg_head">
-        <img src="http://img.cdn.hljcxiaoxiong.com/banner11-12.png" alt="">
+        <img src="@/assets/merchant/lizhifu.png" alt="">
         <span>立之付</span>
       </div>
       <div class="qrImg_content">
         <div class="title">支付就用立之付</div>
         <div class="qrcode_img">
           <vue-qrcodes :qrcodeData="qrcodeData" v-if="qrcodeData.show"></vue-qrcodes>
-          <div class="userName">**三</div>
+          <div class="userName" v-if="name!=''">{{name}}</div>
         </div>
       </div>
       <div class="qr_foot">打开立之付【扫一扫】</div>
@@ -36,6 +36,7 @@
 
 <script>
   import html2canvas from 'html2canvas';
+  import lizhifu from '@/assets/merchant/lizhifuLogo.png';
   import { XButton } from 'vux'
   import vueQrcodes from '@/components/vueQrcodes'
   export default {
@@ -50,8 +51,8 @@
         LOGOUrl: '',
         dataURL: '',
         qrcodeData:{
-          url:'http://192.168.1.34:8088/#/payment?agentId=1&brandId=deb99c1be8a748a59f760485fd49df15',
-          icon:'http://img.cdn.hljcxiaoxiong.com/pic_sort11-12.png',
+          url:'',
+          icon:lizhifu,
           wid: 200,
           hei: 200,
           imgwid:53,
@@ -60,11 +61,44 @@
         }
       }
     },
+    computed:{
+      name:function () {
+        let str = this.$store.getters.LzfUserName
+          if(null != str && str != undefined && str !=""){
+            if(str.length <= 3){
+              return "*" + str.substring(1,str.length);
+            } else if(str.length > 3 && str.length <= 6){
+              return "**" + str.substring(2,str.length);
+            } else if(str.length > 6){
+              return str.substring(0,2) + "****" + str.substring(6,str.length)
+            }
+          } else {
+            return "";
+          }
+      }
+    },
     created() {
+      this.qrCodeInfo()
       this.setQrcode()
       this.getUserInfo()
     },
     methods: {
+      qrCodeInfo(){
+        this.$axiosApi.qrCodeInfo().then(res=>{
+          if(res.code == 200){
+            this.qrcodeData.url = res.data
+          }else {
+            this.$vux.alert.show({
+              title: '提示',
+              content: res.message,
+              onShow() {
+              },
+              onHide() {
+              }
+            })
+          }
+        })
+      },
       setQrcode(){
         let w = document.body.clientWidth
         this.qrcodeData.wid = Math.floor((28.125/46.875) * w)

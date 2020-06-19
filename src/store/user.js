@@ -1,6 +1,7 @@
 import axiosApi from '@/api/axios'
-import {environmentAI,environment} from '@/filters'
-import { AlertModule } from 'vux'
+import cookies from '@/utils/auth'
+import {environmentAI, environment} from '@/filters'
+import {AlertModule} from 'vux'
 
 const user = {
   state: {
@@ -9,9 +10,13 @@ const user = {
     },
     selectItem: 'all',
     agentInfo: {},
-    token:""
+    token: "",
+    LzfUserName: "",
   },
   mutations: {
+    SET_LZUSERNNAME: (state, LzfUserName) => {
+      state.LzfUserName = LzfUserName
+    },
     SET_USERINFO: (state, userInfo) => {
       state.userInfo = userInfo
     },
@@ -68,41 +73,112 @@ const user = {
     },
     getToken({commit}) {
       return new Promise((resolve, reject) => {
+
+
         let token;
 
         token = ''
-        token = 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJITEpDIiwiZXhwIjoxNTkxMTUyNDAyLCJ1c2VyIjoiOGI4M2JmM2JmNDI5NGYwMmJmZmQ5NjEzZjAxZmI5ZjAifQ._GG3AFcxQvKpe1UmS3ziOiMHfBCieMYSJn8QSiyLeIADfe3g4qSS7ua5c2Sc7uUI0oGi56OJvLe-ph0yFxwEhQ'
+        token = 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJITEpDIiwiZXhwIjoxNTkyNTM0OTMyLCJ1c2VyIjoiMDIzY2RiOTkxMTk5NDBhMWIwZTBlYjRiNWY2MDA5OTUifQ.yKG4MclBpNHC9qtSXz8YVjrMQMpIY-SMUovBD7QSlYWmzUzyPe3nkOhOe0oaX4eiEL9IqmlZj22GIv1Hdi83tg'
+        let userName = '测试名称'
+        commit('SET_LZUSERNNAME', userName)
         resolve(token)
 
-        if(environmentAI() == 1 && environment() == 2){
-          try{
-            token = window.app.getToken()
-            commit('SET_TOKEN',token )
-            resolve(token)
-          }catch (err){
+        return
+
+
+        let data = cookies.getBrandId()
+        if (data && data == 'deb99c1be8a748a59f760485fd49df15') {
+
+          ly.getAuthCode({
+            "merchantId": "2020042900101187",
+            "scopes": ["lzfApiUserInfo", "lzfApiChooseBankCard"],
+            "callback": ((result) => {
+              //处理授权码
+              //  console.log(result,'result')
+              if (result.status == 1) {
+                axiosApi.getKWebToken(result.code).then(res1 => {
+                  if (res1.code == 200) {
+                    let accessToken = res1.data.accessToken
+                    let openId = res1.data.openId
+
+                    axiosApi.getKUser(accessToken, openId).then(res2 => {
+                      if (res2.code == 200) {
+
+                        let phone = res2.data.phone
+                        let userName = res2.data.userName
+                        commit('SET_LZUSERNNAME', userName)
+
+                        let brandId = data
+
+                        axiosApi.registerLoginH5(phone, brandId).then(res3 => {
+                          if (res3.code == 200) {
+                            resolve(res3.data)
+                          } else {
+                            AlertModule.show({
+                              title: '提示',
+                              content: res3.message,
+                            })
+                          }
+                        })
+
+
+                      } else {
+                        AlertModule.show({
+                          title: '提示',
+                          content: res2.message,
+                        })
+                      }
+                    })
+
+                  } else {
+                    AlertModule.show({
+                      title: '提示',
+                      content: res1.message,
+                    })
+                  }
+                })
+              } else {
+                AlertModule.show({
+                  title: '提示',
+                  content: result.failureDetails,
+                })
+              }
+            })
+          });
+
+        } else {
+          if (environmentAI() == 1 && environment() == 2) {
+            try {
+              token = window.app.getToken()
+              commit('SET_TOKEN', token)
+              resolve(token)
+            } catch (err) {
+              token = ''
+              resolve(token)
+            }
+          } else if (environmentAI() == 2 && environment() == 2) {
+            try {
+              token = window.app.getToken()
+              commit('SET_TOKEN', token)
+              resolve(token)
+            } catch (err) {
+              window.setToken = (params) => {
+                if (params) {
+                  commit('SET_TOKEN', params)
+                  resolve(params)
+                } else {
+                  resolve('')
+                }
+              }
+              window.webkit.messageHandlers.getToken.postMessage({})
+            }
+          } else {
             token = ''
             resolve(token)
           }
-        }else if(environmentAI() == 2 && environment() == 2){
-          try {
-            token = window.app.getToken()
-            commit('SET_TOKEN',token )
-            resolve(token)
-          }catch(err){
-            window.setToken = (params)=>{
-              if(params){
-                commit('SET_TOKEN',params)
-                resolve(params)
-              }else {
-                resolve('')
-              }
-            }
-            window.webkit.messageHandlers.getToken.postMessage({})
-          }
-        }else {
-          token = ''
-          resolve(token)
         }
+
+
       })
     },
   }

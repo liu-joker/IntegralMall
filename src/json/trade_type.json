@@ -1,0 +1,50 @@
+[{
+    "id": "1",
+    "name": "餐饮美食",
+    "parentId": "0"
+  },
+  {
+    "id": "2",
+    "name": "酒店住宿",
+    "parentId": "0"
+  },
+  {
+    "id": "3",
+    "name": "休闲娱乐",
+    "parentId": "0"
+  },
+  {
+    "id": "4",
+    "name": "周边旅游",
+    "parentId": "0"
+  },
+  {
+    "id": "5",
+    "name": "美容美发",
+    "parentId": "1"
+  },
+  {
+    "id": "6",
+    "name": "家居装修",
+    "parentId": "1"
+  },
+  {
+    "id": "7",
+    "name": "医疗健康",
+    "parentId": "1"
+  },
+  {
+    "id": "8",
+    "name": "运动健康",
+    "parentId": "1"
+  },
+  {
+    "id": "9",
+    "name": "生活服务",
+    "parentId": "1"
+  },
+  {
+    "id": "10",
+    "name": "更多",
+    "parentId": "2"
+  }]
