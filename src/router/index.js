@@ -200,7 +200,7 @@ const routerList = [
     }
   },
 
-  //商家模块
+
 
   {
     path: '/merchantInfo',
@@ -212,6 +212,71 @@ const routerList = [
   },
 
   {
+    path: '/merchantInfo2',
+    name: 'merchantInfo2',
+    component: () => import('@/views/merchant/merchantInfo2'),
+    meta: {
+      title: '商家详情'
+    }
+  },
+  {
+    path: '/BusinessDetails',
+    name: 'BusinessDetails',
+    component: () => import('@/views/merchant/BusinessDetails'),
+    meta: {
+      title: '商家详情'
+    }
+  },
+  {
+    path: '/commentList',
+    name: 'commentList',
+    component: () => import('@/views/merchant/commentList'),
+    meta: {
+      title: '评论列表'
+    }
+  },
+  {
+    path: '/videoList',
+    name: 'videoList',
+    component: () => import('@/views/merchant/videoList'),
+    meta: {
+      title: '视频列表'
+    }
+  },
+  {
+    path: '/activityDetail',
+    name: 'activityDetail',
+    component: () => import('@/views/merchant/activityDetail'),
+    meta: {
+      title: '活动详情'
+    }
+  },
+  {
+    path: '/PackageDetails',
+    name: 'PackageDetails',
+    component: () => import('@/views/merchant/PackageDetails'),
+    meta: {
+      title: '套餐详情'
+    }
+  },
+  {
+    path: '/morePrivilege',
+    name: 'morePrivilege',
+    component: () => import('@/views/merchant/morePrivilege'),
+    meta: {
+      title: '更多特权'
+    }
+  },
+
+
+
+
+
+  //商家模块
+
+
+
+ /* {
     path: '/merChantIndex',
     name: 'merChantIndex',
     component: () => import('@/views/merchant/merchantIndex'),
@@ -362,7 +427,7 @@ const routerList = [
     meta: {
       title: '相册管理'
     }
-  },
+  },*/
 
 
   {path: '/404', component: () => import('@/views/404'), hidden: true},

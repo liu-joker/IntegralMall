@@ -8,32 +8,20 @@ Vue.use(ToastPlugin,{
   position: 'bottom'
 })
 import {environmentAI} from '@/filters'
-
-
 // 创建axios实例
 const service = axios.create({
   baseURL: process.env.BASE_API, // api的base_url
   timeout: 60000 // 请求超时时间
 })
 
-
 // request拦截器   请求之前
 service.interceptors.request.use(config => {
-
-
   const headers = config.headers["Content-Type"]
   // console.log(headers.indexOf("application/x-www-form-urlencoded"))
   //console.log(config.data)
   if (headers == undefined || headers.indexOf("application/x-www-form-urlencoded") != -1) {
     config.data = qs.stringify(config.data);
   }
-
-
-  /*  AlertModule.show({
-      title: '提示',
-      content: cookies.getToken(),
-    })*/
-
   config.headers['token'] = cookies.getToken()
 
   /*if (store.getters.token) {
@@ -47,7 +35,7 @@ service.interceptors.request.use(config => {
 })
 
 
-// respone拦截器
+// respone拦截器  响应之后
 service.interceptors.response.use(
   response => {
 
@@ -61,6 +49,10 @@ service.interceptors.response.use(
 
       let message = ""
       if (res.code == '401' || res.code == '402' || res.code == '0' || res.code == '726') {
+
+        if(cookies.getSEnvironment() == 1){
+          cookies.removeToken()
+        }
         AlertModule.show({
           title: '提示',
           content: "登录失效，请重新登录!",
@@ -110,6 +102,11 @@ service.interceptors.response.use(
 
     if (errordata.code != '200') {
       if (errordata.code == '401' || errordata.code == '402' || errordata.code == '0' || errordata.code == '726') {
+
+        if(cookies.getSEnvironment() == 1){
+          cookies.removeToken()
+        }
+
         try {
           if (environmentAI() == 2) {
             window.webkit.messageHandlers.onLoginErro.postMessage({})

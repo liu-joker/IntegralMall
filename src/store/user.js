@@ -77,13 +77,13 @@ const user = {
 
         let token;
 
-        token = ''
-        token = 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJITEpDIiwiZXhwIjoxNTkyNTM0OTMyLCJ1c2VyIjoiMDIzY2RiOTkxMTk5NDBhMWIwZTBlYjRiNWY2MDA5OTUifQ.yKG4MclBpNHC9qtSXz8YVjrMQMpIY-SMUovBD7QSlYWmzUzyPe3nkOhOe0oaX4eiEL9IqmlZj22GIv1Hdi83tg'
+      /*  token = ''
+        //token = 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJITEpDIiwiZXhwIjoxNTk0MTEwMzQ4LCJ1c2VyIjoiMDIzY2RiOTkxMTk5NDBhMWIwZTBlYjRiNWY2MDA5OTUifQ.jvLUFW555B7NZEBTujwx9mUd9kf90PlMTooIS4bnE3atOTsr6TLcfCIh1Lcg29HvQ2QDRRDWAniMQwai5y_lJw'
         let userName = '测试名称'
         commit('SET_LZUSERNNAME', userName)
         resolve(token)
 
-        return
+        return*/
 
 
         let data = cookies.getBrandId()
@@ -120,8 +120,6 @@ const user = {
                             })
                           }
                         })
-
-
                       } else {
                         AlertModule.show({
                           title: '提示',

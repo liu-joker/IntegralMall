@@ -124,6 +124,20 @@ class loginApi {
     })
   };
 
+  // /loginRegisterSms 商城注册
+  static loginRegisterSms(phone, code, brandId) {
+    return request({
+      url: 'https://www.hlxiaoxiong.com/v2.0/user/loginRegisterSms',
+      method: 'post',
+      data: {
+        'phone': phone,
+        'code': code,
+        'brandId': brandId,
+      },
+      headers: {"Content-Type": "application/x-www-form-urlencoded;charset=utf-8"},
+    })
+  };
+
   //用户信息
   static shopUserinfo() {
     return request({
@@ -264,6 +278,7 @@ class loginApi {
   //上传凭证
   static getAuth() {
     return request({
+      // url: 'https://www.hlxiaoxiong.com/v2.0/notice/getAuth',
       url: 'http://129.211.65.120:8099/v2.0/notice/getAuth',
       method: 'post',
       data: {},
@@ -349,13 +364,13 @@ class loginApi {
   };
 
   //商户评论列表
-/*  static getAgentCommont(agentId, orderBy, pageNum, pageSize) {
-    return request({
-      url: '/getAgentCommont?agentId=' + agentId + '&orderBy=' + orderBy + '&pageNum=' + pageNum + '&pageSize=' + pageSize,
-      method: 'get',
-      data: {},
-    })
-  };*/
+  /*  static getAgentCommont(agentId, orderBy, pageNum, pageSize) {
+      return request({
+        url: '/getAgentCommont?agentId=' + agentId + '&orderBy=' + orderBy + '&pageNum=' + pageNum + '&pageSize=' + pageSize,
+        method: 'get',
+        data: {},
+      })
+    };*/
 
 
 //获取商户信息
@@ -525,9 +540,9 @@ class loginApi {
 
   // /getAgentCommont 获取商户评论列表
 
-  static getAgentCommont(agentId,time,orderBy,pageNum,pageSize) {
+  static getAgentCommont(agentId, time, orderBy, pageNum, pageSize) {
     return request({
-      url: '/getAgentCommont?agentId=' + agentId + '&time=' + time + '&orderBy=' + orderBy +'&pageNum=' + pageNum +'&pageSize=' + pageSize,
+      url: '/getAgentCommont?agentId=' + agentId + '&time=' + time + '&orderBy=' + orderBy + '&pageNum=' + pageNum + '&pageSize=' + pageSize,
       method: 'get',
       data: {},
       headers: {"Content-Type": "application/x-www-form-urlencoded;charset=utf-8"},
@@ -544,12 +559,80 @@ class loginApi {
     })
   };
 
- // POST /addPhoto 添加或修改商户相册
+  // POST /addPhoto 添加或修改商户相册
   static addPhoto(data) {
     return request({
       url: '/addPhoto',
       method: 'post',
       data: data,
+      headers: {"Content-Type": "application/x-www-form-urlencoded;charset=utf-8"},
+    })
+  };
+
+  ///agentGoods 商户团购套餐列表
+  static agentGoods(agentId, isFirst) {
+    return request({
+      url: '/agentGoods?agentId=' + agentId + '&isFirst=' + isFirst,
+      method: 'get',
+      data: {},
+      headers: {"Content-Type": "application/x-www-form-urlencoded;charset=utf-8"},
+    })
+  };
+
+  ///agentGoodsDetail 团购套餐详情
+  static agentGoodsDetail(goodsId) {
+    return request({
+      url: '/agentGoodsDetail?goodsId=' + goodsId,
+      method: 'get',
+      data: {},
+      headers: {"Content-Type": "application/x-www-form-urlencoded;charset=utf-8"},
+    })
+  };
+
+  ///getUserActivity 用户获取商户活动
+  static getUserActivityList(agentId) {
+    return request({
+      url: '/getUserActivityList',
+      method: 'post',
+      data: {
+        agentId: agentId
+      },
+      headers: {"Content-Type": "application/x-www-form-urlencoded;charset=utf-8"},
+    })
+  };
+
+  //POST /getUserActivityDetail 用户获取商户活动详情
+  static getUserActivityDetail(id) {
+    return request({
+      url: '/getUserActivityDetail',
+      method: 'post',
+      data: {
+        id: id
+      },
+      headers: {"Content-Type": "application/x-www-form-urlencoded;charset=utf-8"},
+    })
+  };
+
+
+  ///agentVideos 商户所有视频
+  static agentVideos(agentId) {
+    return request({
+      url: '/agentVideos?agentId=' + agentId,
+      method: 'get',
+      data: {},
+      headers: {"Content-Type": "application/x-www-form-urlencoded;charset=utf-8"},
+    })
+  };
+
+
+  ///getUserActivity 用户获取商户活动
+  static getUserActivity(agentId) {
+    return request({
+      url: '/getUserActivity',
+      method: 'post',
+      data: {
+        agentId: agentId
+      },
       headers: {"Content-Type": "application/x-www-form-urlencoded;charset=utf-8"},
     })
   };

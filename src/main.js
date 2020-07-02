@@ -82,8 +82,10 @@ import VueWechatTitle from 'vue-wechat-title';
 Vue.use(VueWechatTitle)
 
 
-
-
+import VideoPlayer from 'vue-video-player'
+require('video.js/dist/video-js.css')
+require('vue-video-player/src/custom-theme.css')
+Vue.use(VideoPlayer)
 
 /** i18n **/
 /*let store = new Vuex.Store({

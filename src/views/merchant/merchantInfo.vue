@@ -245,7 +245,7 @@
       getCommontInfo() {
         //获取商户评论列表
         let orderBy = 1
-        let time
+        let time = ''
         this.$axiosApi.getAgentCommont(this.agentId,time, orderBy, this.pageNum, this.pageSize).then(res => {
           if (res.code == 200) {
 

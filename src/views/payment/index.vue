@@ -187,7 +187,7 @@
       this.environment = environment()
 
       console.log(environment())
-      this.environment = 5
+     // this.environment = 5
 
 
       if(this.environment != 2){

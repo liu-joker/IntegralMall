@@ -200,7 +200,8 @@
           width: 0,
           gutterWidth: 0
         },
-        queryId:''
+        queryId:'',
+        userId:''
       }
     },
     watch: {
@@ -292,6 +293,7 @@
       var url = window.location.href;
       var j = url.substring(url.indexOf('brandId=') + 8, url.indexOf('brandId=') + 40);
       this.brandId = this.$route.query.brandId || j
+      this.userId = this.$route.query.userId
       this.$store.dispatch('setBrindId', this.brandId)
 
 
@@ -308,7 +310,7 @@
         this.$router.push({path: '/my'})
       },
       GoodsDetails(x) {
-        this.$router.push({path: '/GoodsDetails/' + x.id})
+        this.$router.push({path: `/GoodsDetails/${x.id}?userId=${this.userId}`})
       },
       getBannerList() {
         this.$axiosApi.itemAdvert().then(res => {
@@ -413,7 +415,7 @@
       },
       grabble_fun() {
         this.$router.push({
-          path: 'grabble'
+          path: `/grabble?userId=${this.userId}`
         })
       },
       loadmore(item) {

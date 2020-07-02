@@ -109,6 +109,8 @@
         </div>
       </div>
     </div>
+    <login-view :loginData="loginData"></login-view>
+
     <back-to-top></back-to-top>
   </div>
 
@@ -136,6 +138,7 @@
   import {imgUrl} from "@/filters";
 
   import loading from '@/assets/loading3.gif'
+  import loginView from "@/components/loginView"
 
   export default {
     name: 'index',
@@ -147,6 +150,7 @@
       BackToTop,
       XImg,
       Sticky,
+      loginView,
     },
     data() {
       const self = this
@@ -239,6 +243,7 @@
         third: 0,
         itemType: '',
         info: '',
+        environment: '',
         dividerShow: false,
         noDataShow: false,
         timer: null,
@@ -247,6 +252,10 @@
           width: 0,
           gutterWidth: 0
         },
+        loginData:{
+          brandId: 'deb99c1be8a748a59f760485fd49df15',
+          showView:false
+        }
       }
     },
     computed: {
@@ -329,6 +338,10 @@
       var url = window.location.href;
       var j = url.substring(url.indexOf('brandId=') + 8, url.indexOf('brandId=') + 40);
       this.brandId = this.$route.query.brandId || j
+      //environment 判断环境  1.公众号
+      this.environment = this.$route.query.environment || ""
+      this.loginData.brandId = this.$route.query.brandId
+      this.$Cookie.setSEnvironment(this.environment)
       this.$store.dispatch('setBrindId', this.brandId)
 
       this.getBannerList()
@@ -349,6 +362,14 @@
         if (this.$Cookie.getToken() != null && this.$Cookie.getToken() != "null" && this.$Cookie.getToken() != "") {
           this.$router.push({path: '/my'})
         } else {
+
+          if(this.$Cookie.getToken() == '' && this.environment == 1 && this.loginData.brandId){
+            this.loginData.showView = true
+            console.log('公众号')
+            return
+          }
+
+
           if (this.$EnvironmentAI() == 2) {
             this.$vux.confirm.show({
               content: "请先登录",
@@ -368,7 +389,8 @@
         }
       },
       GoodsDetails(x) {
-        this.$router.push({path: '/GoodsDetails/' + x.id})
+        //this.$router.push({path: '/GoodsDetails/' + x.id})
+        this.$router.push({path: `/GoodsDetails/${x.id}?brandId=${this.brandId}&environment=${this.environment}`})
       },
       getBannerList() {
         this.$axiosApi.itemAdvert().then(res => {
@@ -468,7 +490,7 @@
       },
       grabble_fun() {
         this.$router.push({
-          path: 'grabble'
+          path: `/grabble?brandId=${this.brandId}&environment=${this.environment}`
         })
       },
       loadmore(item) {

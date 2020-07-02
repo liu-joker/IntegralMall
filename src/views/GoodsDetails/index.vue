@@ -61,6 +61,8 @@
       </div>
     </div>
 
+
+    <login-view :loginData="loginData"></login-view>
   </div>
 
 </template>
@@ -79,11 +81,13 @@
   import icon_share2 from "@/assets/images/icon_share2.png"
   import {Swiper, SwiperItem, Checker, CheckerItem} from 'vux'
   import {formatMoney} from "@/filters"
+  import loginView from "@/components/loginView"
 
   export default {
     name: 'GoodsDetails',
     components: {
       Swiper,
+      loginView,
       SwiperItem,
       Checker,
       CheckerItem
@@ -112,12 +116,20 @@
           }
           return ""
         },
-        id: ''
+        id: '',
+        environment: '',
+        loginData:{
+          brandId: '',
+          showView:false
+        }
       }
     },
     created() {
 
       this.id = this.$route.params.id
+      this.environment = this.$route.query.environment
+      this.$Cookie.setSEnvironment(this.environment)
+      this.loginData.brandId = this.$route.query.brandId
       this.getData()
     },
     methods: {
@@ -131,6 +143,16 @@
         if (this.itemInfo.status == 2) {
           return
         }
+
+        if(this.$Cookie.getToken() == '' && this.environment == 1 && this.loginData.brandId){
+          this.loginData.showView = true
+          console.log('公众号')
+          return
+        }
+
+
+
+
         if (this.$Cookie.getToken() == '' && this.$EnvironmentAI() == 2) {
           this.$vux.confirm.show({
             content: "请先登录",
@@ -148,9 +170,9 @@
           return
         }
 
+        console.log(this.$route.query.userId)
         if (this.$Cookie.getToken() == "") {
           if (this.$route.query.userId) {
-
             // let appName =  this.$store.getters.appName
             this.$vux.confirm.show({
               content: "请前往APP领取",

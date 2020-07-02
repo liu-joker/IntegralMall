@@ -30,7 +30,7 @@
                   <span>收款码</span>
                 </div>
                 <div class="item" @click="toMyOrder">
-                  <img src="@/assets/merchant/icon_add_skm.png" alt="">
+                  <img src="@/assets/merchant/icon_myorder.png" alt="">
                   <span>我的订单</span>
                 </div>
                 <div class="item" @click="toAgentCenter">

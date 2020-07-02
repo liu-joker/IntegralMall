@@ -101,6 +101,9 @@
         third: '',
         itemType: '',
         name: '',
+        userId: '',
+        environment: '',
+        brandId: '',
         timer: null,
       }
     },
@@ -120,6 +123,9 @@
       }
     },
     created() {
+      this.userId = this.$route.query.userId
+      this.environment = this.$route.query.environment
+      this.brandId = this.$route.query.brandId
       if (this.$Cookie.getSearchRecord()) {
         this.search = eval(this.$Cookie.getSearchRecord())
       }
@@ -138,7 +144,7 @@
         }, 300)
       },
       GoodsDetails(x) {
-        this.$router.push({path: '/GoodsDetails/' + x.id})
+        this.$router.push({path: `/GoodsDetails/${x.id}?userId=${this.userId}&brandId=${this.brandId}&environment=${this.environment}`})
       },
       delectSearch() {
         this.$Cookie.removeSearchRecord()

@@ -11,8 +11,15 @@ const searchRecord = 'searchRecord'//搜索历史
 const MGHistory = 'MGHistory'//搜索历史
 const brandId = 'brandId'
 const agentIntroduce = 'agentIntroduce'
+const SEnvironment = 'SEnvironment'
 
 class cookies {
+  static setSEnvironment(type) {
+    return Cookies.set(SEnvironment, type)
+  }
+  static getSEnvironment() {
+    return Cookies.get(SEnvironment)
+  }
 
   static setAgentIntroduce(agent) {
     return Cookies.set(agentIntroduce, agent)
