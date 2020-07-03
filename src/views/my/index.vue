@@ -132,6 +132,21 @@
           })
         } else if (x.funType == 'AppUrl') {
 
+          if(this.$Cookie.getSEnvironment() == 1){
+
+            this.$vux.confirm.show({
+              content: "客服电话：4009637768",
+              onCancel() {
+                window.location.href = 'tel://4009637768';
+              },
+              onConfirm: () => {
+
+              }
+            })
+
+            return
+          }
+
           if (this.$EnvironmentAI() == 1) {
             window.app.contactService()
           } else if (this.$EnvironmentAI() == 2) {

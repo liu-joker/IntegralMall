@@ -399,7 +399,6 @@
             }else {
               this.$vux.alert.show({
                 title: '提示',
-
                 content: res.data.respMessage,
                 onShow() {
                 },
@@ -478,9 +477,6 @@
                 }
               })
             }
-
-
-
 
           }else {
             this.$vux.alert.show({

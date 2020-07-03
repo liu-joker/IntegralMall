@@ -51,7 +51,7 @@
           <div class="num" v-html="PresentPrice()"></div>
           <div>价格</div>
         </div>
-        <div class="share" @click="share" v-if="$Cookie.getToken('token') != ''">
+        <div class="share" @click="share" v-if="$Cookie.getToken('token') != '' && environment == 2">
           <img :src="icon_share2" alt="" class="shareImg">
           <div>分享</div>
         </div>
@@ -80,7 +80,7 @@
   import icon_browse from "@/assets/images/icon_browse.png"
   import icon_share2 from "@/assets/images/icon_share2.png"
   import {Swiper, SwiperItem, Checker, CheckerItem} from 'vux'
-  import {formatMoney} from "@/filters"
+  import {formatMoney, environment} from "@/filters"
   import loginView from "@/components/loginView"
 
   export default {

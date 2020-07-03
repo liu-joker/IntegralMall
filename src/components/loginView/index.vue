@@ -21,7 +21,7 @@
             </x-button>
           </group>
           <div class="submit editSubmit">
-            <x-button type="primary" class="button" @click.native="submit">登录</x-button>
+            <x-button type="primary" class="button" :disabled="butDisabled" :class="(butDisabled)?'butDisabled':''" @click.native="submit">登录</x-button>
           </div>
         </div>
       </div>
@@ -58,6 +58,7 @@
         },
         showView: true,
         code_disabled: false,
+        butDisabled: false,
         code_time: "获取验证码",
         brandId: '8436cb02523c43bb9f6a9aea5fcac7d6',
         userPhone:'',
@@ -74,7 +75,9 @@
         let phone = this.userPhone
         let code = this.code
         let brandId = this.brandId
+        this.butDisabled = true
         this.$axiosApi.loginRegisterSms(phone, code, brandId).then(res=>{
+          this.butDisabled = false
           if(res.code == 200){
             this.$Cookie.setToken(res.data)
             this.$store.dispatch('getUserInfo').then(res=>{
@@ -232,11 +235,15 @@
             color: #FEFEFE;
             height: 4.5rem;
             line-height: 4.5rem;
+            &.butDisabled{
+              background-color: @disabledTheme;
+            }
           }
         }
         .code_time_class{
           background-color: @disabledTheme;
         }
+
       }
     }
   }

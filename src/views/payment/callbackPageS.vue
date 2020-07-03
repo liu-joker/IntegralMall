@@ -144,7 +144,7 @@
     methods: {
       toMore(){
         this.$router.push({
-          path:'/commodityTypeList?id='+0
+          path: `/commodityTypeList?id=0&userId=${this.preUser}`
         })
       },
       getData(type) {
@@ -182,11 +182,10 @@
             })
           }
         })
-
-
       },
       GoodsDetails(x) {
-        this.$router.push({path: '/GoodsDetails/' + x.id})
+        if (!this.preUser || this.preUser == "") return
+        this.$router.push({path: `/GoodsDetails/${x.id}?userId=${this.userId}`})
       },
       download() {
         if (!this.preUser || this.preUser == "") return

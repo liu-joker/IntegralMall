@@ -12,16 +12,16 @@
     <div class="img-box" ref="imageWrapper">
       <div class="qrImg_head">
         <img src="@/assets/merchant/lizhifu.png" alt="">
-        <span>立之付</span>
+        <span>小米粒</span>
       </div>
       <div class="qrImg_content">
-        <div class="title">支付就用立之付</div>
+        <div class="title">支付就用小米粒</div>
         <div class="qrcode_img">
           <vue-qrcodes :qrcodeData="qrcodeData" v-if="qrcodeData.show"></vue-qrcodes>
           <div class="userName" v-if="name!=''">{{name}}</div>
         </div>
       </div>
-      <div class="qr_foot">打开立之付【扫一扫】</div>
+      <div class="qr_foot">打开小米粒【扫一扫】</div>
     </div>
     <div class="downloadImg">
       <img :src="dataURL" alt="">

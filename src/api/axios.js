@@ -278,8 +278,8 @@ class loginApi {
   //上传凭证
   static getAuth() {
     return request({
-      // url: 'https://www.hlxiaoxiong.com/v2.0/notice/getAuth',
-      url: 'http://129.211.65.120:8099/v2.0/notice/getAuth',
+       url: 'https://www.hlxiaoxiong.com/v2.0/notice/getAuth',
+     // url: 'http://129.211.65.120:8099/v2.0/notice/getAuth',
       method: 'post',
       data: {},
       headers: {"Content-Type": "application/x-www-form-urlencoded;charset=utf-8"},

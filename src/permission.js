@@ -14,7 +14,7 @@ router.beforeEach((to, from, next) => {
   let brandId
   if(/Lycheepay/.test(window.navigator.userAgent)){
        brandId = 'deb99c1be8a748a59f760485fd49df15'
-      cookies.setBrandId(brandId)
+       cookies.setBrandId(brandId)
   }
 
 
@@ -26,20 +26,25 @@ router.beforeEach((to, from, next) => {
   document.querySelector("#app").setAttribute('class', themeClass)*/
 
 
+
   let token = ""
   try {
     store.dispatch('getToken', brandId).then(res => {
       token = res
-
-      console.log(token)
       /*          AlertModule.show({
                   title: '提示',
                   content: token,
                 })
             token = ''*/
-
-      cookies.setToken(token)
-      if (token != "null" && token != null && token != "" && !store.getters.userInfo.phone && whiteList.indexOf(to.name) == -1) {
+      if(cookies.getSEnvironment() == 1){
+        if(cookies.getToken() == 'undefined' || cookies.getToken() == undefined){
+          cookies.setToken('')
+        }
+      }else {
+        cookies.setToken(token)
+      }
+      //cookies.setToken(token)
+      if (cookies.getToken() != "null" && cookies.getToken() != null && cookies.getToken() != "" && !store.getters.userInfo.phone && whiteList.indexOf(to.name) == -1) {
         NProgress.start()
         store.dispatch('getUserInfo').then((res) => {
           console.log(res)

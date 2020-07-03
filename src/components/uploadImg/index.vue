@@ -59,7 +59,7 @@
             let img = new Image();
             img.src = this.userImgList;
             let Nfile = this.imgCompress(img, {quality: 0.4})
-            let key = new Date().getTime() + i + this.$Cookies.getToken().substring(0, 12) + Nfile.imgType
+            let key = new Date().getTime() + i + this.$Cookie.getToken().substring(0, 12) + Nfile.imgType
             var Extra = {
               fname: key,
               params: {},

@@ -102,7 +102,7 @@
                     <div class="itemC" v-for="(x,index) in CommontList" :key="index">
                       <div class="c_i_content">
                         <div class="left">
-                          <img :src="x.img" alt="">
+                          <img :src="x.img !=''?x.img:pic_head" alt="">
                         </div>
                         <div class="right">
                           <div class="r_head">
@@ -277,11 +277,11 @@
                   <div class="titleText">
                     精彩活动
                   </div>
-                  <div class="titleR">
+                  <div class="titleR" v-if="false">
                     查看更多>>
                   </div>
                 </div>
-                <div class="activity_list" v-if="true">
+                <div class="activity_list" v-if="ActivityList.length !=0">
                   <div class="item" @click="toActivityDetail(x)" v-for="(x,index) in ActivityList">
                     <div class="itemHead">
                       <div class="itemTitle">{{x.activityTitle}}</div>
@@ -347,6 +347,7 @@
   import pic_sjxc from "@/assets/images/pic_sjxc.png"
   import {imgUrl, formatMoney} from "@/filters"
   import videoView from "@/components/videoView"
+  import pic_head from "@/assets/images/pic_head@2x.png"
   import {
     XButton,
     Scroller, LoadMore, Divider,
@@ -379,6 +380,7 @@
         icon_phone: icon_phone,
         icon_open: icon_open,
         banner1: banner1,
+        pic_head: pic_head,
         startStyle: {
           'background-position': '0px -18rem' //0.5start = -2.5rem
         },
@@ -744,6 +746,9 @@
     .m_content {
       .sticky_Box{
         height: 6.25rem;
+      }
+      .vux-fixed{
+        border-bottom: 1px solid #EAEAEA;
       }
       .sticky {
         padding: 1.75rem 1.875rem;
@@ -1209,9 +1214,16 @@
               }
             }
             .item_content {
+              background-color: #fff;
+              height: 21.625rem;
+              overflow: hidden;
+              display: flex;
+              align-items: center;
+              justify-content: center;
               img {
                 width: 100%;
-                height: 21.625rem;
+                display: inline-block;
+                height: auto;
                 border-radius: 1rem;
               }
             }

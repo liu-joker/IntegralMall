@@ -2,7 +2,7 @@
 
   <div class="qrCode">
     <div class="qr_content">
-      <div class="title">立之付扫一扫，向我付钱</div>
+      <div class="title">小米粒扫一扫，向我付钱</div>
 
       <vue-qrcodes :qrcodeData="qrcodeData" v-if="qrcodeData.show"></vue-qrcodes>
       <div class="setOrSave">
