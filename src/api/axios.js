@@ -124,7 +124,7 @@ class loginApi {
     })
   };
 
-  // /loginRegisterSms 商城注册
+  // /loginRegisterSms 短信验证码注册
   static loginRegisterSms(phone, code, brandId) {
     return request({
       url: 'https://www.hlxiaoxiong.com/v2.0/user/loginRegisterSms',

@@ -108,6 +108,12 @@ service.interceptors.response.use(
     if (errordata.code != '200') {
       if (errordata.code == '401' || errordata.code == '402' || errordata.code == '0' || errordata.code == '726') {
 
+        if(cookies.getSEnvironment() == 1 && cookies.getToken()!=""){
+          cookies.setToken('')
+          location.reload()
+          return
+        }
+
         try {
           if (environmentAI() == 2) {
             window.webkit.messageHandlers.onLoginErro.postMessage({})
@@ -126,11 +132,7 @@ service.interceptors.response.use(
     }
 
     Vue.$vux.toast.show({text:error.message})
-    if(cookies.getSEnvironment() == 1 && cookies.getToken()!=""){
-      cookies.setToken('')
-      location.reload()
-      return
-    }
+
    /* AlertModule.show({
       title: '提示',
       content: error.message,

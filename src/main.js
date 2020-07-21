@@ -78,6 +78,9 @@ Object.keys(filters).forEach(key => {
 import {environmentAI} from './filters'
 Vue.prototype.$EnvironmentAI = environmentAI;
 
+import {EnvironmentType} from './filters'
+Vue.prototype.$EnvironmentType = EnvironmentType;
+
 import VueWechatTitle from 'vue-wechat-title';
 Vue.use(VueWechatTitle)
 

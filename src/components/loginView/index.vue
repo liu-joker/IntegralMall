@@ -60,7 +60,7 @@
         code_disabled: false,
         butDisabled: false,
         code_time: "获取验证码",
-        brandId: '8436cb02523c43bb9f6a9aea5fcac7d6',
+        brandId: '',
         userPhone:'',
         code:''
       }
@@ -68,7 +68,7 @@
     props:['loginData'],
     created() {
       this.showView = this.loginData.showView
-      //this.brandId = this.loginData.brandId
+      this.brandId = this.loginData.brandId
     },
     methods: {
       submit() {
@@ -76,32 +76,39 @@
         let code = this.code
         let brandId = this.brandId
         this.butDisabled = true
-        this.$axiosApi.loginRegisterSms(phone, code, brandId).then(res=>{
+        if(this.$refs.userPhone.valid && phone != "" && this.$refs.code.valid && code != "" ){
+          this.$axiosApi.loginRegisterSms(phone, code, brandId).then(res=>{
+            this.butDisabled = false
+            if(res.code == 200){
+              this.$Cookie.setToken(res.data)
+              this.$store.dispatch('getUserInfo').then(res=>{
+                this.$vux.toast.show({text:'登录成功'})
+                this.showView = false
+                this.loginData.showView = false
+
+                /*if(this.$store.getters.userInfo.password != 1){
+                  this.$vux.confirm.show({
+                    content: "暂未设置交易密码",
+                    confirmText: '前往设置',
+                    onCancel() {
+
+                    },
+                    onConfirm: () => {
+                      this.$router.push({
+                        path: '/updatePayPwd'
+                      })
+                    }
+                  })
+                }*/
+              })
+            }
+          })
+        }else {
+          this.$vux.toast.show({text:'请输入手机号和验证码！'})
           this.butDisabled = false
-          if(res.code == 200){
-            this.$Cookie.setToken(res.data)
-            this.$store.dispatch('getUserInfo').then(res=>{
-              this.$vux.toast.show({text:'登录成功'})
-              this.showView = false
-              this.loginData.showView = false
+          return
+        }
 
-              /*if(this.$store.getters.userInfo.password != 1){
-                this.$vux.confirm.show({
-                  content: "暂未设置交易密码",
-                  confirmText: '前往设置',
-                  onCancel() {
-
-                  },
-                  onConfirm: () => {
-                    this.$router.push({
-                      path: '/updatePayPwd'
-                    })
-                  }
-                })
-              }*/
-            })
-          }
-        })
       },
       getCode() {
         //获取验证码
@@ -133,7 +140,7 @@
             console.log(error)
           })
         } else {
-          this.$vux.toast.show({text:'请填写手机号'})
+          this.$vux.toast.show({text:'请输入手机号'})
         }
 
 

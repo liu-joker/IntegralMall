@@ -275,12 +275,12 @@
             padding: 1rem 0.5rem;
             .name {
               font-size: 1.25rem;
-              word-break: break-all;
-              display: -webkit-box; /**对象作为伸缩盒子模型展示**/
-              -webkit-box-orient: vertical; /**设置或检索伸缩盒子对象的子元素的排列方式**/
-              -webkit-line-clamp: 2; /**显示的行数**/
+           /*   word-break: break-all;
+              display: -webkit-box; !**对象作为伸缩盒子模型展示**!
+              -webkit-box-orient: vertical; !**设置或检索伸缩盒子对象的子元素的排列方式**!
+              -webkit-line-clamp: 2; !**显示的行数**!
               overflow: hidden;
-              height: 3.25rem;
+              height: 3.25rem;*/
             }
             .foot {
               display: flex;

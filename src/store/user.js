@@ -8,10 +8,11 @@ const user = {
     userInfo: {
       grade: 0
     },
-    selectItem: 'all',
-    agentInfo: {},
+    selectItem: 'all',//商品类别判断  all 为精选
+    agentInfo: {},//商户信息
     token: "",
-    LzfUserName: "",
+    brandId: "",
+    LzfUserName: "",//立之付用户名称
   },
   mutations: {
     SET_LZUSERNNAME: (state, LzfUserName) => {
@@ -77,8 +78,8 @@ const user = {
 
         let token;
 
-      /*  token = ''
-        //token = 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJITEpDIiwiZXhwIjoxNTk0MTEwMzQ4LCJ1c2VyIjoiMDIzY2RiOTkxMTk5NDBhMWIwZTBlYjRiNWY2MDA5OTUifQ.jvLUFW555B7NZEBTujwx9mUd9kf90PlMTooIS4bnE3atOTsr6TLcfCIh1Lcg29HvQ2QDRRDWAniMQwai5y_lJw'
+        /*token = ''
+        token = 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJITEpDIiwiZXhwIjoxNTk1Mjk5MTcwLCJ1c2VyIjoiMDIzY2RiOTkxMTk5NDBhMWIwZTBlYjRiNWY2MDA5OTUifQ.xDenRJ4PA2_D4yJxjpTI-XvHeg4NJyaMonPp324CejMyLFAL8zFUh7UqS04m5Y4lQqpefYff3ZVP74kXFsPVjA'
         let userName = '测试名称'
         commit('SET_LZUSERNNAME', userName)
         resolve(token)
@@ -88,7 +89,7 @@ const user = {
 
         let data = cookies.getBrandId()
         if (data && data == 'deb99c1be8a748a59f760485fd49df15') {
-
+          //立之付登录相关
           ly.getAuthCode({
             "merchantId": "2020042900101187",
             "scopes": ["lzfApiUserInfo", "lzfApiChooseBankCard"],
@@ -175,8 +176,6 @@ const user = {
             resolve(token)
           }
         }
-
-
       })
     },
   }

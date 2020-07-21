@@ -40,7 +40,7 @@
         <div class="title">购买须知</div>
         <div class="marginB">有效期:</div>
         <div class="marginB">{{agentGoodsDetail.startDate}}至{{agentGoodsDetail.endDate}}</div>
-        <div class="marginB">使用规则</div>
+        <div class="marginB">使用规则:</div>
         <pre>{{agentGoodsDetail.useRules}}</pre>
       </div>
 
@@ -48,8 +48,8 @@
 
     <div class="p_foot">
       <div class="left">
-        <span class="realAmount">¥{{agentGoodsDetail.realAmount}}</span>
-        <span class="showAmount">¥{{agentGoodsDetail.showAmount}}</span>
+        <span class="realAmount">¥{{agentGoodsDetail.realAmount | formatMoney}}</span>
+        <span class="showAmount">¥{{agentGoodsDetail.showAmount | formatMoney}}</span>
       </div>
       <div class="right" @click="submit">
         <div class="but">立即抢购</div>

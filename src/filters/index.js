@@ -96,6 +96,28 @@ export function formatDate(time) {
   return date
 }
 
+
+//用于不同商城环境
+export function EnvironmentType(brandId) {
+
+  let TypeId;
+  let shopName;
+
+  if(brandId == ""){
+    return {
+
+    }
+  }
+  if(brandId == 'dc244cacf322438f8b8cff6b47865020'){
+    TypeId = 1;
+    shopName = '汇米城';
+  }
+
+  return {
+    TypeId:TypeId,
+    shopName:shopName,
+  }
+}
 export function environment() {
 
 

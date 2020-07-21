@@ -285,8 +285,6 @@
       this.select_headTop = this.$refs.shopContent.offsetTop - this.$refs.grabble.offsetHeight
       this.grabbleHeight = this.$refs.grabble.offsetHeight
       this.handleScroll()
-
-
     },
     created() {
 

@@ -125,7 +125,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="allCommentList" @click="toCommentList">
+                  <div class="allCommentList" @click="toCommentList" v-if="AgentGoods.length >2">
                     <div class="left">查看全部评论</div>
                     <div class="right">
                       <svg-icon class="form_icon" icon-class="right"></svg-icon>
@@ -160,12 +160,12 @@
                             <span class="amount">¥{{x.realAmount | formatMoney}}</span>
                             <span class="oldAmount">¥{{x.showAmount | formatMoney}}</span>
                           </div>
-                          <div class="d3_right">已售：{{x.buyBumber}}</div>
+                          <!--<div class="d3_right">已售：{{x.buyBumber}}</div>-->
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div class="allGoods" @click="toPackageDetails">
+                  <div class="allGoods" @click="toPackageDetails" v-if="AgentGoods.length >1">
                     <div class="left">查看其它套餐</div>
                     <div class="right">
                       <svg-icon class="form_icon" icon-class="bottom"></svg-icon>
@@ -195,7 +195,7 @@
                           </div>
                           <div class="item_footText">
                             <div class="info">{{x.name}}</div>
-                            <div class="number">{{x.browse}}U米</div>
+                            <div class="number">{{x.coin}}U米</div>
                           </div>
                         </div>
                       </div>
@@ -395,12 +395,10 @@
         selectList: [],
         useDayList: [
           {id: 1, value: '全部可用'},
-          {id: 2, value: '仅工作日(包括节假日)'},
-          {id: 3, value: '仅工作日(不包括节假日)'},
-          {id: 4, value: '仅周末(包括节假日)'},
-          {id: 5, value: '仅周末(不包括节假日)'},
-          {id: 6, value: '全部可用(不包括节假日)'},
-        ],//可用日期：1全部可用、2仅工作日(包括节假日)、3仅工作日(不包括节假日)、4仅周末(包括节假日)、5仅周末(不包括节假日)、6全部可用(不包括节假日)"
+          {id: 2, value: '周一至周五'},
+          {id: 3, value: '仅周末'},
+          {id: 4, value: '节假日不可用'},
+        ],//可用日期：1全部可用、2周一至周五、3仅周末、4节假日不可用
         info: '',
         brandId: '',
         agentId: '',
@@ -415,10 +413,13 @@
         terminalType: '0',
         sticky2Height: '',
         videoData: {
-          autoplay: false,
-          sources: [],
-          poster: "",
-          videoTitle: ''
+          autoplay: false,//自动播放
+          sources: [{
+            type:'',
+            src:''
+          }],//url地址
+          poster: "",//封面地址
+          videoTitle: ''//视频标题
         },
         userId:''
       }
@@ -627,8 +628,8 @@
             let time = new Date().getTime() / 100000000
             let shopList = res.data.list.map(v => {
               v.imgUrl = imgUrl(v.photo.split(',')[0])
-              let resume = 550
-              v.browse = (time + (v.name.length * resume)).toFixed(0)
+           /*   let resume = 550
+              v.browse = (time + (v.name.length * resume)).toFixed(0)*/
               return v
             })
             this.selectList = shopList

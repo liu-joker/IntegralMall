@@ -74,13 +74,8 @@
                 if (response.code == 200) {
                   this.$store.dispatch('getUserInfo').then((res) => {
                     if(res.data.password == 1){
-                      this.$vux.confirm.show({
-                        title: '提示',
-                        content: '修改成功',
-                        showCancelButton: false,
-                        onConfirm: () => {
-                        }
-                      })
+                      this.form.code = ""
+                      this.$vux.toast.show({text:'修改成功'})
                     }
                   })
                 }else {
@@ -94,12 +89,7 @@
             }
           })
         } else {
-          this.$vux.toast.show({
-            type: 'text',
-            text: '两次输入的密码不一致！',
-            width: 'auto'
-          })
-
+          this.$vux.toast.show({text:'两次输入的密码不一致!'})
         }
       },
       getCode() {

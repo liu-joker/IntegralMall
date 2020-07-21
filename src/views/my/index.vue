@@ -72,7 +72,7 @@
           title: '我的U米',
           type: 'url',
           url: "/MyUmi",
-          value: '',
+          value: this.$store.getters.userInfo.coin,
           funType: 'url'
         }, {
           title: '修改交易密码',
@@ -101,6 +101,9 @@
           }
         }
       }
+    },
+    computed: {
+
     },
     methods: {
 

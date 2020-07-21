@@ -62,17 +62,18 @@
 </script>
 
 <style rel="stylesheet/less" lang="less">
-  .VideoPlayer .vjs-custom-skin > .video-js .vjs-big-play-button{
+  .VideoPlayer  .video-js .vjs-big-play-button{
     /*
     播放按钮换成圆形
     */
     height: 2em;
     width: 2em;
-    font-size: 2.5em;
+    /*font-size: 2.5em !important;*/
     line-height: 2em;
     border-radius: 1em;
     margin-left: 0 !important;
     transform: translate(-50%,0);
   }
+
 
 </style>

@@ -13,6 +13,7 @@ const whiteList2 = ['merChantIndex', 'tradeType']
 router.beforeEach((to, from, next) => {
   let brandId
   if(/Lycheepay/.test(window.navigator.userAgent)){
+    //立之付环境判断
        brandId = 'deb99c1be8a748a59f760485fd49df15'
        cookies.setBrandId(brandId)
   }
@@ -44,7 +45,7 @@ router.beforeEach((to, from, next) => {
         cookies.setToken(token)
       }
       //cookies.setToken(token)
-      if (cookies.getToken() != "null" && cookies.getToken() != null && cookies.getToken() != "" && !store.getters.userInfo.phone && whiteList.indexOf(to.name) == -1) {
+      if (cookies.getToken() != "undefined" && cookies.getToken() != "null" && cookies.getToken() != null && cookies.getToken() != "" && !store.getters.userInfo.phone && whiteList.indexOf(to.name) == -1) {
         NProgress.start()
         store.dispatch('getUserInfo').then((res) => {
           console.log(res)

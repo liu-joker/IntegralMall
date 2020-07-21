@@ -82,7 +82,10 @@
                       <div class="text">
                         <div class="name">{{x.name}}</div>
                         <div class="foot">
-                          <div class="left">{{x.coin}}U米</div>
+                          <div class="left">
+                            <span class="coin">{{x.coin}}U米</span>
+                            <span class="originalPrice">&yen;{{x.showAmount | formatMoney}}</span>
+                          </div>
                           <div class="right">
                             <img :src="icon_browse" alt="" class="eye">
                             {{x.browse}}
@@ -139,6 +142,7 @@
 
   import loading from '@/assets/loading3.gif'
   import loginView from "@/components/loginView"
+  import VueWechatTitle from 'vue-wechat-title';
 
   export default {
     name: 'index',
@@ -252,9 +256,9 @@
           width: 0,
           gutterWidth: 0
         },
-        loginData:{
-          brandId: 'deb99c1be8a748a59f760485fd49df15',
-          showView:false
+        loginData: {
+          brandId: '',
+          showView: false
         }
       }
     },
@@ -333,6 +337,15 @@
 
 
     },
+    beforeCreate() {
+      let brandId = this.$route.query.brandId
+      if (this.$EnvironmentType(brandId).shopName) {
+        document.title = this.$EnvironmentType(brandId).shopName
+        this.$route.meta.title = this.$EnvironmentType(brandId).shopName
+
+        console.log(this.$EnvironmentType(brandId).shopName, this.$route.meta.title)
+      }
+    },
     created() {
 
       var url = window.location.href;
@@ -341,6 +354,8 @@
       //environment 判断环境  1.公众号
       this.environment = this.$route.query.environment || ""
       this.loginData.brandId = this.$route.query.brandId
+
+
       this.$Cookie.setSEnvironment(this.environment)
       this.$store.dispatch('setBrindId', this.brandId)
 
@@ -363,7 +378,7 @@
           this.$router.push({path: '/my'})
         } else {
 
-          if(this.$Cookie.getToken() == '' && this.environment == 1 && this.loginData.brandId){
+          if (this.$Cookie.getToken() == '' && this.environment == 1 && this.loginData.brandId) {
             this.loginData.showView = true
             console.log('公众号')
             return
@@ -519,7 +534,6 @@
         let y = ((x + 1) * 2) % 8
         return y == 4 || y == 6 ? 'yellowClass' : ''
       },
-
       //切换类别
       selectData2(x, index) {
 
@@ -569,9 +583,6 @@
 </script>
 
 <style rel="stylesheet/less" lang="less">
-
-
-
 
 
 </style>
