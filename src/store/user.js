@@ -1,8 +1,12 @@
+import Vue from 'vue'
 import axiosApi from '@/api/axios'
 import cookies from '@/utils/auth'
 import {environmentAI, environment} from '@/filters'
-import {AlertModule} from 'vux'
-
+import {AlertModule,ToastPlugin} from 'vux'
+Vue.use(ToastPlugin,{
+  type:'text',
+  position: 'bottom'
+})
 const user = {
   state: {
     userInfo: {
@@ -78,17 +82,16 @@ const user = {
 
         let token;
 
-        /*token = ''
-        token = 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJITEpDIiwiZXhwIjoxNTk1Mjk5MTcwLCJ1c2VyIjoiMDIzY2RiOTkxMTk5NDBhMWIwZTBlYjRiNWY2MDA5OTUifQ.xDenRJ4PA2_D4yJxjpTI-XvHeg4NJyaMonPp324CejMyLFAL8zFUh7UqS04m5Y4lQqpefYff3ZVP74kXFsPVjA'
+       /* token = ''
+        token = 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJITEpDIiwiZXhwIjoxNTk2MDc2Mjg5LCJ1c2VyIjoiMDIzY2RiOTkxMTk5NDBhMWIwZTBlYjRiNWY2MDA5OTUifQ.exbsog8YfzKcVYGWFMqjT0_NvvuSLnyZ0hNhvsyx1zW074Bh-rhVQ4D9rKspIDat5yZ7DxC2u_jrYxT8Zq6hcQ'
         let userName = '测试名称'
         commit('SET_LZUSERNNAME', userName)
         resolve(token)
 
         return*/
 
-
         let data = cookies.getBrandId()
-        if (data && data == 'deb99c1be8a748a59f760485fd49df15') {
+        if (data && data == '59c7a6325bb44368a6102cb189504b05') {
           //立之付登录相关
           ly.getAuthCode({
             "merchantId": "2020042900101187",
@@ -115,32 +118,34 @@ const user = {
                           if (res3.code == 200) {
                             resolve(res3.data)
                           } else {
-                            AlertModule.show({
-                              title: '提示',
-                              content: res3.message,
-                            })
+                            Vue.$vux.toast.show({text:res3.message})
                           }
                         })
                       } else {
-                        AlertModule.show({
+                        Vue.$vux.toast.show({text:res2.message})
+
+                       /* AlertModule.show({
                           title: '提示',
                           content: res2.message,
-                        })
+                        })*/
                       }
                     })
 
                   } else {
-                    AlertModule.show({
+                    Vue.$vux.toast.show({text:res1.message})
+                  /*  AlertModule.show({
                       title: '提示',
                       content: res1.message,
-                    })
+                    })*/
                   }
                 })
               } else {
-                AlertModule.show({
+                Vue.$vux.toast.show({text:result.failureDetails})
+
+              /*  AlertModule.show({
                   title: '提示',
                   content: result.failureDetails,
-                })
+                })*/
               }
             })
           });

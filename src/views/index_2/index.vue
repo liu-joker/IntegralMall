@@ -349,9 +349,9 @@
     created() {
 
       var url = window.location.href;
-      var j = url.substring(url.indexOf('brandId=') + 8, url.indexOf('brandId=') + 40);
+      var j = url.substring(url.indexOf('brandId=') + 8, url.indexOf('brandId=') + 40); //兼容app传参
       this.brandId = this.$route.query.brandId || j
-      //environment 判断环境  1.公众号
+      //environment 判断环境  1.外部开放商城
       this.environment = this.$route.query.environment || ""
       this.loginData.brandId = this.$route.query.brandId
 
@@ -375,7 +375,7 @@
       toMy() {
 
         if (this.$Cookie.getToken() != null && this.$Cookie.getToken() != "null" && this.$Cookie.getToken() != "") {
-          this.$router.push({path: '/my'})
+          this.$router.push({path: `/my?brandId=${this.brandId}&environment=${this.environment}`})
         } else {
 
           if (this.$Cookie.getToken() == '' && this.environment == 1 && this.loginData.brandId) {

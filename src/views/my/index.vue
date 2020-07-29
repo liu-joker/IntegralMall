@@ -30,7 +30,7 @@
 
     <div class="cellList">
       <group>
-        <cell :title="x.title" :value="x.value" @click.native="onClick(x)" v-for="(x,index) in cellList" :key="index"
+        <cell :title="x.title" :value="x.value" @click.native="onClick(x)" v-for="(x,index) in cellList" :key="index" v-if="x.show"
               :is-link="x.type=='url'" class="cellItem"></cell>
       </group>
     </div>
@@ -62,34 +62,54 @@
         icon_dfukuan: icon_dfukuan,
         icon_dfahuo: icon_dfahuo,
         icon_dshou: icon_dshou,
+        brandId: '',
+        environment: '',
         cellList: [{
+          id:1,
+          show:true,
           title: '收货地址',
           type: 'url',
           url: "/ShoppingAddress",
           value: '',
           funType: 'url'
         }, {
+          id:2,
+          show:true,
           title: '我的U米',
           type: 'url',
           url: "/MyUmi",
           value: this.$store.getters.userInfo.coin,
           funType: 'url'
         }, {
+          id:3,
+          show:true,
           title: '修改交易密码',
           type: 'url',
           url: "/updatePayPwd",
           value: '',
           funType: 'url'
         }, {
+          id:4,
+          show:true,
           title: '联系客服',
           type: 'url',
           url: "/ShoppingAddress",
           value: '',
           funType: 'AppUrl'
         }, {
+          id:5,
+          show:true,
           title: '帮助',
           type: 'url',
           url: "/HelpCenter",
+          value: '',
+          funType: 'url'
+        }, {
+          id:6,
+          show:this.$route.query.environment == 1,
+          title: '退出登录',
+          type: 'url',
+          url: `/?brandId=${this.brandId}&environment=${this.environment}`,
           value: '',
           funType: 'url'
         },],
@@ -104,6 +124,11 @@
     },
     computed: {
 
+    },
+    created(){
+      this.brandId = this.$route.query.brandId
+      this.environment = this.$route.query.environment || ""
+      console.log(document.location.hostname)
     },
     methods: {
 
@@ -130,6 +155,14 @@
       onClick(x) {
         if (x.funType == 'url') {
           console.log(x)
+
+          if(x.id == 6){
+            this.$Cookie.setToken('')
+            this.$vux.toast.show({text:'当前账户已退出'})
+            var address = location.href.split('/#/')[0] + '/#/';
+            window.location.replace(address + `?brandId=${this.brandId}&environment=${this.environment}`)
+            return
+          }
           this.$router.push({
             path: x.url
           })

@@ -64,8 +64,8 @@
               温馨提示：
             </div>
             <div class="right">
-              <p class="pInfo">未填写返还U米手机号将无法获得U米。</p>
-              <p class="pInfo">填写的手机号码需为小米粒账号，否则无法获得U米。</p>
+              <p class="pInfo">填写的手机号码用于{{brandName}}兑换礼品，免费好礼直送你家！</p>
+              <p class="pInfo">未填写手机号码将无法获得礼品。</p>
             </div>
           </div>
         </group>
@@ -121,7 +121,7 @@
   import icon_cancel2 from "@/assets/images/icon_cancel2.png"
   import icon_phone from "@/assets/images/icon_phone@2x.png"
   import {formatMoney, imgUrl, environment} from "@/filters"
-
+  import brandIdList from "@/json/brandId.json"
   import {Popup, Divider, Group, XInput,} from 'vux'
 
   export default {
@@ -158,10 +158,10 @@
         popupShow: false,
         readonly: true,
         keyboardType: 1,
-        brandId: '',
         environment: '',
         form: {
           phone: '',
+          brandId: '',
           amount: '',
           userId: '',
           agentId: '',
@@ -169,6 +169,15 @@
         },
         amountDisabled: false,
         EnvironmentalType: "",
+      }
+    },
+    computed: {
+      brandName:function () {
+        let item = brandIdList.find(v=>{
+          return v.brandId == this.form.brandId
+        })
+        console.log(item)
+        return item.brandName
       }
     },
     created() {
@@ -187,7 +196,7 @@
       this.environment = environment()
 
       console.log(environment())
-     // this.environment = 5
+   //   this.environment = 1
 
 
       if(this.environment != 2){

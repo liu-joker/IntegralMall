@@ -536,7 +536,10 @@
       },
       toGoodsDetails(x){
         //商品详情
-        this.$router.push({path: `/GoodsDetails/${x.id}?userId=${this.userId}`})
+
+        this.$router.push({path: `/GoodsDetails/${x.id}?userId=${this.userId}&brandId=${this.brandId}&environment=1`})
+
+        //this.$router.push({path: `/GoodsDetails/${x.id}?userId=${this.userId}`})
       },
       toMorePrivilege(){
         //更多特权
@@ -546,8 +549,10 @@
       },
       toShopSelectList() {
         //查看更多商品
+
+       // https://www.hlxiaoxiong.com/IntegralMall/#/?brandId=dc244cacf322438f8b8cff6b47865020&environment=1
         this.$router.push({
-          path: `/commodityTypeList?id=0&userId=${this.userId}`
+          path: `/?userId=${this.userId}&brandId=${this.brandId}&environment=1`
         })
       },
       toPackageDetails(x) {

@@ -150,7 +150,7 @@
         kmActive: 500,
         tradeType:'',
         info: {},
-        brandId:'deb99c1be8a748a59f760485fd49df15'
+        brandId:'59c7a6325bb44368a6102cb189504b05'
 
       }
     },

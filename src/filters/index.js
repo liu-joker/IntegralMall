@@ -153,7 +153,7 @@ export function environment() {
       }
       payEnv = '2';
     } catch (error) {
-      if(cookies.getBrandId() == 'deb99c1be8a748a59f760485fd49df15'){
+      if(cookies.getBrandId() == '59c7a6325bb44368a6102cb189504b05'){
         payEnv = '5';
       }else{
         payEnv = '4';

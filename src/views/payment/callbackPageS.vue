@@ -14,7 +14,11 @@
         <p>获得U米：<span class="yellow">{{point}}</span></p>
         <p v-if="phone">U米获取手机号：<span class="yellow">{{phone}}</span></p>
         <div class="noPhone">
-          <p class="download">U米可前往小米粒免费兑换商品，<span @click="download">前往下载>></span></p>
+          <p class="download" v-if="brandId == 'dc244cacf322438f8b8cff6b47865020'">关注汇米城公众号，免费好礼直送你家！拒绝套路！</p>
+          <p class="download" v-else>U米可前往{{brandName}}免费兑换商品，<span @click="download">前往下载>></span></p>
+        </div>
+        <div class="imgItem" v-if="brandId == 'dc244cacf322438f8b8cff6b47865020'">
+          <img src="@/assets/images/pic_erweima.png" alt="">
         </div>
       </div>
     </div>
@@ -79,6 +83,7 @@
   import callbackPageS from "@/assets/images/callbackPageS.png"
   import {formatMoney, imgUrl} from "@/filters"
   import icon_browse from "@/assets/images/icon_browse.png"
+  import brandIdList from "@/json/brandId.json"
 
   export default {
     name: 'callbackPageS',
@@ -97,6 +102,7 @@
         isUser: 0,
         preUser: "",
         phone: "",
+        brandId: "",
         waterfallData: {
           col: 2,
           width: 0,
@@ -132,6 +138,12 @@
           return false
         }
       },
+      brandName:function () {
+        let item = brandIdList.find(v=>{
+         return v.brandId == this.brandId
+        })
+        return item.brandName
+      }
     },
     created() {
       this.amount = this.$route.query.amount
@@ -139,12 +151,13 @@
       this.isUser = this.$route.query.isUser || 0
       this.preUser = this.$route.query.preUser
       this.phone = this.$route.query.phone
+      this.brandId = this.$route.query.brandId
       this.getData()
     },
     methods: {
       toMore(){
         this.$router.push({
-          path: `/commodityTypeList?id=0&userId=${this.preUser}`
+          path: `/?userId=${this.preUser}&brandId=${this.brandId}&environment=1`
         })
       },
       getData(type) {
@@ -185,7 +198,9 @@
       },
       GoodsDetails(x) {
         if (!this.preUser || this.preUser == "") return
-        this.$router.push({path: `/GoodsDetails/${x.id}?userId=${this.userId}`})
+//        this.$router.push({path: `/GoodsDetails/${x.id}?userId=${this.userId}`})
+        this.$router.push({path: `/GoodsDetails/${x.id}?brandId=${this.brandId}&environment=1`})
+
       },
       download() {
         if (!this.preUser || this.preUser == "") return

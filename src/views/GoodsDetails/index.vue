@@ -51,7 +51,7 @@
           <div class="num" v-html="PresentPrice()"></div>
           <div>价格</div>
         </div>
-        <div class="share" @click="share" v-if="$Cookie.getToken('token') != '' && environment == 2">
+        <div class="share" @click="share" v-if="$Cookie.getToken('token') != '' && environmentStart == 2">
           <img :src="icon_share2" alt="" class="shareImg">
           <div>分享</div>
         </div>
@@ -118,6 +118,7 @@
         },
         id: '',
         environment: '',
+        environmentStart: '',
         loginData:{
           brandId: '',
           showView:false
@@ -125,7 +126,8 @@
       }
     },
     created() {
-
+      this.environmentStart = environment()
+      console.log(this.environmentStart)
       this.id = this.$route.params.id
       this.environment = this.$route.query.environment
       this.$Cookie.setSEnvironment(this.environment)

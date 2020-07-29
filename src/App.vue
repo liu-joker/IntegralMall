@@ -13,7 +13,7 @@
     data() {
       return {
         bodyHeight: '',
-        cachedViews: ['applicationForm']
+        cachedViews: ['index','applicationForm']
       }
     },
     computed: {

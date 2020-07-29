@@ -13,7 +13,7 @@
         </group>
         <group class="inputItem code" >
           <x-input class="input" placeholder-align="left" text-align="left" placeholder="请输入验证码"
-                   v-model="form.code" show-clear ref="code"></x-input>
+                   v-model="form.code" show-clear ref="code"  :max="6"></x-input>
           <x-button mini class="getcode" @click.native="getCode" :disabled="code_disabled"
                     :class="(code_disabled)?'code_time_class':''">{{code_time}}
           </x-button>

@@ -276,7 +276,7 @@ const routerList = [
 
 
 
- /* {
+  {
     path: '/merChantIndex',
     name: 'merChantIndex',
     component: () => import('@/views/merchant/merchantIndex'),
@@ -427,7 +427,7 @@ const routerList = [
     meta: {
       title: '相册管理'
     }
-  },*/
+  },
 
 
   {path: '/404', component: () => import('@/views/404'), hidden: true},
