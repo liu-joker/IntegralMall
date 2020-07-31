@@ -82,8 +82,8 @@ const user = {
 
         let token;
 
-       /* token = ''
-        token = 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJITEpDIiwiZXhwIjoxNTk2MDc2Mjg5LCJ1c2VyIjoiMDIzY2RiOTkxMTk5NDBhMWIwZTBlYjRiNWY2MDA5OTUifQ.exbsog8YfzKcVYGWFMqjT0_NvvuSLnyZ0hNhvsyx1zW074Bh-rhVQ4D9rKspIDat5yZ7DxC2u_jrYxT8Zq6hcQ'
+/*        token = ''
+        token = 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJITEpDIiwiZXhwIjoxNTk2Njc4Nzc4LCJ1c2VyIjoiMDIzY2RiOTkxMTk5NDBhMWIwZTBlYjRiNWY2MDA5OTUifQ.Irhs8Wpdx-bIvh0Av1ig4q18ghwbCak2N9Tx2hE1bYl8aPNFnAOk4b9er22OkgNPnax43-bkijo6nXR5MfCI1w'
         let userName = '测试名称'
         commit('SET_LZUSERNNAME', userName)
         resolve(token)

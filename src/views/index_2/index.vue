@@ -375,7 +375,9 @@
       toMy() {
 
         if (this.$Cookie.getToken() != null && this.$Cookie.getToken() != "null" && this.$Cookie.getToken() != "") {
-          this.$router.push({path: `/my?brandId=${this.brandId}&environment=${this.environment}`})
+          this.$store.dispatch('getUserInfo').then(res=>{
+            this.$router.push({path: `/my?brandId=${this.brandId}&environment=${this.environment}`})
+          })
         } else {
 
           if (this.$Cookie.getToken() == '' && this.environment == 1 && this.loginData.brandId) {

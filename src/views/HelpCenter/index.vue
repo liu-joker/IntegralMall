@@ -48,7 +48,7 @@
           show: false
         }, {
           title: '2.如何获得U米？',
-          html: '<p>(1) '+this.appName+'用户通过APP购买合作商家的线下服务，可获取U米。</p>',
+          html: '<p>(1) '+this.appName+'用户通过购买合作商家的线下服务，可获得U米。</p>',
           show: false
         },{
           title: '3.如何查询U米？',

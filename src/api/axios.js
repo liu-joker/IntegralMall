@@ -224,6 +224,16 @@ class loginApi {
     })
   };
 
+  ///successOrderInfo 支付成功回调页信息
+  static successOrderInfo(orderNum) {
+    return request({
+      url: '/successOrderInfo?orderNum='+orderNum,
+      method: 'get',
+      data: {
+      },
+    })
+  };
+
   //确认收货
   static finishOrder(orderNum) {
     return request({

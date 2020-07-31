@@ -29,7 +29,7 @@
 
     <div class="shopContent" ref="shopContent">
       <div class="commodity_content">
-        <div class="list" >
+        <div class="list">
           <waterfall :col='waterfallData.col' :width="itemWidth" :gutterWidth="gutterWidth"
                      :data="shopList"
           >
@@ -79,7 +79,7 @@
 </template>
 
 <script>
-  import {XButton, Scroller, LoadMore,Divider} from 'vux'
+  import {XButton, Scroller, LoadMore, Divider} from 'vux'
   import callbackPageS from "@/assets/images/callbackPageS.png"
   import {formatMoney, imgUrl} from "@/filters"
   import icon_browse from "@/assets/images/icon_browse.png"
@@ -110,9 +110,10 @@
         },
         selectList: [],
         dividerShow: false,
-        shopList:[],
+        shopList: [],
         third: 0,
         itemType: '',
+        brandName: '',
         pageNum: 1,
         pageSize: 6,
       }
@@ -138,26 +139,45 @@
           return false
         }
       },
-      brandName:function () {
-        let item = brandIdList.find(v=>{
-         return v.brandId == this.brandId
-        })
-        return item.brandName
-      }
     },
     created() {
-      this.amount = this.$route.query.amount
-      this.point = this.$route.query.point
-      this.isUser = this.$route.query.isUser || 0
-      this.preUser = this.$route.query.preUser
-      this.phone = this.$route.query.phone
-      this.brandId = this.$route.query.brandId
+      this.successOrderInfo()
       this.getData()
     },
     methods: {
-      toMore(){
+      toMore() {
         this.$router.push({
           path: `/?userId=${this.preUser}&brandId=${this.brandId}&environment=1`
+        })
+      },
+      successOrderInfo() {
+        let orderNum = this.$route.query.orderNum
+        this.$axiosApi.successOrderInfo(orderNum).then(res => {
+          if (res.code == 200) {
+            if (res.data != 'null') {
+              this.amount = res.data.amount
+              this.point = res.data.point
+              this.isUser = res.data.isUser || 0
+              this.preUser = res.data.preUser
+              this.phone = res.data.phone
+              this.brandId = res.data.brandId
+              let item = brandIdList.find(v => {
+                return v.brandId == this.brandId
+              })
+              this.brandName = item.brandName
+            } else {
+              this.$vux.alert.show({
+                title: '提示',
+                content: '订单信息已超时！',
+                onShow() {
+                },
+                onHide() {
+                }
+              })
+            }
+          } else {
+            this.$vux.toast.show({text: res.message})
+          }
         })
       },
       getData(type) {
@@ -169,6 +189,7 @@
         this.$axiosApi.itemList(itemType, third, pageNum, pageSize, name).then(res => {
           if (res.code == 200) {
             //
+
             let time = new Date().getTime() / 100000000
             this.info = res.data
             let shopList = res.data.list.map(v => {
@@ -183,6 +204,7 @@
             this.$nextTick(() => {
               this.dividerShow = true
             })
+
 
           } else {
             this.$vux.alert.show({
