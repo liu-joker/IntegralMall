@@ -142,19 +142,18 @@
 
       },
       pay() {
+        //商品状态:1可买2不可买
         if (this.itemInfo.status == 2) {
           return
         }
 
+        //外放商城登录判断
         if(this.$Cookie.getToken() == '' && this.environment == 1 && this.loginData.brandId){
           this.loginData.showView = true
-          console.log('公众号')
           return
         }
 
-
-
-
+        //app端登录判断
         if (this.$Cookie.getToken() == '' && this.$EnvironmentAI() == 2) {
           this.$vux.confirm.show({
             content: "请先登录",
@@ -172,7 +171,7 @@
           return
         }
 
-        console.log(this.$route.query.userId)
+        //商品分享营销下载判断
         if (this.$Cookie.getToken() == "") {
           if (this.$route.query.userId) {
             // let appName =  this.$store.getters.appName
@@ -200,7 +199,7 @@
           return
         }
 
-
+        //有无交易密码
         if (this.$store.getters.userInfo.password != 1) {
           this.$vux.confirm.show({
             content: "暂未设置交易密码",

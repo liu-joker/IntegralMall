@@ -69,9 +69,6 @@
   import enter_05 from "@/assets/helpCenter/enter_05.jpg"
   import enter_06 from "@/assets/helpCenter/enter_06.jpg"
   import enter_07 from "@/assets/helpCenter/enter_07.jpg"
-  import enter_08 from "@/assets/helpCenter/enter_08.jpg"
-  import enter_09 from "@/assets/helpCenter/enter_09.jpg"
-  import enter_10 from "@/assets/helpCenter/enter_10.jpg"
 
   import center_01 from "@/assets/helpCenter/center_01.jpg"
   import center_02 from "@/assets/helpCenter/center_02.jpg"
@@ -85,6 +82,7 @@
   import center_10 from "@/assets/helpCenter/center_10.jpg"
   import center_11 from "@/assets/helpCenter/center_11.jpg"
   import center_12 from "@/assets/helpCenter/center_12.jpg"
+  import center_13 from "@/assets/helpCenter/center_13.jpg"
 
 
   export default {
@@ -97,7 +95,7 @@
       const self = this
       return {
         appName: this.$store.getters.userInfo.brandName,
-        itemShow: 0,
+        itemShow: 0,//帮助中心类别
         selectIndex: 0,
         swiperOption: {//swiper3
           notNextTick: false,
@@ -115,8 +113,8 @@
             }
           }
         },
-        imgList1: [enter_01, enter_02, enter_03, enter_04, enter_05, enter_06, enter_07, enter_08, enter_09, enter_10],
-        imgList2: [center_01, center_02, center_03, center_04, center_05, center_06, center_07, center_08, center_09, center_10, center_11, center_12,],
+        imgList1: [enter_01, enter_02, enter_03, enter_04, enter_05, enter_06, enter_07],
+        imgList2: [center_01, center_02, center_03, center_04, center_05, center_06, center_07, center_08, center_09, center_10, center_11, center_12, center_13,],
       }
     },
     computed: {
@@ -179,6 +177,7 @@
     }
     .item2 {
       .imgList {
+        min-height: 100vh;
         img {
           width: 100%;
           height: auto;
