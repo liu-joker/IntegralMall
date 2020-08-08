@@ -159,12 +159,21 @@ const routerList = [
       title: '商品分享'
     }
   },
+
   {
     path: '/payment',
     name: 'payment',
     component: () => import('@/views/payment/index'),
     meta: {
       title: '支付'
+    }
+  },
+  {
+    path: '/promoCodePage/:eid/:esign',
+    name: 'promoCodePage',
+    component: () => import('@/views/payment/promoCodePage'),
+    meta: {
+      title: '请稍候...'
     }
   },
   {
@@ -199,7 +208,14 @@ const routerList = [
       title: '入驻合同书'
     }
   },
-
+  {
+    path: '/agreementOfAgent2',
+    name: 'agreementOfAgent2',
+    component: () => import('@/views/agreement/agreementOfAgent2'),
+    meta: {
+      title: '入驻合同书'
+    }
+  },
 
 
   {

@@ -148,6 +148,15 @@ class loginApi {
   };
 
 
+  //获取二维码链接 /shop/exCode/{eid}/{esign}
+  static exCode(eid, esign) {
+    return request({
+      url: '/exCode/'+eid +'/'+esign,
+      method: 'get',
+      data: {},
+    })
+  };
+
   //下单
   static orderItem(itemId, payMode) {
     return request({
