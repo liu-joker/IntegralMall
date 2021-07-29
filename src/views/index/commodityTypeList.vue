@@ -172,11 +172,13 @@
         })
       },
       getBannerList() {
-
+          let brandId = this.$store.getterd.brandId
         this.$vux.loading.show({
           text: '加载中...'
         })
-        this.$axiosApi.itemAdvert().then(res => {
+        this.$axiosApi.itemAdvert(brandId).then(res => {
+        
+         
           if (res.code == 200) {
             this.selectList = res.data.shopType
             this.$nextTick(x => {

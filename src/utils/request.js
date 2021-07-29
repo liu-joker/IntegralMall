@@ -24,6 +24,9 @@ service.interceptors.request.use(config => {
   }
   config.headers['token'] = cookies.getToken()
 
+      //测试token
+  //  config.headers['token'] ='eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJITEpDIiwiZXhwIjoxNjA5NDY2OTQ4LCJ1c2VyIjoiMDA4MTE5Njk0Mzk3NDRkZmJiNjJmOGY0MGVhZGI4OGUifQ.YQ-evTqPinJpwNAIJ3nR19lQA-PMFD-qi5Q4Www8vVhJe8oRxsZM-DH_Vom3PGria1e-1vL5HXokDST5oC0rcw'
+
   /*if (store.getters.token) {
     config.headers['X-Token'] = getToken() // 让每个请求携带自定义token 请根据实际情况自行修改
   }*/

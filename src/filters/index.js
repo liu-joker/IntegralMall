@@ -158,7 +158,7 @@ export function environment() {
       }else{
         payEnv = '4';
       }
-    }
+  }
   }
   return payEnv
 }

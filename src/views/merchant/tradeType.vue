@@ -60,7 +60,7 @@
                      @loadmore="loadmore">
             <template>
 
-              <div class="item2" v-for="(x,index) in shopList" @click="toAgentDetail(x)">
+              <div class="item2" v-for="(x,index) in shopList" @click="toAgentDetail(x)" :key='index'>
                 <img :src="x.shopFrontPhoto | imgUrl" class="merchantLogo" alt="">
                 <div class="item_content">
                   <div class="item_title">{{x.shopName}}</div>
@@ -145,7 +145,7 @@
         startStyle: {
           'background-position': '0px -18rem' //0.5start = -2.5rem
         },
-        shopList: [1, 2],
+        shopList: [],
         kmList: [{m: 500, table: '附近'}, {m: 1000, table: '1km'}, {m: 5000, table: '5km'}, {m: 10000, table: '10km'},
           {m: 15000, table: '15km'}, {m: 20000, table: '20km'},],
         showScrollBox: false,
@@ -158,7 +158,8 @@
           width: 0,
           gutterWidth: 0
         },
-        tradeType:''
+        tradeType:'',
+        brandId:''
       }
     },
     computed: {
@@ -188,6 +189,7 @@
     created() {
 
       this.tradeType = this.$route.query.tradeType
+      this.brandId =  this.$route.query.brandId
       this.getData()
     },
     mounted() {
@@ -198,14 +200,14 @@
       toAgentDetail(x){
         //https://www.hlxiaoxiong.com/IntegralMall/#/merchantInfo?agentId=1&brandId=deb99c1be8a748a59f760485fd49df15
         this.$router.push({
-          path:`/merchantInfo?agentId=${x.agentId}&brandId=${this.brandId}&terminalType=1`
+          path:`/merchantInfo2?agentId=${x.agentId}&brandId=${this.brandId}&terminalType=1`
         })
       },
       getData() {
 
         console.log('getData')
         let shopName
-        let brandId = this.$store.getters.userInfo.brandId;
+        let brandId = this.$store.getters.userInfo.brandId?this.$store.getters.userInfo.brandId:this.$route.query.brandId
         let lng = 114.03167;
         let lat = 22.532151;
         let distance ;  //=this.kmActive//距离

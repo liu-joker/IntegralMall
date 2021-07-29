@@ -3,7 +3,7 @@
   <div class="applicationForm">
     <div class="head">
       <div class="item" v-for="(x,index) in titleList" :class="formActive == index+1?'active':''"
-           @click="changeFormActive(index)">{{x}}
+           @click="changeFormActive(index)" :key="index">{{x}}
       </div>
     </div>
     <div class="formComponent">

@@ -82,13 +82,16 @@ const user = {
 
         let token;
 
-/*        token = ''
-        token = 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJITEpDIiwiZXhwIjoxNTk2Njc4Nzc4LCJ1c2VyIjoiMDIzY2RiOTkxMTk5NDBhMWIwZTBlYjRiNWY2MDA5OTUifQ.Irhs8Wpdx-bIvh0Av1ig4q18ghwbCak2N9Tx2hE1bYl8aPNFnAOk4b9er22OkgNPnax43-bkijo6nXR5MfCI1w'
-        let userName = '测试名称'
-        commit('SET_LZUSERNNAME', userName)
-        resolve(token)
 
-        return*/
+        //测试环境token
+        // token = ''
+        // token = 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJITEpDIiwiZXhwIjoxNjAwMTU4NDg2LCJ1c2VyIjoiOGI4M2JmM2JmNDI5NGYwMmJmZmQ5NjEzZjAxZmI5ZjAifQ.ySc7liPwTxz3HbmRs44GSpOTjNf2x5NBnLKG3VEnSMDE8PjflTAryPGLFIg1kjxojZ5OtjFXsPvkYXkNSOWK-A'
+        // let userName = '测试名称'
+        // commit('SET_LZUSERNNAME', userName)
+        // commit('SET_TOKEN', token)
+        // resolve(token)
+
+        // return
 
         let data = cookies.getBrandId()
         if (data && data == '59c7a6325bb44368a6102cb189504b05') {

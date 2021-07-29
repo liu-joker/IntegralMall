@@ -46,7 +46,7 @@
 
     <div class="mallSelect">
       <div class="tab_title">
-        <div class="titleItem" @click="toIndex">
+        <div class="titleItem">
           <svg-icon class="form_icon" icon-class="shoppingCart"></svg-icon>
           <span>免费商城</span>
         </div>
@@ -99,7 +99,7 @@
       <div class="list">
         <div class="item" v-for="(x,index) in selectList" :key="index" @click="toAgentGrabble(x)">
           <img :src="x.img" alt="">
-          <span>{{x.name}}</span>
+          <span>{{x.name}}</span>r
         </div>
       </div>
     </div>
@@ -108,8 +108,8 @@
       <sticky transfer-dom ref="sticky" :offset="grabbleHeight" class="vuxFixed">
         <div class="nearbyDiv">
           <div class="list">
-            <!--<div class="item" @click="showSelectList">-->
-            <div class="item">
+            <div class="item" >
+            <!-- <div class="item" @click="showSelectList"> -->
               <span>附近</span>
               <span class="select_span"><svg-icon class="form_icon" icon-class="bottom"></svg-icon></span>
             </div>
@@ -136,7 +136,7 @@
         <template>
       <div class="list">
 
-        <div class="item" v-for="(x,index) in shopList" @click="toAgentDetail(x)">
+        <div class="item" v-for="(x,index) in shopList" @click="toAgentDetail(x)" :key="index">
           <img :src="x.shopFrontPhoto | imgUrl" class="merchantLogo" alt="">
           <div class="item_content">
             <div class="item_title">{{x.shopName}}</div>
@@ -266,7 +266,8 @@
         pageNum: 1,
         pageSize: 20,
         info: {},
-        brandId: '59c7a6325bb44368a6102cb189504b05'
+        brandId: '4f98940d9b8a4680aab7ff787a250bfc',
+       
       }
     },
     computed: {
@@ -289,7 +290,7 @@
     },
     created() {
 
-      console.log(environment(), '环境')
+      
 
       /* this.$vux.alert.show({
          title: '提示',
@@ -310,6 +311,7 @@
         } catch (err) {
         }
       })
+      console.log(environment(), '环境',this.$refs.isPopover,this.$store.getters)
       this.getBannerList()
       // this.isAgent()
       this.getData()
@@ -364,13 +366,13 @@
       },
       toAgentGrabble(x) {
         this.$router.push({
-          path: `/tradeType?tradeType=${x.type}&title=${x.name}&brandId=100`
+          path: `/tradeType?tradeType=${x.type}&title=${x.name}&brandId=`+this.brandId
         })
       },
       toAgentDetail(x) {
         //https://www.hlxiaoxiong.com/IntegralMall/#/merchantInfo?agentId=1&brandId=deb99c1be8a748a59f760485fd49df15
         this.$router.push({
-          path: `/merchantInfo?agentId=${x.agentId}&brandId=${this.brandId}&terminalType=1`
+          path: `/merchantInfo2?agentId=${x.agentId}&brandId=${this.brandId}&terminalType=1`
         })
       },
       loadMore() {
@@ -387,7 +389,7 @@
         let brandId = this.brandId;
         let lng = 114.03167;
         let lat = 22.532151;
-        let distance;  //=this.kmActive//距离
+        let distance=this.kmActive;  //=this.kmActive//距离
         let pageNum = this.pageNum;
         let pageSize = this.pageSize;
         let shopName;
@@ -440,7 +442,7 @@
         //附近
         this.kmActive = x.m
         this.showScrollBox = false
-        //this.getData()
+        this.getData()
       },
       showSelectList() {
         this.showScrollBox = !this.showScrollBox
@@ -449,11 +451,12 @@
             document.body.scrollTop = document.documentElement.scrollTop = this.pageContent
           }
         })
-
+        console.log('this.showScrollBox ')
       },
 
       getBannerList() {
-        this.$axiosApi.itemAdvert().then(res => {
+       let brandId = this.brandId
+        this.$axiosApi.itemAdvert(brandId).then(res => {
           if (res.code == 200) {
             this.bannerList = res.data.shopAdvert
 
@@ -473,7 +476,7 @@
       shopSelectList(id) {
         console.log(id)
         this.$router.push({
-          path: '/commodityTypeList?id=' + id
+          path: '/commodityTypeList?id=' + id+'?brandId='+this.brandId
         })
       }
     }

@@ -292,6 +292,7 @@
       var j = url.substring(url.indexOf('brandId=') + 8, url.indexOf('brandId=') + 40);
       this.brandId = this.$route.query.brandId || j
       this.userId = this.$route.query.userId
+      console.log('brandId',this.userId, this.$route.query.brandId)
       this.$store.dispatch('setBrindId', this.brandId)
 
 
@@ -311,7 +312,9 @@
         this.$router.push({path: `/GoodsDetails/${x.id}?userId=${this.userId}`})
       },
       getBannerList() {
-        this.$axiosApi.itemAdvert().then(res => {
+        
+         let brandId = this.brandId
+        this.$axiosApi.itemAdvert(brandId).then(res => {
           if (res.code == 200) {
             this.bannerList = res.data.shopAdvert
             let selectList = res.data.shopType.map((v, index) => {
@@ -329,7 +332,7 @@
               pageNum: 1,
               total: 0,
             }]
-//            this.selectList = active.concat(selectList.slice(0,6))
+          // this.selectList = active.concat(selectList.slice(0,6))
             this.selectList = active.concat(selectList)
 
             let x = 0
@@ -339,7 +342,7 @@
               x=queryId
             }
             this.selectData2({id:x})
-//            this.getData()
+                 this.getData()
           } else {
             this.$vux.alert.show({
               title: '提示',

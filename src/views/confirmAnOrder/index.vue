@@ -77,7 +77,7 @@
              </div>-->
             <div class="item" :class="PayActive == 2?'active':''" @click="PayActive = 2">
               <span class="round"></span>
-              微信支付
+              支付宝支付
             </div>
           </div>
         </div>
@@ -94,7 +94,7 @@
         </div>
       </div>
       <div class="right" @click="BuyNow">
-        免费领取
+        {{amountMoney}}
       </div>
     </div>
 
@@ -145,7 +145,8 @@
         orderInfoItem: {},
         payInfo: '',
         dialogShow: false,
-        password: ''
+        password: '',
+        amountMoney:'免费领取'
       }
     },
     created() {
@@ -157,6 +158,7 @@
       this.getData()
     },
     mounted() {
+      console.log("window",window.app.onWeChatPay)
       window['onPayFailure'] = () => {
         this.onPayFailure()
       }
@@ -266,18 +268,35 @@
 
               if (res.data.passType == 0) {
                 //第三方支付
-                let thirdData = JSON.stringify(res.data.thirdData.data)
+                if(res.data.thirdData.respCode == 10000){
+                  let thirdData = res.data.thirdData.data
 
-             //   window.app.onWeChatPay(thirdData)
-                if (this.$EnvironmentAI() == 1) {
-                  window.app.onWeChatPay(thirdData)
-                } else if (this.$EnvironmentAI() == 2) {
-                  try {
-                    window.app.onWeChatPay(thirdData)
-                  }catch (err){
-                    window.webkit.messageHandlers.onWeChatPay.postMessage(thirdData)
-                  }
+                   window.location = thirdData
+                
+
+                }else{
+                  this.$vux.alert.show({
+                    title: '提示',
+                    content: res.data.thirdData.respMessage,
+                    onShow() {
+                    },
+                    onHide() {
+                    }
+                  })
                 }
+
+
+//                let thirdData = JSON.stringify(res.data.thirdData.data)
+//             //   window.app.onWeChatPay(thirdData)
+//                if (this.$EnvironmentAI() == 1) {
+//                  window.app.onWeChatPay(thirdData)
+//                } else if (this.$EnvironmentAI() == 2) {
+//                  try {
+//                    window.app.onWeChatPay(thirdData)
+//                  }catch (err){
+//                    window.webkit.messageHandlers.onWeChatPay.postMessage(thirdData)
+//                  }
+//                }
 
 
               } else if (res.data.passType == 1) {
@@ -352,6 +371,9 @@
               this.orderInfo.imgUrl = imgUrl(res.data.item.photo.split(',')[1])
               this.orderInfoItem = res.data.item
               this.orderInfo.itemName = '¥' + formatMoney(res.data.amount) + "+" + res.data.coin + "U米"
+              if(res.data.amount!==0){
+                this.amountMoney = '立即支付'
+              }
             } else {
               this.$vux.alert.show({
                 title: '提示',

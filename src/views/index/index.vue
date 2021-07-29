@@ -40,7 +40,7 @@
             </div>
             <div class="item fadeIn animated" @click="moreItem = false" v-if="selectListC.length !=0 && moreItem">
               <div class="name">
-                <<
+               
               </div>
             </div>
 
@@ -140,7 +140,7 @@
     },
     created() {
 
-
+      console.log('index....................................')
       this.getData()
       this.getBannerList()
 
@@ -215,6 +215,7 @@
       },
 
       getBannerList() {
+        console.log('index')
         this.$axiosApi.itemAdvert().then(res => {
           this.$vux.loading.hide()
           if (res.code == 200) {

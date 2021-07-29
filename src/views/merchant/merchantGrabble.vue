@@ -47,7 +47,7 @@
                      @loadmore="loadmore">
             <template>
 
-              <div class="item2" v-for="(x,index) in shopList" @click="toAgentDetail(x)">
+              <div class="item2" v-for="(x,index) in shopList" @click="toAgentDetail(x)" :key="index">
                 <img :src="x.shopFrontPhoto | imgUrl" class="merchantLogo" alt="">
                 <div class="item_content">
                   <div class="item_title">{{x.shopName}}</div>
@@ -191,7 +191,7 @@
       toAgentDetail(x){
         //https://www.hlxiaoxiong.com/IntegralMall/#/merchantInfo?agentId=1&brandId=deb99c1be8a748a59f760485fd49df15
         this.$router.push({
-          path:`/merchantInfo?agentId=${x.agentId}&brandId=${this.brandId}&terminalType=1`
+          path:`/merchantInfo2?agentId=${x.agentId}&brandId=${this.brandId}&terminalType=1`
         })
       },
       selectData(x) {

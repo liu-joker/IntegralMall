@@ -8,7 +8,7 @@
       </div>
       <div class="right">
         <div class="startList">
-          <div class="item" v-for="(x,index) in 5">
+          <div class="item" v-for="(x,index) in 5" :key="index">
             <div class="itemL" :style="'background-position:' + (index * 1.75) + 'rem -20.75rem;'"></div>
             <div class="itemR">
               <div class="itemR_BGC" v-if="scoreList.length>0" :style="itemRSty(index)"></div>
@@ -49,7 +49,7 @@
       <scroller lock-x @on-scroll-bottom="onScrollBottom" ref="scrollerBottom2" :scroll-bottom-offst="300"
                 v-if="!noDataShow" height="76.26vh">
         <div class="list">
-          <div class="item" v-for="(x,index) in orderList">
+          <div class="item" v-for="(x,index) in orderList" :key="index">
             <div class="c_i_content">
               <div class="left">
                 <img :src="x.userPhoto | imgUrl" alt="">

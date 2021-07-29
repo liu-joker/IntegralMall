@@ -65,7 +65,10 @@
       }
     },
     created() {
-
+        if(this.$route.query.token){
+          let token = this.$route.query.token
+          this.$Cookie.setToken(token)
+        }
     },
     methods: {
       submit() {

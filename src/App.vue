@@ -19,7 +19,7 @@
     computed: {
       appTitle:function () {
         if(this.$store.getters.brandId != ""){
-          console.log(this.$store.getters.brandId)
+          console.log('this.$store.getters.brandId',this.$store.getters.brandId)
          return this.$route.meta.title
         }else {
           return this.$route.meta.title
@@ -37,8 +37,8 @@
       }
     },
     mounted(){
-      console.log(this.$route.meta)
-      console.log(this.$store.getters.brandId)
+      console.log(this.$route.meta,'meta')
+      console.log(this.$store.getters.brandId,'brandid')
     }
   }
 </script>

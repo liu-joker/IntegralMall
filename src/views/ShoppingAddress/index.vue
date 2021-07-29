@@ -43,11 +43,16 @@
     data() {
       return {
         icon_position: icon_position,
-        addressList: []
+        addressList: [],
+        token:''
       }
     },
     created() {
-
+       if(this.$route.query.token){
+          let token = this.$route.query.token
+          this.token = this.$route.query.token
+          this.$Cookie.setToken(token)
+        }
       this.getData()
     },
     methods: {
@@ -137,7 +142,12 @@
         })
       },
       addAddress() {
-        this.$router.push({path: '/AddShoppingAddress'})
+        if(this.token){
+          this.$router.push({path: '/AddShoppingAddress?token='+this.token})
+        }else{
+          this.$router.push({path: '/AddShoppingAddress'})
+        }
+        
       }
     }
   }

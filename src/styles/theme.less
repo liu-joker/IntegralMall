@@ -1,5 +1,5 @@
 .theme(
-  @themeColor: #F89F04;
+  @themeColor: #F89F04;//
   @themebackgroundColor: #f7f7f7;
   @butActive: #F89F04;
   @shopTheme:#2D2922;
@@ -142,6 +142,8 @@
               font-size: 2.125rem;
               font-weight: bold;
               font-family: Alibaba PuHuiTi;
+
+
             }
             .title_info {
               font-size: 1.375rem;
@@ -152,6 +154,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            position: relative;
             img {
               width: 10rem;
               height: 10rem;
@@ -306,8 +309,16 @@
                     display: flex;
                     align-items: center;
                     justify-content: flex-start;
+                    align-items: flex-start;
+                    flex-direction: column;
                     color: #8C8C8C;
                     font-size: 1.5rem;
+                    .right_bottom{
+                      display: flex;
+                      align-items: center;
+                      justify-content: flex-start;
+                      margin-top: 0.25rem;
+                    }
                     .eye {
                       width: 1.75rem;
                       height: 1.5rem;

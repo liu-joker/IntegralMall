@@ -143,7 +143,7 @@
                 </div>
                 <div v-if="AgentGoods.length !=0">
                   <div class="goodsList">
-                    <div class="item_G" v-for="(x,index) in AgentGoods"  @click="toPackageDetails(x)">
+                    <div class="item_G" v-for="(x,index) in AgentGoods"  @click="toPackageDetails(x)" :key='index'>
                       <div class="left">
                         <img :src="x.goodsPhotoList[0] | imgUrl" alt="">
                       </div>
@@ -189,7 +189,7 @@
                   <scroller :lock-y="true" :scrollbar-x='false' ref="scroller">
                     <div class="box1" :style="box1Style">
                       <div class="box1-list" ref="box1">
-                        <div class="box1-item" v-for="(x,index) in selectList" @click="toGoodsDetails(x)">
+                        <div class="box1-item" v-for="(x,index) in selectList" @click="toGoodsDetails(x)" :key='index'>
                           <div class="headImg">
                             <img :src="x.imgUrl" alt="">
                           </div>
@@ -282,7 +282,7 @@
                   </div>
                 </div>
                 <div class="activity_list" v-if="ActivityList.length !=0">
-                  <div class="item" @click="toActivityDetail(x)" v-for="(x,index) in ActivityList">
+                  <div class="item" @click="toActivityDetail(x)" v-for="(x,index) in ActivityList" :key='index'>
                     <div class="itemHead">
                       <div class="itemTitle">{{x.activityTitle}}</div>
                     </div>
@@ -426,13 +426,14 @@
     },
 
     created() {
+      console.log('this.store',this.$store)
       this.agentId = this.$route.query.agentId
       this.userId = this.$route.query.userId
-      if(this.userId == undefined || this.userId == null || this.userId == ""){
-        this.$router.push({
-          path:'/404'
-        })
-      }
+      // if(this.userId == undefined || this.userId == null || this.userId == ""){
+      //   this.$router.push({
+      //     path:'/404'
+      //   })
+      // }
       this.brandId = this.$route.query.brandId
       this.terminalType = this.$route.query.terminalType
       this.getData()

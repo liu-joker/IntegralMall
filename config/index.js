@@ -12,6 +12,7 @@ module.exports = {
     proxyTable: {
       '/BaseUrlApi/**': {
         target: 'http://129.211.65.120:8099/v2.0/shop/',
+        // target:'https://www.hlxiaoxiong.com/v2.0/shop',
         pathRewrite:{
           '^/BaseUrlApi':'/'
         }

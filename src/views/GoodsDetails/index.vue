@@ -5,8 +5,13 @@
     <div class="G_banner">
       <swiper auto dots-position="center" loop style="width: 100%;margin:0 auto;" :aspect-ratio="40.63/46.88"
               :interval=5000>
+        <!-- <swiper-item class="swiper-demo-img">
+          <video src="http://img.cdn.hljcxiaoxiong.com/20200908172522702168.mp4" controls width='100%' height='100%'></video>
+        </swiper-item> -->
         <swiper-item class="swiper-demo-img" v-for="(item, index) in itemInfo.photoList" :key="index">
+          <!-- <swiper-item class="swiper-demo-img" v-for="(item, index) in 5" :key="index"> -->
           <img :src="item | imgUrl" alt="" class="bannerImg">
+          <!-- <img src="http://img.cdn.hljcxiaoxiong.com/160428874509033914.png" alt=""> -->
         </swiper-item>
       </swiper>
     </div>
@@ -57,7 +62,7 @@
         </div>
       </div>
       <div class="right" :class="itemInfo.status == 2?'disable':''" @click="pay">
-        免费领取
+        {{amountMoney}}
       </div>
     </div>
 
@@ -94,6 +99,7 @@
     },
     data() {
       return {
+        amountMoney:'免费领取',
         icon_my: icon_my,
         banner1: banner1,
         icon_browse: icon_browse,
@@ -133,6 +139,7 @@
       this.$Cookie.setSEnvironment(this.environment)
       this.loginData.brandId = this.$route.query.brandId
       this.getData()
+
     },
     methods: {
       share() {
@@ -142,6 +149,7 @@
 
       },
       pay() {
+        console.log('payMode',this.active, 'itemId',this.itemInfo.id)
         //商品状态:1可买2不可买
         if (this.itemInfo.status == 2) {
           return
@@ -231,6 +239,7 @@
           itemId: this.id,
           grade: this.$store.getters.userInfo.grade,
         }
+        console.log('grade',this.$store.getters.userInfo)
         this.$axiosApi.itemDetail(data.itemId, data.grade).then(res => {
           this.$vux.loading.hide()
           if (res.code == 200) {
@@ -240,6 +249,9 @@
             this.priceInfo = res.data.priceInfo.map(v => {
               this.tagShow = true
               //1金钱2积分3混合
+              if(v.amount!==0){
+                this.amountMoney = '立即支付'
+              }
               v.itemName = '¥' + formatMoney(v.amount) + "+" + v.coin + "U米"
               return v
 

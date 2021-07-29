@@ -14,9 +14,9 @@ class loginApi {
   };
 
   //首页轮播图
-  static itemAdvert() {
+  static itemAdvert(brandId) {
     return request({
-      url: '/itemAdvert',
+      url: '/itemAdvert?brandId='+brandId,
       method: 'get',
       data: {},
       headers: {"Content-Type": "application/x-www-form-urlencoded;charset=utf-8"}
@@ -655,6 +655,96 @@ class loginApi {
       headers: {"Content-Type": "application/x-www-form-urlencoded;charset=utf-8"},
     })
   };
+  // 积分兑换余额。
+  static getExchangeAmount(type){
+    return request({
+      url:'/exchangeAmount',
+      method:"post",
+      data:{
+        type:type
+      },
+      headers: {"Content-Type": "application/x-www-form-urlencoded;charset=utf-8"},
+    })
+  };
+  //积分核销
+  static consumePoint(agentId,brandId,point,appType,payPass,phone){
+    return request({
+      url:'/consumePoint',
+      method:"post",
+      data:{
+        agentId:agentId,
+        brandId:brandId,
+        point:point,
+        appType:appType,
+        payPass:payPass,
+        phone:phone
+      },
+      headers: {"Content-Type": "application/x-www-form-urlencoded;charset=utf-8"},
+    })
+  }
+  //购买会员支持通道
+  static memberChannel(){
+    return request({
+      url:'https://www.hlxiaoxiong.com/v2.0/payment/memberChannel',
+      method:"get",
+      data:{
+      },
+      headers: {"Content-Type": "application/x-www-form-urlencoded;charset=utf-8"},
+    })
+  }
+    //购买会员生成订单
+  static upgradeMembersNew(bankId,gradeId,channelTag){
+    return request({
+      url:'https://www.hlxiaoxiong.com/v2.0/payment/upgradeMembersNew',
+      method:"post",
+      data:{
+        bankId:bankId,
+        gradeId,gradeId,
+        channelTag,channelTag,
+      },
+      headers: {"Content-Type": "application/x-www-form-urlencoded;charset=utf-8"},
+    })
+  }
+
+  //支付购买会员，
+  static payMembersGift(orderNum,addressId){
+    return request({
+      url:'https://www.hlxiaoxiong.com/v2.0/payment/payMembersGift',
+      method:"post",
+      data:{
+        orderNum:orderNum,
+        addressId:addressId,
+      },
+      headers: {"Content-Type": "application/x-www-form-urlencoded;charset=utf-8"},
+    })
+  }
+
+   //华润积分兑换生成订单
+   static hrPointsOrder(coinType){
+    return request({
+      url:'/hrPointsOrder',
+      method:"post",
+      data:{
+        coinType:coinType
+      },
+      headers: {"Content-Type": "application/x-www-form-urlencoded;charset=utf-8"},
+    })
+  }
+
+
+  //华润积分兑换订单支付
+  static hrPointsOrderPay(orderNum,password,code){
+    return request({
+      url:'/hrPointsOrderPay',
+      method:"post",
+      data:{
+        orderNum:orderNum,
+        password:password,
+        code:code
+      },
+      headers: {"Content-Type": "application/x-www-form-urlencoded;charset=utf-8"},
+    })
+  }
 }
 
 

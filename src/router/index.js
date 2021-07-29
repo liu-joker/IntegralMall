@@ -15,18 +15,20 @@ const routerList = [
       title: 'U米商城',
     }
   },
+ 
+ 
   {
-    path: '/commodityTypeList',
-    name: 'commodityTypeList',
-    component: () => import('@/views/index_2/commodityTypeList'),
+    path: '/grabble',
+    name: 'grabble',
+    component: () => import('@/views/index_2/grabble'),
     meta: {
       title: '商城'
     }
   },
   {
-    path: '/grabble',
-    name: 'grabble',
-    component: () => import('@/views/index_2/grabble'),
+    path: '/commodityTypeList',
+    name: 'commodityTypeList',
+    component: () => import('@/views/index_2/commodityTypeList'),
     meta: {
       title: '商城'
     }
@@ -45,6 +47,14 @@ const routerList = [
     component: () => import('@/views/my'),
     meta: {
       title: '我的'
+    }
+  },
+  {
+    path: '/payVipOrder',
+    name: 'payVipOrder',
+    component: () => import('@/views/payVipOrder/index.vue'),
+    meta: {
+      title: '购买商品'
     }
   },
   {
@@ -120,6 +130,14 @@ const routerList = [
     }
   },
   {
+    path: '/thirdPay',
+    name: 'thirdPay',
+    component: () => import('@/views/MyUmi/thirdPay'),
+    meta: {
+      title: ''
+    }
+  },
+  {
     path: '/TheDetail',
     name: 'TheDetail',
     component: () => import('@/views/MyUmi/TheDetail'),
@@ -185,6 +203,14 @@ const routerList = [
     }
   },
   {
+    path: '/callbackPagejf',
+    name: 'callbackPagejf',
+    component: () => import('@/views/payment/callbackPagejf'),
+    meta: {
+      title: '支付结果'
+    }
+  },
+  {
     path: '/errorPayPage',
     name: 'errorPayPage',
     component: () => import('@/views/payment/errorPayPage'),
@@ -214,6 +240,14 @@ const routerList = [
     component: () => import('@/views/agreement/agreementOfAgent2'),
     meta: {
       title: '入驻合同书'
+    }
+  },
+  {
+    path: '/agreementOfAgent3',
+    name: 'agreementOfAgent3',
+    component: () => import('@/views/agreement/agreementOfAgent3'),
+    meta: {
+      title: '汇卡新零售项目合作协议'
     }
   },
 
@@ -289,7 +323,6 @@ const routerList = [
 
 
   //商家模块
-
 
 
   {

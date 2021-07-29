@@ -28,13 +28,20 @@
     </div>
     <div class="container">
       <div class="classification">
-        <div class="item" v-for="(x,index) in selectList2" :class="yellowClass(index)" @click="selectData2(x,index)">
+        <div class="item" v-for="(x,index) in selectList2" :class="yellowClass(index)" :key='index' @click="selectData2(x,index)">
           <div class="item_head">
-            <div class="title">{{x.title}}</div>
+            <div class="title">{{x.title}}
+              
+              <div class="title_hei" v-if='index==0'>超值特惠</div>
+            
+            </div>
+
             <div class="title_info">{{x.info}}</div>
           </div>
           <div class="img_2">
-            <img v-for="(y,index) in x.photoList" :src="y" alt="">
+            <img v-for="(y,index) in x.photoList" :src="y" :key='index' alt="">
+            <div class="img_msg" v-if='index==0'>品牌折扣</div>
+            <div class="img_msg img_msg_right" v-if='index==0'>五折疯抢</div>
           </div>
         </div>
       </div>
@@ -68,7 +75,8 @@
           <swiper :options="swiperOption2" ref="mySwiper" class="swiper2">
             <swiper-slide v-for="(item, index) in selectList" :key="index">
               <div class="list" v-if="item.shopList">
-                <waterfall :col='waterfallData.col' :width="itemWidth" :gutterWidth="gutterWidth"
+                <waterfall :col='waterfallData.col'
+                           :width="itemWidth" :gutterWidth="gutterWidth"
                            :data="item.shopList"
                            @loadmore="loadmore(item)" :key="index">
                   <template>
@@ -83,12 +91,18 @@
                         <div class="name">{{x.name}}</div>
                         <div class="foot">
                           <div class="left">
-                            <span class="coin">{{x.coin}}U米</span>
+                            
+                            <span class="coin" v-if='x.coin!=0'>{{x.coin}}<span style="font-size:1.25rem;color:#323232;"> U米</span></span>
+                            <span class="coin"  v-if='x.coin==0 && x.amount !=0'><span>&yen; </span>{{x.amount | formatMoney}}</span>
                             <span class="originalPrice">&yen;{{x.showAmount | formatMoney}}</span>
                           </div>
-                          <div class="right">
-                            <img :src="icon_browse" alt="" class="eye">
-                            {{x.browse}}
+                          <div class="right"> 
+                            <div class="right_top" v-if='x.fare != 0'>运费:&yen;{{x.fare}}</div>
+                            <div class="right_top" v-if='x.fare == 0'>包邮</div>
+                            <div class="right_bottom"><img :src="icon_browse" alt="" class="eye">
+                            {{x.browse}} 
+                            </div>
+                            
                           </div>
                         </div>
                       </div>
@@ -204,9 +218,9 @@
         selectValue: 0,
         selectList: [],
         selectList2: [{
-          id: 19,
-          title: '精选厨房',
-          info: '美味来袭 精选厨房',
+          id: 27,
+          title: '折扣专区',
+          info: '绝对折扣 好物等你来',
           photoList: [
             pic_sort3,
             pic_sort4
@@ -297,10 +311,10 @@
         return style
       },
       itemWidth: function () {
-        return 0.445 * document.documentElement.clientWidth
+        return Math.floor(0.445 * document.documentElement.clientWidth)
       },
       gutterWidth: function () {
-        return 0.024 * document.documentElement.clientWidth
+        return Math.floor(0.020 * document.documentElement.clientWidth)
       },
       indicator_item: function () {
         let w = this.bannerList.length * 1.875
@@ -347,18 +361,16 @@
       }
     },
     created() {
-
+       
       var url = window.location.href;
       var j = url.substring(url.indexOf('brandId=') + 8, url.indexOf('brandId=') + 40); //兼容app传参
       this.brandId = this.$route.query.brandId || j
       //environment 判断环境  1.外部开放商城
       this.environment = this.$route.query.environment || ""
       this.loginData.brandId = this.$route.query.brandId
-
-
       this.$Cookie.setSEnvironment(this.environment)
-      this.$store.dispatch('setBrindId', this.brandId)
-
+      this.$store.dispatch('setBrindId', this.brandId,)
+      console.log(this.brandId,'this.brandId')
       this.getBannerList()
     },
     activated() {
@@ -366,15 +378,16 @@
       /*if(this.$Cookie.getToken() != null && this.$Cookie.getToken() != "null" && this.$Cookie.getToken() != ""){
               this.$store.dispatch('getUserInfo')
             }*/
-
+      console.log('activated')
       this.$nextTick(() => {
         this.$waterfall.forceUpdate()
       })
     },
     methods: {
       toMy() {
-
+          console.log('tomay')
         if (this.$Cookie.getToken() != null && this.$Cookie.getToken() != "null" && this.$Cookie.getToken() != "") {
+            console.log('token')
           this.$store.dispatch('getUserInfo').then(res=>{
             this.$router.push({path: `/my?brandId=${this.brandId}&environment=${this.environment}`})
           })
@@ -407,10 +420,16 @@
       },
       GoodsDetails(x) {
         //this.$router.push({path: '/GoodsDetails/' + x.id})
-        this.$router.push({path: `/GoodsDetails/${x.id}?brandId=${this.brandId}&environment=${this.environment}`})
+      if(x.id == 639){
+        this.$router.push({path:'/thirdPay'})
+      }else{
+         this.$router.push({path: `/GoodsDetails/${x.id}?brandId=${this.brandId}&environment=${this.environment}`})
+      }
+       
       },
       getBannerList() {
-        this.$axiosApi.itemAdvert().then(res => {
+       let brandId = this.brandId
+        this.$axiosApi.itemAdvert(brandId).then(res => {
           if (res.code == 200) {
             this.bannerList = res.data.shopAdvert
             let selectList = res.data.shopType.map((v, index) => {
@@ -431,7 +450,7 @@
 
 //            this.selectList = active.concat(selectList.slice(0,6))
             this.selectList = active.concat(selectList)
-
+            console.log('this.selectList',this.selectList)
 
             this.getData()
           } else {
@@ -463,7 +482,7 @@
         console.log(this.selectList[this.selectValue].id)
         if (this.selectList[this.selectValue].id == 0) {
           pageNum = 1
-          pageSize = 20
+          pageSize = 10
         }
         this.$axiosApi.itemList(itemType, third, pageNum, pageSize, name).then(res => {
           if (res.code == 200) {
@@ -485,7 +504,7 @@
               }
               return v
             })
-            console.log(shopList)
+            console.log('shopList',shopList)
 
             this.$nextTick(() => {
               this.dividerShow = true
@@ -585,6 +604,36 @@
 </script>
 
 <style rel="stylesheet/less" lang="less">
+.title_hei{
+  display:inline-block;
+  color:#FEFEFE;
+  font-size:1.25rem;
+  width:6.125rem;
+  height:1.75rem;
+  background:linear-gradient(-90deg,rgba(252,37,72,1),rgba(254,101,129,1));
+  border-radius:0.875rem;
+  text-align:center;
+  // line-height:1.75rem;
+  position:relative;
+  bottom:.5rem;
+  right:-1rem;
+}
+.img_msg{
+  color:#FEFEFE;
+  font-size:1.25rem;
+  width:8.625rem;
+  height:1.75rem;
+  background:linear-gradient(-90deg,rgba(252,37,72,1),rgba(254,101,129,1));
+  border-radius:0.875rem 0px 0.875rem 0px;
+  text-align:center;
+  position:absolute;
+  bottom:0;left:0.6875rem;
+  line-height:1.75rem;
+}
+.img_msg_right{
+  position:absolute;
+  bottom:0;left:10.6875rem;
 
+}
 
 </style>
